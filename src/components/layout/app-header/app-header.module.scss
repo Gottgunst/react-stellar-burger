@@ -1,0 +1,32 @@
+@use '/src/styles/variables' as *;
+
+.header {
+  background: var(--interface-modal-bg, #1c1c21);
+  position: relative;
+}
+
+.list {
+  composes: text text_type_main-default pt-4 pb-4 from global;
+  list-style: none;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: $gap-2;
+}
+
+.list_item {
+  composes: pl-5 pr-5 pt-4 pb-4 from global;
+  display: flex;
+  align-items: center;
+  gap: $gap-2;
+  max-width: fit-content;
+
+  &:last-of-type {
+    margin-left: auto;
+  }
+}
+
+.logo {
+  position: absolute;
+  top: 0;
+}

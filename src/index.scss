@@ -1,5 +1,3 @@
-@import-normalize;
-
-body {
-  margin: 0;
-}
+@use 'styles/normalize.scss';
+@use 'styles/styles.scss';
+@use 'fonts/fonts.scss';

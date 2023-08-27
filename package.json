@@ -27,14 +27,25 @@
     "@testing-library/user-event": "^12.1.10",
     "@types/react": "17.0.0",
     "@types/react-dom": "17.0.0",
+    "prettier": "3.0.0",
     "sass": "^1.66.1",
+    "sass-loader": "^13.3.2",
+    "style-loader": "^3.3.3",
+    "stylelint": "^15.10.2",
+    "stylelint-config-clean-order": "^5.0.1",
+    "stylelint-config-standard": "^34.0.0",
+    "stylelint-config-standard-scss": "^10.0.0",
     "typescript": "^4.9.5"
   },
   "scripts": {
     "start": "react-scripts start",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "stylelint:check": "stylelint **/*.{css,scss}",
+    "stylelint": "stylelint **/*.{css,scss} --fix",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -52,6 +63,13 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "lint-staged": {
+    "*.(css|scss)": [
+      "prettier --write --ignore-unknown",
+      "stylelint --fix --allow-empty-input",
+      "git add"
     ]
   }
 }
