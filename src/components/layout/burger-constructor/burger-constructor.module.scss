@@ -1,4 +1,72 @@
 @use '/src/styles/variables' as *;
 
-.burger_constructor {
+@property --round {
+  syntax: '<integer>';
+  initial-value: 1;
+  inherits: false; /* or true depending on context */
+}
+
+.wrapper {
+  composes: pl-4 pr-4 pt-25 from global;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: $gap-10;
+  max-height: calc(100lvh - 88px);
+  box-sizing: border-box;
+
+  @media screen and (max-width: $screen-mobile) {
+    padding-top: 0;
+    background: var(--interface-modal-bg, #1c1c21);
+    align-items: center;
+  }
+}
+
+.components {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: $gap-4;
+
+  &_inside {
+    composes: custom-scroll pr-2 from global;
+    flex-grow: 1;
+    overflow-y: scroll;
+    min-height: 272px;
+    max-height: calc(100lvh - 88px - 252px - 196px);
+    margin-right: -19px;
+    scroll-snap-type: y mandatory;
+  }
+
+  @media screen and (max-width: $screen-mobile) {
+    display: none;
+  }
+}
+
+.part {
+  min-width: 536px;
+}
+
+.component {
+  display: flex;
+  justify-content: stretch;
+  width: 100%;
+  align-items: center;
+  gap: $gap-2;
+  scroll-snap-align: start;
+}
+
+.info {
+  display: flex;
+  gap: $gap-10;
+  flex-shrink: 0;
+}
+
+.price {
+  composes: text text_type_digits-medium from global;
+  display: flex;
+  align-items: center;
+  gap: $gap-2;
+  margin-left: auto;
 }

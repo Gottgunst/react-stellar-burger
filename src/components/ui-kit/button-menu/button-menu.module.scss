@@ -1,0 +1,25 @@
+@use '/src/styles/variables' as *;
+
+.item {
+  composes: pl-5 pr-5 pt-4 pb-4 from global;
+
+  cursor: pointer;
+
+  display: flex;
+  gap: $gap-2;
+  align-items: center;
+
+  max-width: fit-content;
+  height: 100%;
+
+  color: var(--text-dark-grey-secondary-text, #8585ad);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--text-primary-light-standart-text, #f2f2f3);
+  }
+
+  &_active {
+    color: var(--text-primary-light-standart-text, #f2f2f3);
+  }
+}

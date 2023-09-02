@@ -1,0 +1,35 @@
+@use '/src/styles/variables' as *;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-2;
+  height: 208px;
+  box-sizing: border-box;
+  align-items: center;
+  position: relative;
+}
+
+.image {
+  width: 240px;
+  height: 120px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.price {
+  composes: text text_type_digits-default from global;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: $gap-2;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.name {
+  composes: text text_type_main-default from global;
+  text-align: center;
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -12,17 +12,22 @@ import {
   BurgerIcon,
   ListIcon,
   ProfileIcon,
+  MenuIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import ButtonMenu from '../../ui-kit/button-menu/button-menu';
 
 /* ####################
 КЛАСС =================
 ##################### */
 
 class AppHeader extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {};
-  // }
+  constructor(props) {
+    super(props);
+    this.className = props.className;
+    // this.state = {};
+  }
 
   // componentDidMount() {}
   // componentDidUpdate(prevProps, prevState){}
@@ -31,24 +36,40 @@ class AppHeader extends React.Component {
 
   render() {
     return (
-      <nav className={styles.header}>
+      <nav className={this.className + ' ' + styles.header}>
+        <a className={styles.logo} href="/">
+          <Logo />
+        </a>
         <ul className={styles.list}>
-          <li className={styles.list_item}>
-            <BurgerIcon type="primary" />
-            Конструктор
+          <li>
+            <ButtonMenu active>
+              <BurgerIcon type="primary" />
+              Конструктор
+            </ButtonMenu>
           </li>
-          <li className={styles.list_item}>
-            <ListIcon type="primary" />
-            Лента заказов
+          <li>
+            <ButtonMenu>
+              <ListIcon type="secondary" />
+              Лента заказов
+            </ButtonMenu>
           </li>
-          <li className={styles.list_item}>
-            <ProfileIcon type="primary" />
-            Личный кабинет
+          <li>
+            <ButtonMenu>
+              <ProfileIcon type="secondary" />
+              Личный кабинет
+            </ButtonMenu>
+            {/* <ArrowUpIcon type="primary" />
+            <ArrowDownIcon type="primary" />
+            <ul>
+              <li>Профиль</li>
+              <li>История заказов</li>
+              <li>Выход</li>
+            </ul> */}
           </li>
         </ul>
-        <div className={styles.logo}>
-          <Logo />
-        </div>
+        <a className={styles.menu} href="/">
+          <MenuIcon type="primary" />
+        </a>
       </nav>
     );
   }

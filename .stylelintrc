@@ -1,6 +1,6 @@
 {
   "extends": ["stylelint-config-standard-scss", "stylelint-config-clean-order"],
-  "plugins": ["stylelint-order"],
+  "plugins": ["stylelint-order","stylelint-css-modules"],
   "rules": {
     "no-empty-source": null,
     "no-missing-end-of-source-newline": null,
@@ -11,6 +11,16 @@
     "custom-property-pattern": null,
     "block-no-empty": null,
     "declaration-block-no-redundant-longhand-properties": null,
-    "no-descending-specificity": null
+    "no-descending-specificity": null,
+    "css-modules/composed-class-names": true,
+    "property-no-unknown": [
+            true,
+            {
+                "ignoreProperties": [
+                    "composes",
+                    "compose-with"
+                ]
+            }
+        ]
   }
 }

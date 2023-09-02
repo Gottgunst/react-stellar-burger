@@ -1,3 +1,5 @@
+@use '/src/styles/variables' as *;
+
 .app {
   display: grid;
   grid-template-areas:
@@ -7,21 +9,37 @@
   grid-template-rows: 88px auto;
   column-gap: 40px;
 
-  min-width: 320px;
-  max-width: 1280px;
+  min-width: $screen-min;
+  max-width: $screen-max;
   min-height: 100lvh;
   max-height: 100%;
   margin: 0 auto;
 
-  & nav:first-child {
+  @media screen and (max-width: $screen-mobile) {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'header'
+      'ingredients'
+      'constructor';
+
+    max-height: 100lvh;
+    // overflow: hidden;
+  }
+
+  & .header {
     grid-area: header;
   }
 
-  & div:nth-child(2) {
+  & .ingredients {
     grid-area: ingredients;
+
+    @media screen and (max-width: $screen-mobile) {
+      overflow: hidden;
+      max-height: calc(100lvh - 88px - 72px);
+    }
   }
 
-  & div:nth-child(3) {
+  & .constructor {
     grid-area: constructor;
   }
 }
