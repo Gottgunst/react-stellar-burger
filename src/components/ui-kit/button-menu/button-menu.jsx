@@ -5,14 +5,12 @@
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
-
 import styles from './button-menu.module.scss';
 import { ButtonMenuPropTypes } from './button-menu.types.js';
 
 /* ####################
-ФУНКЦИЯ================
+|||||||||||||||||||||||
 ##################### */
-
 function ButtonMenu({ active = false, children }) {
   //  const  type = 'primary';
   const styleList = active

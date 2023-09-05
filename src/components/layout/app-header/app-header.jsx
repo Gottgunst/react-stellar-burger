@@ -1,12 +1,5 @@
 import React from 'react';
 // import ReactDOM from 'react-dom';
-
-/* ####################
-СТИЛИ и ТИПИЗАЦИЯ ======
-##################### */
-
-import styles from './app-header.module.scss';
-import { AppHeaderPropTypes } from './app-header.types.js';
 import {
   Logo,
   BurgerIcon,
@@ -19,27 +12,21 @@ import {
 import ButtonMenu from '../../ui-kit/button-menu/button-menu';
 
 /* ####################
-КЛАСС =================
+СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
+import styles from './app-header.module.scss';
+import { AppHeaderPropTypes } from './app-header.types.js';
 
-class AppHeader extends React.Component {
-  constructor(props) {
-    super(props);
-    this.className = props.className;
-    // this.state = {};
-  }
-
-  // componentDidMount() {}
-  // componentDidUpdate(prevProps, prevState){}
-  // shouldComponentUpdate(nextProps, nextState){return false;}
-  // componentWillUnmount() {}
-
-  render() {
-    return (
-      <nav className={this.className + ' ' + styles.header}>
-        <a className={styles.logo} href="/">
-          <Logo />
-        </a>
+/* ####################
+|||||||||||||||||||||||
+##################### */
+function AppHeader({ className }) {
+  return (
+    <header className={className + ' ' + styles.header}>
+      <a className={styles.logo} href="/">
+        <Logo />
+      </a>
+      <nav className={styles.navigation}>
         <ul className={styles.list}>
           <li>
             <ButtonMenu active>
@@ -67,17 +54,17 @@ class AppHeader extends React.Component {
             </ul> */}
           </li>
         </ul>
+
         <a className={styles.menu} href="/">
           <MenuIcon type="primary" />
         </a>
       </nav>
-    );
-  }
+    </header>
+  );
 }
 export default AppHeader;
 
 /* #####################
-ТИПЫ и ПРОПСЫ ПО УМОЛЧАНИЮ 
+ТИПЫ ===================
 ##################### */
 AppHeader.propTypes = AppHeaderPropTypes;
-AppHeader.defaultProps = {};

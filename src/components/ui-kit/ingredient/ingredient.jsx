@@ -8,14 +8,12 @@ import {
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
-
 import styles from './ingredient.module.scss';
 import { IngredientPropTypes } from './ingredient.types.js';
 
 /* ####################
-ФУНКЦИЯ================
+|||||||||||||||||||||||
 ##################### */
-
 function Ingredient({ data, quantity = 0 }) {
   return (
     <div className={styles.wrapper}>

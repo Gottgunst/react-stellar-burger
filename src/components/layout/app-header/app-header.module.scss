@@ -11,6 +11,11 @@
   box-shadow: 0 -100vw 0 100vw var(--interface-modal-bg, #1c1c21);
 }
 
+.navigation {
+  display: flex;
+  min-width: 100%;
+}
+
 .list {
   composes: text text_type_main-default pt-4 pb-4 from global;
 
