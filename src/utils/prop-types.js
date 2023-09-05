@@ -14,3 +14,9 @@ export const ingredientPropType = PropTypes.shape({
   image_large: PropTypes.string,
   __v: PropTypes.number,
 });
+
+export const ApiPropType = PropTypes.shape({
+  baseUrl: PropTypes.string,
+  headers: PropTypes.object,
+  paths: PropTypes.object,
+});

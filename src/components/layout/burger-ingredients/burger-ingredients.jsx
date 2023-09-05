@@ -12,7 +12,7 @@ import { BurgerIngredientsPropTypes } from './burger-ingredients.types.js';
 /* ####################
 |||||||||||||||||||||||
 ##################### */
-function BurgerIngredients({ className, ingredients }) {
+export function BurgerIngredients({ className, ingredients }) {
   const tabList = [
     { name: 'Булки', type: 'bun' },
     { name: 'Соусы', type: 'sauce' },
@@ -62,7 +62,6 @@ function BurgerIngredients({ className, ingredients }) {
     </div>
   );
 }
-export default BurgerIngredients;
 
 /* #####################
 ТИПЫ ===================

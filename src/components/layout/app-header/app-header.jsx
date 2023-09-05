@@ -20,7 +20,7 @@ import { AppHeaderPropTypes } from './app-header.types.js';
 /* ####################
 |||||||||||||||||||||||
 ##################### */
-function AppHeader({ className }) {
+export function AppHeader({ className }) {
   return (
     <header className={className + ' ' + styles.header}>
       <a className={styles.logo} href="/">
@@ -62,7 +62,6 @@ function AppHeader({ className }) {
     </header>
   );
 }
-export default AppHeader;
 
 /* #####################
 ТИПЫ ===================

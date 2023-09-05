@@ -16,7 +16,7 @@ import { BurgerConstructorPropTypes } from './burger-constructor.types.js';
 /* ####################
 |||||||||||||||||||||||
 ##################### */
-function BurgerConstructor({ className, compound }) {
+export function BurgerConstructor({ className, compound }) {
   // Временная булка
   const bun = compound.filter((el) => el.type === 'bun')[0];
 
@@ -71,7 +71,6 @@ function BurgerConstructor({ className, compound }) {
     </div>
   );
 }
-export default BurgerConstructor;
 
 /* #####################
 ТИПЫ ===================
