@@ -1,13 +1,17 @@
 @use '/src/styles/variables' as *;
 
 .wrapper {
+  cursor: pointer;
+
+  position: relative;
+
   display: flex;
   flex-direction: column;
   gap: $gap-2;
-  height: 208px;
-  box-sizing: border-box;
   align-items: center;
-  position: relative;
+
+  box-sizing: border-box;
+  height: 208px;
 }
 
 .image {
@@ -19,14 +23,15 @@
 
 .price {
   composes: text text_type_digits-default from global;
+
+  overflow: hidden;
   display: flex;
-  justify-content: center;
-  align-items: center;
   gap: $gap-2;
+  align-items: center;
+  justify-content: center;
 
   text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden;
 }
 
 .name {

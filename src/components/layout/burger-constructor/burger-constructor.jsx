@@ -34,19 +34,18 @@ export function BurgerConstructor({ className, compound }) {
         </li>
         <li className={styles.part}>
           <ul className={styles.components + ' ' + styles['components_inside']}>
-            {compound.map((el) => {
-              if (el.type !== 'bun')
-                return (
-                  <li className={styles.component} key={el._id}>
-                    <DragIcon type="primary" />
-                    <ConstructorElement
-                      text={el.name}
-                      price={el.price}
-                      thumbnail={el.image}
-                    />
-                  </li>
-                );
-            })}
+            {compound.map((el) =>
+              el.type !== 'bun' ? (
+                <li className={styles.component} key={el._id}>
+                  <DragIcon type="primary" />
+                  <ConstructorElement
+                    text={el.name}
+                    price={el.price}
+                    thumbnail={el.image}
+                  />
+                </li>
+              ) : null,
+            )}
           </ul>
         </li>
         <li className={styles.part}>

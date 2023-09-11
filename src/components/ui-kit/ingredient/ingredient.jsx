@@ -1,9 +1,9 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom';
+import React, { useState } from 'react';
 import {
   CurrencyIcon,
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import Modal from '../modal/modal';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -15,19 +15,30 @@ import { IngredientPropTypes } from './ingredient.types.js';
 |||||||||||||||||||||||
 ##################### */
 function Ingredient({ data, quantity = 0 }) {
-  return (
-    <div className={styles.wrapper}>
-      {quantity === 0 ? null : (
-        <Counter count={quantity} size="default" extraClass="m-1" />
-      )}
+  const [openStatus, setOpenStatus] = useState(false);
 
-      <img src={data.image} alt={data.name} className={styles.image} />
-      <span className={styles.price}>
-        {data.price}
-        <CurrencyIcon type="primary" />
-      </span>
-      <p className={styles.name}>{data.name}</p>
-    </div>
+  const openModal = () => {
+    setOpenStatus(true);
+  };
+
+  return (
+    <>
+      <div className={styles.wrapper} onClick={openModal}>
+        {quantity === 0 ? null : (
+          <Counter count={quantity} size="default" extraClass="m-1" />
+        )}
+
+        <img src={data.image} alt={data.name} className={styles.image} />
+        <span className={styles.price}>
+          {data.price}
+          <CurrencyIcon type="primary" />
+        </span>
+        <p className={styles.name}>{data.name}</p>
+      </div>
+      <Modal openStatus={openStatus} setOpenStatus={setOpenStatus}>
+        <div>{data.name}</div>
+      </Modal>
+    </>
   );
 }
 
