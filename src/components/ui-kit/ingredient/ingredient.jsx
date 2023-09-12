@@ -4,6 +4,7 @@ import {
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -36,7 +37,7 @@ function Ingredient({ data, quantity = 0 }) {
         <p className={styles.name}>{data.name}</p>
       </div>
       <Modal openStatus={openStatus} setOpenStatus={setOpenStatus}>
-        <div>{data.name}</div>
+        <IngredientDetails consist={data} />
       </Modal>
     </>
   );

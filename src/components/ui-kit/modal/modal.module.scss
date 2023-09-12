@@ -24,7 +24,8 @@
 
   position: relative;
 
-  min-width: 640px;
+  box-sizing: border-box;
+  min-width: 720px;
   min-height: 500px;
 
   background: var(--interface-modal-bg, #1c1c21);
@@ -37,6 +38,13 @@
     0 4px 8px 0 rgb(0 0 0 / 4%),
     0 16px 24px 0 rgb(0 0 0 / 4%),
     0 24px 32px 0 rgb(0 0 0 / 4%);
+
+  @media screen and (max-width: $screen-mobile) {
+    min-width: 100%;
+    min-height: 100%;
+    background: var(--interface-bg, #131316);
+    border-radius: 0;
+  }
 }
 
 .close {

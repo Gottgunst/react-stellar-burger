@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import ReactDOM from 'react-dom';
 import {
   ConstructorElement,
@@ -6,6 +6,8 @@ import {
   CurrencyIcon,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import Modal from '../../ui-kit/modal/modal';
+import OrderDetails from '../../ui-kit/order-details/order-details';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -19,6 +21,12 @@ import { BurgerConstructorPropTypes } from './burger-constructor.types.js';
 export function BurgerConstructor({ className, compound }) {
   // Временная булка
   const bun = compound.filter((el) => el.type === 'bun')[0];
+
+  const [openStatus, setOpenStatus] = useState(false);
+
+  const openModal = () => {
+    setOpenStatus(true);
+  };
 
   return (
     <div className={className + ' ' + styles.wrapper}>
@@ -63,9 +71,17 @@ export function BurgerConstructor({ className, compound }) {
           610
           <CurrencyIcon type="primary" />
         </span>
-        <Button htmlType="button" type="primary" size="large">
+        <Button
+          htmlType="button"
+          type="primary"
+          size="large"
+          onClick={openModal}
+        >
           Оформить заказ
         </Button>
+        <Modal openStatus={openStatus} setOpenStatus={setOpenStatus}>
+          <OrderDetails />
+        </Modal>
       </span>
     </div>
   );
