@@ -6,7 +6,7 @@
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
 import styles from './order-details.module.scss';
-import { OrderDetailsPropTypes } from './order-details.types.js';
+// import { OrderDetailsPropTypes } from './order-details.types.js';
 
 /* ####################
 |||||||||||||||||||||||
@@ -31,4 +31,4 @@ export default OrderDetails;
 /* #####################
 ТИПЫ ===================
 ##################### */
-OrderDetails.propTypes = OrderDetailsPropTypes;
+// OrderDetails.propTypes = OrderDetailsPropTypes;

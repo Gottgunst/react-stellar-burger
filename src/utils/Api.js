@@ -7,13 +7,17 @@ export default class Api {
     this._paths = paths;
   }
 
-  _lateralUrl(keyPath) {
-    return keyPath.id
-      ? this._paths[keyPath.key] + '/' + keyPath.id
-      : this._paths[keyPath.key];
+  _composeUrl(keyPath) {
+    if (typeof keyPath === 'string') {
+      return keyPath;
+    } else {
+      return keyPath.id
+        ? this._paths[keyPath.key] + '/' + keyPath.id
+        : this._paths[keyPath.key];
+    }
   }
 
-  workData(keyPath, method = 'GET', body) {
+  makeRequest(keyPath, method = 'GET', body) {
     const options = {
       method: method.toUpperCase(),
       headers: this._headers,
@@ -23,7 +27,7 @@ export default class Api {
       options.body = JSON.stringify(body);
     }
 
-    return fetch(`${this._baseUrl}${this._lateralUrl(keyPath)}`, options).then(
+    return fetch(`${this._baseUrl}${this._composeUrl(keyPath)}`, options).then(
       (res) => {
         if (res.ok) {
           return res.json();

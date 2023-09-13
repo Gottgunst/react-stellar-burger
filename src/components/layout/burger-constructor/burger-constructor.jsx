@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 // import ReactDOM from 'react-dom';
 import {
   ConstructorElement,
@@ -8,6 +8,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../../ui-kit/modal/modal';
 import OrderDetails from '../../ui-kit/order-details/order-details';
+import { useModal } from '../../../hooks/useModal';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -22,11 +23,7 @@ export function BurgerConstructor({ className, compound }) {
   // Временная булка
   const bun = compound.filter((el) => el.type === 'bun')[0];
 
-  const [openStatus, setOpenStatus] = useState(false);
-
-  const openModal = () => {
-    setOpenStatus(true);
-  };
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   return (
     <div className={className + ' ' + styles.wrapper}>
@@ -79,7 +76,7 @@ export function BurgerConstructor({ className, compound }) {
         >
           Оформить заказ
         </Button>
-        <Modal openStatus={openStatus} setOpenStatus={setOpenStatus}>
+        <Modal status={isModalOpen} closeModal={closeModal}>
           <OrderDetails />
         </Modal>
       </span>

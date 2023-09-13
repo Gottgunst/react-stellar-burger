@@ -12,7 +12,7 @@ import { ModalOverlayPropTypes } from './modal-overlay.types.js';
 |||||||||||||||||||||||
 ##################### */
 function ModalOverlay({ status, onMouseDown, children }) {
-  let modalClases = `${styles.bg} ${status ? styles['bg_opened'] : ''}`;
+  const modalClases = `${styles.bg} ${status ? styles['bg_opened'] : ''}`;
 
   return (
     <div className={modalClases} onMouseDown={onMouseDown}>

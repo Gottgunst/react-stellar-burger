@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import ReactDOM from 'react-dom';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../../ui-kit/ingredient/ingredient';
+import IngredientDetails from '../../ui-kit/ingredient-details/ingredient-details';
+import Modal from '../../ui-kit/modal/modal';
+import { useModal } from '../../../hooks/useModal';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -20,6 +23,14 @@ export function BurgerIngredients({ className, ingredients }) {
   ];
   const [state, setState] = useState('Булки');
 
+  const [detailsId, setDetailsId] = useState('');
+  // отбираем данные для модального окна
+  const details = () => {
+    return (
+      ingredients.filter((item) => item._id === detailsId)[0] || ingredients[0]
+    );
+  };
+
   // временный пресет
   const preset = (name) => {
     if (
@@ -28,6 +39,8 @@ export function BurgerIngredients({ className, ingredients }) {
     )
       return 1;
   };
+
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   return (
     <div className={className + ' ' + styles.wrapper}>
@@ -49,7 +62,13 @@ export function BurgerIngredients({ className, ingredients }) {
               <ul className={styles.ingredient}>
                 {ingredients.map((item) =>
                   group.type === item.type ? (
-                    <li key={item._id}>
+                    <li
+                      key={item._id}
+                      onClick={() => {
+                        openModal();
+                        setDetailsId(item._id);
+                      }}
+                    >
                       <Ingredient data={item} quantity={preset(item.name)} />
                     </li>
                   ) : null,
@@ -59,6 +78,10 @@ export function BurgerIngredients({ className, ingredients }) {
           ))}
         </ul>
       </div>
+
+      <Modal status={isModalOpen} closeModal={closeModal}>
+        <IngredientDetails consist={details()} />
+      </Modal>
     </div>
   );
 }

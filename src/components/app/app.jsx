@@ -9,38 +9,40 @@ import { AppHeader, BurgerConstructor, BurgerIngredients } from '../layout/';
 import styles from './app.module.scss';
 
 /* ####################
+КОНФИГУРАЦИЯ API ======
+##################### */
+const burgerApi = new Api({
+  baseUrl: process.env.REACT_APP_API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  paths: {
+    ingredients: '/ingredients',
+  },
+});
+
+/* ####################
 |||||||||||||||||||||||
 ##################### */
 function App() {
-  // настройка API
-  const burgerApi = new Api({
-    baseUrl: process.env.REACT_APP_API_URL,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    paths: {
-      ing: '/ingredients',
-    },
-  });
-
+  // cбор и хранение данных
   const [state, setState] = useState({
     productData: null,
     loading: true,
   });
 
   useEffect(() => {
-    const getData = async () => {
+    const getData = () => {
       setState({ ...state, loading: true });
-      const response = await burgerApi
-        .workData({ key: 'ing' })
+      burgerApi
+        .makeRequest('/ingredients')
         .then((res) => {
-          return res.data;
+          setState({ productData: res.data, loading: false });
         })
         .catch((err) => {
           console.warn('STATUS', err.status, '#######', err);
           return reserveData;
         });
-      setState({ productData: response, loading: false });
     };
     getData();
   }, []);

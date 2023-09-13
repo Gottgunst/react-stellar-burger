@@ -12,38 +12,30 @@ import { ModalPropTypes } from './modal.types.js';
 /* ####################
 |||||||||||||||||||||||
 ##################### */
-function Modal({ openStatus, setOpenStatus, children }) {
-  const closeModal = (e) => {
-    setOpenStatus(false);
-  };
-
-  const catchEsc = (e) => {
-    if (e.key === 'Escape') {
-      closeModal(e);
-    }
-  };
-
+function Modal({ status, closeModal, children }) {
+  // запрещаем всплытие клика на основном модальном окне
   const dontCloseModal = (e) => {
     e.stopPropagation();
   };
 
   useEffect(() => {
-    if (openStatus) document.addEventListener('keydown', catchEsc);
+    const catchEsc = (e) => {
+      if (e.key === 'Escape') {
+        closeModal(e);
+      }
+    };
+
+    if (status) document.addEventListener('keydown', catchEsc);
 
     return () => {
       document.removeEventListener('keydown', catchEsc);
     };
-  }, [openStatus]);
-
-  // // Набор стилей для блока модального окна
-  // let modalClases = `${styles.wrapper} ${
-  //   closeStatus ? styles['wrapper_closed'] : ''
-  // }`;
+  }, [status]);
 
   return createPortal(
-    <ModalOverlay status={openStatus} onMouseDown={closeModal}>
+    <ModalOverlay status={status} onMouseDown={closeModal}>
       <div className={styles.block} onMouseDown={dontCloseModal}>
-        <button className={styles.close} onMouseDown={closeModal}>
+        <button className={styles.close} onClick={closeModal}>
           <CloseIcon type="primary" />
         </button>
         {children}
