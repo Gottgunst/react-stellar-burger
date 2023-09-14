@@ -1,0 +1,51 @@
+@use '/src/styles/variables' as *;
+
+.wrapper {
+  composes: pb-5 from global;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  composes: text text_type_main-large from global;
+  width: 100%;
+  line-height: 64px;
+
+  @media screen and (max-width: $screen-mobile) {
+    display: none;
+  }
+}
+
+.image {
+  width: 520px;
+  height: 240px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.name {
+  composes: text text_type_main-medium pt-4 from global;
+  width: 100%;
+  text-align: center;
+}
+
+.consist {
+  composes: text text_type_main-default text_color_inactive pt-8 pl-15 pr-15 from global;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: $gap-5;
+  align-items: center;
+  justify-content: space-between;
+
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.digits {
+  composes: text text_type_digits-default pt-2 from global;
+  text-align: center;
+}

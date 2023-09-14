@@ -1,4 +1,4 @@
-import React from 'react';
+// import React, { useState } from 'react';
 // import ReactDOM from 'react-dom';
 import {
   ConstructorElement,
@@ -6,6 +6,9 @@ import {
   CurrencyIcon,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import Modal from '../../ui-kit/modal/modal';
+import OrderDetails from '../../ui-kit/order-details/order-details';
+import { useModal } from '../../../hooks/useModal';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -16,9 +19,11 @@ import { BurgerConstructorPropTypes } from './burger-constructor.types.js';
 /* ####################
 |||||||||||||||||||||||
 ##################### */
-function BurgerConstructor({ className, compound }) {
+export function BurgerConstructor({ className, compound }) {
   // Временная булка
   const bun = compound.filter((el) => el.type === 'bun')[0];
+
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   return (
     <div className={className + ' ' + styles.wrapper}>
@@ -34,19 +39,18 @@ function BurgerConstructor({ className, compound }) {
         </li>
         <li className={styles.part}>
           <ul className={styles.components + ' ' + styles['components_inside']}>
-            {compound.map((el) => {
-              if (el.type !== 'bun')
-                return (
-                  <li className={styles.component} key={el._id}>
-                    <DragIcon type="primary" />
-                    <ConstructorElement
-                      text={el.name}
-                      price={el.price}
-                      thumbnail={el.image}
-                    />
-                  </li>
-                );
-            })}
+            {compound.map((el) =>
+              el.type !== 'bun' ? (
+                <li className={styles.component} key={el._id}>
+                  <DragIcon type="primary" />
+                  <ConstructorElement
+                    text={el.name}
+                    price={el.price}
+                    thumbnail={el.image}
+                  />
+                </li>
+              ) : null,
+            )}
           </ul>
         </li>
         <li className={styles.part}>
@@ -64,14 +68,21 @@ function BurgerConstructor({ className, compound }) {
           610
           <CurrencyIcon type="primary" />
         </span>
-        <Button htmlType="button" type="primary" size="large">
+        <Button
+          htmlType="button"
+          type="primary"
+          size="large"
+          onClick={openModal}
+        >
           Оформить заказ
         </Button>
+        <Modal status={isModalOpen} closeModal={closeModal}>
+          <OrderDetails />
+        </Modal>
       </span>
     </div>
   );
 }
-export default BurgerConstructor;
 
 /* #####################
 ТИПЫ ===================

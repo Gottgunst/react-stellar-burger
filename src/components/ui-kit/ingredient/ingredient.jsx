@@ -1,5 +1,4 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom';
+import React, { useState } from 'react';
 import {
   CurrencyIcon,
   Counter,
@@ -15,19 +14,27 @@ import { IngredientPropTypes } from './ingredient.types.js';
 |||||||||||||||||||||||
 ##################### */
 function Ingredient({ data, quantity = 0 }) {
-  return (
-    <div className={styles.wrapper}>
-      {quantity === 0 ? null : (
-        <Counter count={quantity} size="default" extraClass="m-1" />
-      )}
+  const [openStatus, setOpenStatus] = useState(false);
 
-      <img src={data.image} alt={data.name} className={styles.image} />
-      <span className={styles.price}>
-        {data.price}
-        <CurrencyIcon type="primary" />
-      </span>
-      <p className={styles.name}>{data.name}</p>
-    </div>
+  const openModal = () => {
+    setOpenStatus(true);
+  };
+
+  return (
+    <>
+      <div className={styles.wrapper} onClick={openModal}>
+        {quantity === 0 ? null : (
+          <Counter count={quantity} size="default" extraClass="m-1" />
+        )}
+
+        <img src={data.image} alt={data.name} className={styles.image} />
+        <span className={styles.price}>
+          {data.price}
+          <CurrencyIcon type="primary" />
+        </span>
+        <p className={styles.name}>{data.name}</p>
+      </div>
+    </>
   );
 }
 
