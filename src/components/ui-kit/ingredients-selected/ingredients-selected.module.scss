@@ -1,0 +1,5 @@
+@use '/src/styles/variables' as *;
+
+.component {
+  composes: component from '../../layout/burger-constructor/burger-constructor.module.scss';
+}
