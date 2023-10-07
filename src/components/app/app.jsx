@@ -14,7 +14,7 @@ import styles from './app.module.scss';
 ##################### */
 function App() {
   // cбор и хранение данных
-  const [state, setState] = useState({
+  const [stateIngredients, setStateIngredients] = useState({
     productData: null,
     loading: true,
   });
@@ -29,17 +29,16 @@ function App() {
     id: null,
   };
   const burgerOrder = useReducer(orderReducer, orderObj);
-
   // Инициализация данных из API
   useEffect(() => {
     // объявили и вызвали
     (() => {
-      setState({ ...state, loading: true });
+      setStateIngredients({ ...stateIngredients, loading: true });
       burgerApi
         .makeRequest('/ingredients')
         .then((res) => {
           // Устанавливаем данные из базы
-          setState({ productData: res.data, loading: false });
+          setStateIngredients({ productData: res.data, loading: false });
 
           // Подготовка заказа
           const [o, dispatch] = burgerOrder;
@@ -56,18 +55,20 @@ function App() {
   }, []);
 
   // Проверка на состояние запроса к АПИ и демонстрация нужной информации
-  const data = state.loading ? reserveData : state.productData;
+  const allIngredients = stateIngredients.loading
+    ? reserveData
+    : stateIngredients.productData;
 
   return (
-    <BurgersContext.Provider value={data}>
-      <OrderContext.Provider value={burgerOrder}>
-        <div className={styles.app}>
-          <AppHeader className={styles.header} />
+    <div className={styles.app}>
+      <AppHeader className={styles.header} />
+      <BurgersContext.Provider value={allIngredients}>
+        <OrderContext.Provider value={burgerOrder}>
           <BurgerIngredients className={styles.ingredients} />
           <BurgerConstructor className={styles.constructor} />
-        </div>
-      </OrderContext.Provider>
-    </BurgersContext.Provider>
+        </OrderContext.Provider>
+      </BurgersContext.Provider>
+    </div>
   );
 }
 

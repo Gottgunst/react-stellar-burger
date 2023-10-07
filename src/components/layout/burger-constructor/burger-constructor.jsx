@@ -1,8 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
-// import ReactDOM from 'react-dom';
+import { useContext } from 'react';
 import {
-  ConstructorElement,
-  DragIcon,
   CurrencyIcon,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -17,6 +14,8 @@ import { burgerApi } from '../../../utils/data';
 ##################### */
 import styles from './burger-constructor.module.scss';
 import { BurgerConstructorPropTypes } from './burger-constructor.types.js';
+import Bun from '../../ui-kit/bun/bun';
+import IngredientsSelected from '../../ui-kit/ingredients-selected/ingredients-selected';
 
 /* ####################
 |||||||||||||||||||||||
@@ -45,51 +44,15 @@ export function BurgerConstructor({ className }) {
     <div className={className + ' ' + styles.wrapper}>
       <ul className={styles.components}>
         <li className={styles.part}>
-          {orderState.bun._id ? (
-            <ConstructorElement
-              type="top"
-              isLocked={true}
-              text={orderState.bun.name + ' (верх)'}
-              price={orderState.bun.price}
-              thumbnail={orderState.bun.image}
-            />
-          ) : (
-            <div className="constructor-element constructor-element_pos_top"></div>
-          )}
+          <Bun type="top" />
         </li>
         <li className={styles.part}>
           <ul className={styles.components + ' ' + styles['components_inside']}>
-            {orderState.items.length > 0 ? (
-              orderState.items.map((el, index) => (
-                <li className={styles.component} key={el._id + index}>
-                  <DragIcon type="primary" />
-                  <ConstructorElement
-                    text={el.name}
-                    price={el.price}
-                    thumbnail={el.image}
-                    handleClose={() => {
-                      dispatch({ act: 'remove', income: index });
-                    }}
-                  />
-                </li>
-              ))
-            ) : (
-              <div className="constructor-element"></div>
-            )}
+            <IngredientsSelected />
           </ul>
         </li>
         <li className={styles.part}>
-          {orderState.bun._id ? (
-            <ConstructorElement
-              type="bottom"
-              isLocked={true}
-              text={orderState.bun.name + ' (низ)'}
-              // price={orderState.bun.price / 2}
-              thumbnail={orderState.bun.image}
-            />
-          ) : (
-            <div className="constructor-element constructor-element_pos_bottom"></div>
-          )}
+          <Bun type="bottom" />
         </li>
       </ul>
       <span className={styles.info}>

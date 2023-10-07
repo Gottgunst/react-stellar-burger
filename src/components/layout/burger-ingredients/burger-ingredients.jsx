@@ -1,5 +1,4 @@
-import React, { useContext, useState } from 'react';
-// import ReactDOM from 'react-dom';
+import { useContext, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../../ui-kit/ingredient/ingredient';
 import IngredientDetails from '../../ui-kit/ingredient-details/ingredient-details';
@@ -17,7 +16,7 @@ import { BurgerIngredientsPropTypes } from './burger-ingredients.types.js';
 |||||||||||||||||||||||
 ##################### */
 export function BurgerIngredients({ className }) {
-  const [orderState, dispatch] = useContext(OrderContext);
+  const [o, dispatch] = useContext(OrderContext);
   const ingredients = useContext(BurgersContext);
 
   const tabList = [
@@ -69,8 +68,8 @@ export function BurgerIngredients({ className }) {
                     <li
                       key={item._id}
                       onClick={() => {
-                        // openModal();
-                        // setDetailsId(item._id);
+                        openModal();
+                        setDetailsId(item._id);
                         dispatch({ act: 'add', income: item });
                       }}
                     >
