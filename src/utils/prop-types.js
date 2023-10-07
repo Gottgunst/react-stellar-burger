@@ -20,3 +20,8 @@ export const ApiPropType = PropTypes.shape({
   headers: PropTypes.object,
   paths: PropTypes.object,
 });
+
+export const orderReducerPropType = PropTypes.shape({
+  state: PropTypes.object,
+  action: PropTypes.object,
+});

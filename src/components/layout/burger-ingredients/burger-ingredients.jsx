@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 // import ReactDOM from 'react-dom';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../../ui-kit/ingredient/ingredient';
 import IngredientDetails from '../../ui-kit/ingredient-details/ingredient-details';
 import Modal from '../../ui-kit/modal/modal';
 import { useModal } from '../../../hooks/useModal';
+import { BurgersContext, OrderContext } from '../../../utils/context';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -15,7 +16,10 @@ import { BurgerIngredientsPropTypes } from './burger-ingredients.types.js';
 /* ####################
 |||||||||||||||||||||||
 ##################### */
-export function BurgerIngredients({ className, ingredients }) {
+export function BurgerIngredients({ className }) {
+  const [orderState, dispatch] = useContext(OrderContext);
+  const ingredients = useContext(BurgersContext);
+
   const tabList = [
     { name: 'Булки', type: 'bun' },
     { name: 'Соусы', type: 'sauce' },
@@ -65,8 +69,9 @@ export function BurgerIngredients({ className, ingredients }) {
                     <li
                       key={item._id}
                       onClick={() => {
-                        openModal();
-                        setDetailsId(item._id);
+                        // openModal();
+                        // setDetailsId(item._id);
+                        dispatch({ act: 'add', income: item });
                       }}
                     >
                       <Ingredient data={item} quantity={preset(item.name)} />

@@ -1,4 +1,24 @@
-export const data = [
+import Api from './Api';
+
+/* ####################
+КОНФИГ API ============
+##################### */
+export const burgerApi = new Api({
+  baseUrl: process.env.REACT_APP_API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  paths: {
+    ingredients: '/ingredients',
+    orders: '/orders',
+  },
+});
+
+/* ####################
+Резервная дата =========
+##################### */
+
+export const reserveData = [
   {
     _id: '60666c42cc7b410027a1a9b1',
     name: 'Краторная булка N-200i',
