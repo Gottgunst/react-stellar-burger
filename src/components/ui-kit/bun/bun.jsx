@@ -1,6 +1,5 @@
-import { useContext } from 'react';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import { OrderContext } from '../../../utils/context';
+import { useSelector } from 'react-redux';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -10,18 +9,19 @@ import { BunPropTypes } from './bun.types.js';
 /* ####################
 |||||||||||||||||||||||
 ##################### */
-function Bun(type) {
-  const [orderState] = useContext(OrderContext);
+function Bun({ type = 'top' }) {
+  const store = useSelector((state) => state.order);
+
   const topPosition = type === 'top';
   return (
     <>
-      {orderState.bun._id ? (
+      {store.bun._id ? (
         <ConstructorElement
           type={type}
           isLocked={true}
-          text={orderState.bun.name + (topPosition ? ' (верх)' : ' (низ)')}
-          price={topPosition ? orderState.bun.price : null}
-          thumbnail={orderState.bun.image}
+          text={store.bun.name + (topPosition ? ' (верх)' : ' (низ)')}
+          price={topPosition ? store.bun.price : null}
+          thumbnail={store.bun.image}
         />
       ) : (
         <div

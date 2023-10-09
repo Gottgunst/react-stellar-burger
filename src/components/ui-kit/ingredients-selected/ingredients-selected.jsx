@@ -1,9 +1,9 @@
-import { useContext } from 'react';
 import {
   ConstructorElement,
   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { OrderContext } from '../../../utils/context';
+import { useSelector, useDispatch } from 'react-redux';
+import { removeFromOrder } from '../../../services/order/reducer';
 
 /* ####################
 СТИЛИ =================
@@ -14,12 +14,13 @@ import styles from './ingredients-selected.module.scss';
 |||||||||||||||||||||||
 ##################### */
 function IngredientsSelected() {
-  const [orderState, dispatch] = useContext(OrderContext);
+  const store = useSelector((state) => state.order);
+  const dispatch = useDispatch();
 
   return (
     <>
-      {orderState.items.length > 0 ? (
-        orderState.items.map((el, index) => (
+      {store.items.length > 0 ? (
+        store.items.map((el, index) => (
           <li className={styles.component} key={el._id + index}>
             <DragIcon type="primary" />
             <ConstructorElement
@@ -27,7 +28,7 @@ function IngredientsSelected() {
               price={el.price}
               thumbnail={el.image}
               handleClose={() => {
-                dispatch({ act: 'remove', income: index });
+                dispatch(removeFromOrder({ index }));
               }}
             />
           </li>

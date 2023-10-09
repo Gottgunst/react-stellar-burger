@@ -1,44 +1,44 @@
-import { useContext } from 'react';
 import {
   CurrencyIcon,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import Bun from '../../ui-kit/bun/bun';
+import IngredientsSelected from '../../ui-kit/ingredients-selected/ingredients-selected';
 import Modal from '../../ui-kit/modal/modal';
 import OrderDetails from '../../ui-kit/order-details/order-details';
 import { useModal } from '../../../hooks/useModal';
-import { OrderContext } from '../../../utils/context';
-import { burgerApi } from '../../../utils/data';
+// import { burgerApi } from '../../../utils/data';
+import { useSelector } from 'react-redux';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
 import styles from './burger-constructor.module.scss';
 import { BurgerConstructorPropTypes } from './burger-constructor.types.js';
-import Bun from '../../ui-kit/bun/bun';
-import IngredientsSelected from '../../ui-kit/ingredients-selected/ingredients-selected';
 
 /* ####################
 |||||||||||||||||||||||
 ##################### */
 export function BurgerConstructor({ className }) {
-  const [orderState, dispatch] = useContext(OrderContext);
+  const store = useSelector((state) => state.order);
+  // const dispatch = useDispatch();
 
   const { isModalOpen, openModal, closeModal } = useModal();
 
-  const createOrder = () => {
-    const items = [...orderState.items, orderState.bun].map((e) => e._id);
-    burgerApi
-      .makeRequest('/orders', 'POST', {
-        ingredients: items,
-      })
-      .then((res) => {
-        dispatch({ act: 'complete', income: res });
-      })
-      .catch((err) => {
-        console.warn('STATUS', err.status, '#######', err);
-        return err;
-      });
-  };
+  // const createOrder = () => {
+  //   const items = [...store.items, store.bun].map((e) => e._id);
+  //   burgerApi
+  //     .makeRequest('/orders', 'POST', {
+  //       ingredients: items,
+  //     })
+  //     .then((res) => {
+  //       dispatch({ act: 'complete', income: res });
+  //     })
+  //     .catch((err) => {
+  //       console.warn('STATUS', err.status, '#######', err);
+  //       return err;
+  //     });
+  // };
 
   return (
     <div className={className + ' ' + styles.wrapper}>
@@ -57,7 +57,7 @@ export function BurgerConstructor({ className }) {
       </ul>
       <span className={styles.info}>
         <span className={styles.price}>
-          {orderState.price}
+          {store.price}
           <CurrencyIcon type="primary" />
         </span>
         <Button
@@ -66,7 +66,7 @@ export function BurgerConstructor({ className }) {
           size="large"
           onClick={() => {
             openModal();
-            createOrder();
+            // createOrder();
           }}
         >
           Оформить заказ

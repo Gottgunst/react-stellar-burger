@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import { useSelector } from 'react-redux';
 // import ReactDOM from 'react-dom';
 // import {   } from '@ya.praktikum/react-developer-burger-ui-components';
-import { OrderContext } from '../../../utils/context';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -13,18 +12,17 @@ import styles from './order-details.module.scss';
 |||||||||||||||||||||||
 ##################### */
 function OrderDetails() {
-  const [orderState] = useContext(OrderContext);
-
+  const store = useSelector((state) => state.order);
   return (
     <div className={styles.wrapper}>
-      {orderState.success ? (
+      {store.success ? (
         <>
           <h2 className={styles.title}>'Заказ оформлен'</h2>
-          <p className={styles.digit}>{orderState.id}</p>
+          <p className={styles.digit}>{store.id}</p>
           <p className={styles['digit-caption']}>идентификатор заказа</p>
           <div className={styles.icon}></div>
           <p className={styles.status}>Ваш заказ начали готовить:</p>
-          <p className={styles.status}>{orderState.name}</p>
+          <p className={styles.status}>{store.name}</p>
           <p className={styles['status-caption']}>
             Дождитесь готовности на орбитальной станции
           </p>
