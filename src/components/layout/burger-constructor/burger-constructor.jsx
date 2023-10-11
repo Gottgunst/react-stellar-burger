@@ -7,38 +7,24 @@ import IngredientsSelected from '../../ui-kit/ingredients-selected/ingredients-s
 import Modal from '../../ui-kit/modal/modal';
 import OrderDetails from '../../ui-kit/order-details/order-details';
 import { useModal } from '../../../hooks/useModal';
-// import { burgerApi } from '../../../utils/data';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
 import styles from './burger-constructor.module.scss';
 import { BurgerConstructorPropTypes } from './burger-constructor.types.js';
+import { sendOrder } from '../../../services/order/actions';
+import { resetQuantity } from '../../../services/ingredients/reducer';
 
 /* ####################
 |||||||||||||||||||||||
 ##################### */
 export function BurgerConstructor({ className }) {
-  const store = useSelector((state) => state.order);
-  // const dispatch = useDispatch();
+  const order = useSelector((state) => state.order);
+  const dispatch = useDispatch();
 
   const { isModalOpen, openModal, closeModal } = useModal();
-
-  // const createOrder = () => {
-  //   const items = [...store.items, store.bun].map((e) => e._id);
-  //   burgerApi
-  //     .makeRequest('/orders', 'POST', {
-  //       ingredients: items,
-  //     })
-  //     .then((res) => {
-  //       dispatch({ act: 'complete', income: res });
-  //     })
-  //     .catch((err) => {
-  //       console.warn('STATUS', err.status, '#######', err);
-  //       return err;
-  //     });
-  // };
 
   return (
     <div className={className + ' ' + styles.wrapper}>
@@ -57,7 +43,7 @@ export function BurgerConstructor({ className }) {
       </ul>
       <span className={styles.info}>
         <span className={styles.price}>
-          {store.price}
+          {order.price}
           <CurrencyIcon type="primary" />
         </span>
         <Button
@@ -66,7 +52,8 @@ export function BurgerConstructor({ className }) {
           size="large"
           onClick={() => {
             openModal();
-            // createOrder();
+            dispatch(sendOrder());
+            dispatch(resetQuantity());
           }}
         >
           Оформить заказ

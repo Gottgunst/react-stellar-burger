@@ -13,7 +13,7 @@ import { IngredientPropTypes } from './ingredient.types.js';
 /* ####################
 |||||||||||||||||||||||
 ##################### */
-function Ingredient({ data, quantity = 0 }) {
+function Ingredient({ data }) {
   const [openStatus, setOpenStatus] = useState(false);
 
   const openModal = () => {
@@ -23,8 +23,8 @@ function Ingredient({ data, quantity = 0 }) {
   return (
     <>
       <div className={styles.wrapper} onClick={openModal}>
-        {quantity === 0 ? null : (
-          <Counter count={quantity} size="default" extraClass="m-1" />
+        {data.quantity > 0 && (
+          <Counter count={data.quantity} size="default" extraClass="m-1" />
         )}
 
         <img src={data.image} alt={data.name} className={styles.image} />

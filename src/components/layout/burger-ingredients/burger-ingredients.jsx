@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../../ui-kit/ingredient/ingredient';
 import IngredientDetails from '../../ui-kit/ingredient-details/ingredient-details';
@@ -6,7 +6,7 @@ import Modal from '../../ui-kit/modal/modal';
 import { useModal } from '../../../hooks/useModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToOrder } from '../../../services/order/reducer';
-import { BurgersContext } from '../../../utils/context';
+import { getInfo, increment } from '../../../services/ingredients/reducer';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -18,10 +18,9 @@ import { BurgerIngredientsPropTypes } from './burger-ingredients.types.js';
 |||||||||||||||||||||||
 ##################### */
 export function BurgerIngredients({ className }) {
-  // const store = useSelector((state) => state.order);
   const dispatch = useDispatch();
 
-  const ingredients = useContext(BurgersContext);
+  const ingredients = useSelector((state) => state.ingredients);
 
   const tabList = [
     { name: 'Булки', type: 'bun' },
@@ -29,14 +28,6 @@ export function BurgerIngredients({ className }) {
     { name: 'Начинки', type: 'main' },
   ];
   const [state, setState] = useState('Булки');
-
-  const [detailsId, setDetailsId] = useState('');
-  // отбираем данные для модального окна
-  const details = () => {
-    return (
-      ingredients.filter((item) => item._id === detailsId)[0] || ingredients[0]
-    );
-  };
 
   // временный пресет
   const preset = (name) => {
@@ -67,13 +58,14 @@ export function BurgerIngredients({ className }) {
             <li key={index}>
               <h2 className={styles.type}>{group.name}</h2>
               <ul className={styles.ingredient}>
-                {ingredients.map((item) =>
+                {ingredients.items.map((item) =>
                   group.type === item.type ? (
                     <li
                       key={item._id}
                       onClick={() => {
                         openModal();
-                        setDetailsId(item._id);
+                        dispatch(getInfo({ item }));
+                        dispatch(increment({ item }));
                         dispatch(addToOrder({ item }));
                       }}
                     >
@@ -88,7 +80,7 @@ export function BurgerIngredients({ className }) {
       </div>
 
       <Modal status={isModalOpen} closeModal={closeModal}>
-        <IngredientDetails consist={details()} />
+        <IngredientDetails />
       </Modal>
     </div>
   );

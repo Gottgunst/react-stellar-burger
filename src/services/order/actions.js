@@ -1,32 +1,29 @@
-import {
-  deleteTaskById,
-  getProjectTasks,
-  addTask as addTaskApi,
-} from '../../utils/todoist-api';
+import { burgerApi } from '../../utils/data';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { _packOrder } from './reducer';
 
-// export const addTask = createAsyncThunk(
-//   'tasks/addTask',
-//   async (payload) => {
-//     return await addTaskApi(payload);
-//   }
-// )
+export const sendOrder = createAsyncThunk(
+  'order/completeOrder',
+  async (_, { rejectWithValue, dispatch, getState }) => {
+    // пакуем выбранные элементы
+    dispatch(_packOrder());
+    // получаем стейт
+    const { order } = getState();
 
-// export const deleteTask = createAsyncThunk(
-//   "tasks/deleteTask",
-//   async (payload) => {
-//     return await deleteTaskById(payload);
-// });
-
-// export const loadTasks = createAsyncThunk(
-//   "tasks/loadTasks",
-//   async (thunkAPI) => {
-//     try
-//     {
-//       return await getProjectTasks();
-//     }
-//     catch (error)
-//     {
-//       thunkAPI.rejectWithValue(error.message)
-//     }
-// });
+    return burgerApi
+      .makeRequest('/orders', 'POST', {
+        ingredients: order.packedItems,
+      })
+      .then((res) => {
+        if (!res.success) {
+          throw new Error('wrum-wrum post');
+        }
+        // отправляем данные
+        return res;
+      })
+      .catch((err) => {
+        console.warn('STATUS', err.status, '#######', err);
+        return rejectWithValue({ err: err });
+      });
+  },
+);

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { sendOrder } from './actions';
 
 export const orderSlice = createSlice({
   name: 'order',
@@ -6,6 +7,12 @@ export const orderSlice = createSlice({
     bun: {},
     items: [],
     price: 0,
+    packedItems: [],
+    orderId: null,
+    name: null,
+    success: false,
+    error: null,
+    loading: false,
   },
   reducers: {
     addToOrder(state, { payload }) {
@@ -29,17 +36,33 @@ export const orderSlice = createSlice({
         .map((e) => e.price)
         .reduce((sum, num) => sum + num, 0);
     },
-    // setUser: {
-    //   reducer: (state, action) => {
-    //     state.user = action.payload;
-    //   },
-    //   prepare: (user) => {
-    //     const id = Math.random();
-    //     return { payload: {...user, key: id}}
-    //   }
-    // }
+    _packOrder(state) {
+      state.packedItems = [...state.items, state.bun].map((e) => e._id);
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(sendOrder.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(sendOrder.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.success = false;
+        state.error = payload.err;
+        state.orderId = payload.err.message;
+      })
+      .addCase(sendOrder.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.success = true;
+        state.orderId = payload.order.number;
+        state.name = payload.name;
+        state.items = [];
+        orderSlice.caseReducers._calcPrice(state);
+      });
   },
 });
 
 export const reducer = orderSlice.reducer;
-export const { addToOrder, removeFromOrder } = orderSlice.actions;
+export const { addToOrder, removeFromOrder, _packOrder } = orderSlice.actions;

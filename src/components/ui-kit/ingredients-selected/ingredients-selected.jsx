@@ -9,6 +9,7 @@ import { removeFromOrder } from '../../../services/order/reducer';
 СТИЛИ =================
 ##################### */
 import styles from './ingredients-selected.module.scss';
+import { decrement } from '../../../services/ingredients/reducer';
 
 /* ####################
 |||||||||||||||||||||||
@@ -29,6 +30,7 @@ function IngredientsSelected() {
               thumbnail={el.image}
               handleClose={() => {
                 dispatch(removeFromOrder({ index }));
+                dispatch(decrement({ item: el }));
               }}
             />
           </li>
