@@ -3,8 +3,7 @@ import {
   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeFromOrder } from '../../../services/order/reducer';
-import { decrement } from '../../../services/ingredients/reducer';
+import { removeFromOrder, decrement } from '../../../services';
 
 /* ####################
 СТИЛИ =================
@@ -15,15 +14,17 @@ import styles from './ingredients-selected.module.scss';
 |||||||||||||||||||||||
 ##################### */
 function IngredientsSelected() {
-  const store = useSelector((state) => state.order);
+  const order = useSelector((state) => state.order);
   const dispatch = useDispatch();
 
   return (
     <>
-      {store.items.length > 0 ? (
-        store.items.map((el, index) => (
+      {order.items.length > 0 ? (
+        order.items.map((el, index) => (
           <li className={styles.component} key={el._id + index}>
-            <DragIcon type="primary" />
+            <div className={styles.handle}>
+              <DragIcon type="primary" />
+            </div>
             <ConstructorElement
               text={el.name}
               price={el.price}

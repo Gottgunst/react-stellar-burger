@@ -12,6 +12,15 @@
 
   box-sizing: border-box;
   height: 208px;
+
+  &:hover {
+    cursor: grab;
+    background: radial-gradient(
+      ellipse farthest-corner at center center,
+      #801ab340 0%,
+      #801ab300 70%
+    );
+  }
 }
 
 .image {

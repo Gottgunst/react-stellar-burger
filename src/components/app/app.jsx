@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import { AppHeader, BurgerConstructor, BurgerIngredients } from '../layout/';
 import { useDispatch } from 'react-redux';
-import { loadIngredients } from '../../services/ingredients/actions';
+import { loadIngredients } from '../../services';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
@@ -21,8 +23,10 @@ function App() {
   return (
     <div className={styles.app}>
       <AppHeader className={styles.header} />
-      <BurgerIngredients className={styles.ingredients} />
-      <BurgerConstructor className={styles.constructor} />
+      <DndProvider backend={HTML5Backend}>
+        <BurgerIngredients className={styles.ingredients} />
+        <BurgerConstructor className={styles.constructor} />
+      </DndProvider>
     </div>
   );
 }

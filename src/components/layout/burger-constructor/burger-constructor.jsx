@@ -8,14 +8,14 @@ import Modal from '../../ui-kit/modal/modal';
 import OrderDetails from '../../ui-kit/order-details/order-details';
 import { useModal } from '../../../hooks/useModal';
 import { useSelector, useDispatch } from 'react-redux';
+import { sendOrder, resetQuantity } from '../../../services';
+import { useDrop } from 'react-dnd';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
 import styles from './burger-constructor.module.scss';
 import { BurgerConstructorPropTypes } from './burger-constructor.types.js';
-import { sendOrder } from '../../../services/order/actions';
-import { resetQuantity } from '../../../services/ingredients/reducer';
 
 /* ####################
 |||||||||||||||||||||||
@@ -26,9 +26,24 @@ export function BurgerConstructor({ className }) {
 
   const { isModalOpen, openModal, closeModal } = useModal();
 
+  const [{ canDrop, isOver }, drop] = useDrop(() => ({
+    accept: 'box',
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  }));
+
+  const isActive = canDrop && isOver;
+  let stylesComponents = isActive
+    ? [styles.components, styles['components_drop_ready']]
+    : canDrop
+    ? [styles.components, styles['components_drop_prepare']]
+    : [styles.components];
+
   return (
     <div className={className + ' ' + styles.wrapper}>
-      <ul className={styles.components}>
+      <ul className={stylesComponents.join(' ')} ref={drop}>
         <li className={styles.part}>
           <Bun type="top" />
         </li>

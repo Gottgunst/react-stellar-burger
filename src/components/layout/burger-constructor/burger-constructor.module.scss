@@ -44,6 +44,22 @@
     margin-right: -19px;
   }
 
+  &_drop_prepare {
+    background: radial-gradient(
+      ellipse farthest-corner at center center,
+      #801ab380 0%,
+      #801ab300 70%
+    );
+  }
+
+  &_drop_ready {
+    background: radial-gradient(
+      ellipse farthest-corner at center center,
+      #801ab3 0%,
+      #801ab300 70%
+    );
+  }
+
   @media screen and (max-width: $screen-mobile) {
     display: none;
   }

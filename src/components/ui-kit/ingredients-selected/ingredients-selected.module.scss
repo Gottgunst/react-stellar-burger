@@ -3,3 +3,7 @@
 .component {
   composes: component from '../../layout/burger-constructor/burger-constructor.module.scss';
 }
+
+.handle {
+  cursor: grab;
+}

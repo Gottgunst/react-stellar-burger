@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { getInfo } from '../services/ingredients/reducer';
+import { getInfo } from '../services';
 
 export const useModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
