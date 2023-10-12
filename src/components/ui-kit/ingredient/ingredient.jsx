@@ -14,7 +14,7 @@ import { IngredientPropTypes } from './ingredient.types.js';
 |||||||||||||||||||||||
 ##################### */
 function Ingredient({ data }) {
-  const [openStatus, setOpenStatus] = useState(false);
+  const [_, setOpenStatus] = useState(false);
 
   const openModal = () => {
     setOpenStatus(true);

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../../ui-kit/ingredient/ingredient';
 import IngredientDetails from '../../ui-kit/ingredient-details/ingredient-details';
@@ -6,7 +6,11 @@ import Modal from '../../ui-kit/modal/modal';
 import { useModal } from '../../../hooks/useModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToOrder } from '../../../services/order/reducer';
-import { getInfo, increment } from '../../../services/ingredients/reducer';
+import {
+  changeTab,
+  getInfo,
+  increment,
+} from '../../../services/ingredients/reducer';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -22,41 +26,67 @@ export function BurgerIngredients({ className }) {
 
   const ingredients = useSelector((state) => state.ingredients);
 
-  const tabList = [
-    { name: 'Булки', type: 'bun' },
-    { name: 'Соусы', type: 'sauce' },
-    { name: 'Начинки', type: 'main' },
-  ];
-  const [state, setState] = useState('Булки');
-
-  // временный пресет
-  const preset = (name) => {
-    if (
-      name === 'Краторная булка N-200i' ||
-      name === 'Соус традиционный галактический'
-    )
-      return 1;
-  };
-
   const { isModalOpen, openModal, closeModal } = useModal();
+
+  const scroll = {
+    bun: useRef(null),
+    sauce: useRef(null),
+    main: useRef(null),
+    jumpToFlag: false,
+    paddingTop: 283.59375,
+    border: 130,
+    to: (group) => {
+      scroll.jumpToFlag = true;
+
+      scroll[group].current.scrollIntoView({
+        behavior: 'smooth',
+      });
+      // ожидаем конца скролла и возвращаем флаг на место
+      setTimeout(() => (scroll.jumpToFlag = false), 1500);
+    },
+    watch: (e) => {
+      const { border, sauce, main, jumpFlag, paddingTop } = scroll;
+
+      const saucePos = sauce.current.getBoundingClientRect().y - paddingTop;
+      const mainPos = main.current.getBoundingClientRect().y - paddingTop;
+      const targetGroup =
+        saucePos < border ? (mainPos < border ? 'main' : 'sauce') : 'bun';
+
+      // если есть флаг, то авто-скролл не мучаем,
+      if (!jumpFlag) dispatch(changeTab({ type: targetGroup }));
+    },
+  };
 
   return (
     <div className={className + ' ' + styles.wrapper}>
       <h1 className={styles.title}>Соберите бургер</h1>
       <ul className={styles.tabs}>
-        {tabList.map((el, index) => (
+        {ingredients.group.map((el, index) => (
           <li key={index}>
-            <Tab value={el.name} active={state === el.name} onClick={setState}>
+            <Tab
+              value={el.name}
+              active={el.active}
+              onClick={() => {
+                dispatch(changeTab(el));
+                scroll.to(el.type);
+              }}
+            >
               {el.name}
             </Tab>
           </li>
         ))}
       </ul>
-      <div className={styles['ingredients-wrapper']}>
+      <div
+        className={styles['ingredients-wrapper']}
+        onScroll={scroll.watch}
+        ref={scroll.blockRef}
+      >
         <ul className={styles['ingredients-type']}>
-          {tabList.map((group, index) => (
+          {ingredients.group.map((group, index) => (
             <li key={index}>
-              <h2 className={styles.type}>{group.name}</h2>
+              <h2 className={styles.type} ref={scroll[group.type]} data-group>
+                {group.name}
+              </h2>
               <ul className={styles.ingredient}>
                 {ingredients.items.map((item) =>
                   group.type === item.type ? (
@@ -69,7 +99,7 @@ export function BurgerIngredients({ className }) {
                         dispatch(addToOrder({ item }));
                       }}
                     >
-                      <Ingredient data={item} quantity={preset(item.name)} />
+                      <Ingredient data={item} />
                     </li>
                   ) : null,
                 )}

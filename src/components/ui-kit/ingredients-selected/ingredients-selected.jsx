@@ -4,12 +4,12 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeFromOrder } from '../../../services/order/reducer';
+import { decrement } from '../../../services/ingredients/reducer';
 
 /* ####################
 СТИЛИ =================
 ##################### */
 import styles from './ingredients-selected.module.scss';
-import { decrement } from '../../../services/ingredients/reducer';
 
 /* ####################
 |||||||||||||||||||||||

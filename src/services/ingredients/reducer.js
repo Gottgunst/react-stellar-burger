@@ -8,8 +8,18 @@ export const ingredientsSlice = createSlice({
     focus: null,
     loading: false,
     error: null,
+    group: [
+      { name: 'Булки', type: 'bun', active: true },
+      { name: 'Соусы', type: 'sauce', active: false },
+      { name: 'Начинки', type: 'main', active: false },
+    ],
   },
   reducers: {
+    changeTab(state, { payload }) {
+      state.group.forEach(
+        (e) => (e.active = e.type === payload.type ? true : false),
+      );
+    },
     getInfo(state, { payload }) {
       payload
         ? (state.focus = state.items.find((e) => e._id === payload.item._id))
@@ -61,5 +71,5 @@ export const ingredientsSlice = createSlice({
 });
 
 export const reducer = ingredientsSlice.reducer;
-export const { getInfo, increment, decrement, resetQuantity } =
+export const { changeTab, getInfo, increment, decrement, resetQuantity } =
   ingredientsSlice.actions;
