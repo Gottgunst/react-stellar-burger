@@ -1,4 +1,4 @@
-export { addToOrder, removeFromOrder } from './order/reducer';
+export { addToOrder, removeFromOrder, sortOrder } from './order/reducer';
 export { sendOrder } from './order/actions';
 
 export {

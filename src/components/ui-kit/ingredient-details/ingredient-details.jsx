@@ -12,7 +12,7 @@ import styles from './ingredient-details.module.scss';
 |||||||||||||||||||||||
 ##################### */
 function IngredientDetails() {
-  const { focus } = useSelector((state) => state.ingredients);
+  const { focus } = useSelector((store) => store.ingredients);
 
   return (
     focus && (

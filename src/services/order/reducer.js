@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, nanoid } from '@reduxjs/toolkit';
 import { sendOrder } from './actions';
 
 export const orderSlice = createSlice({
@@ -15,14 +15,22 @@ export const orderSlice = createSlice({
     loading: false,
   },
   reducers: {
-    addToOrder(state, { payload }) {
-      if (payload.item.type === 'bun') {
-        state.bun = payload.item;
-      } else {
-        state.items.push(payload.item);
-      }
+    addToOrder: {
+      reducer: (state, { payload }) => {
+        const newItem = { ...payload.item, key: payload.key };
 
-      orderSlice.caseReducers._calcPrice(state);
+        if (payload.item.type === 'bun') {
+          state.bun = newItem;
+        } else {
+          state.items.push(newItem);
+        }
+
+        orderSlice.caseReducers._calcPrice(state);
+      },
+      prepare: (item) => {
+        const key = nanoid();
+        return { payload: { ...item, key } };
+      },
     },
     removeFromOrder(state, { payload }) {
       state.items = state.items.filter(
@@ -30,6 +38,10 @@ export const orderSlice = createSlice({
       );
 
       orderSlice.caseReducers._calcPrice(state);
+    },
+    sortOrder(state, { payload }) {
+      const { dragIndex, hoverIndex } = payload;
+      state.items.splice(hoverIndex, 0, state.items.splice(dragIndex, 1)[0]);
     },
     _calcPrice(state) {
       state.price = [...state.items, state.bun]
@@ -65,4 +77,5 @@ export const orderSlice = createSlice({
 });
 
 export const reducer = orderSlice.reducer;
-export const { addToOrder, removeFromOrder, _packOrder } = orderSlice.actions;
+export const { addToOrder, removeFromOrder, sortOrder, _packOrder } =
+  orderSlice.actions;

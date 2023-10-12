@@ -11,7 +11,7 @@ import styles from './order-details.module.scss';
 |||||||||||||||||||||||
 ##################### */
 function OrderDetails() {
-  const order = useSelector((state) => state.order);
+  const order = useSelector((store) => store.order);
   return (
     <div className={styles.wrapper}>
       {order.success ? (

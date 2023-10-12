@@ -1,10 +1,10 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDrag } from 'react-dnd';
 import {
   CurrencyIcon,
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addToOrder, increment } from '../../../services';
 
 /* ####################
@@ -17,7 +17,6 @@ import { IngredientPropTypes } from './ingredient.types.js';
 |||||||||||||||||||||||
 ##################### */
 function Ingredient({ data }) {
-  const ingredients = useSelector((state) => state.ingredients);
   const dispatch = useDispatch();
   const [_, setOpenStatus] = useState(false);
 
@@ -25,7 +24,7 @@ function Ingredient({ data }) {
     setOpenStatus(true);
   };
 
-  const [{ isDragging, didDrop }, drag] = useDrag(() => ({
+  const [{ isDragging }, drag] = useDrag(() => ({
     type: 'box',
     item: data,
     canDrag: (monitor) => {
@@ -45,7 +44,6 @@ function Ingredient({ data }) {
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
       canDrag: monitor.canDrag(),
-      didDrop: monitor.didDrop(),
     }),
   }));
 

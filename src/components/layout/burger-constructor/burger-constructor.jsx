@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import {
   CurrencyIcon,
   Button,
@@ -8,7 +9,7 @@ import Modal from '../../ui-kit/modal/modal';
 import OrderDetails from '../../ui-kit/order-details/order-details';
 import { useModal } from '../../../hooks/useModal';
 import { useSelector, useDispatch } from 'react-redux';
-import { sendOrder, resetQuantity } from '../../../services';
+import { sendOrder, resetQuantity, sortOrder } from '../../../services';
 import { useDrop } from 'react-dnd';
 
 /* ####################
@@ -21,7 +22,7 @@ import { BurgerConstructorPropTypes } from './burger-constructor.types.js';
 |||||||||||||||||||||||
 ##################### */
 export function BurgerConstructor({ className }) {
-  const order = useSelector((state) => state.order);
+  const order = useSelector((store) => store.order);
   const dispatch = useDispatch();
 
   const { isModalOpen, openModal, closeModal } = useModal();
@@ -41,6 +42,10 @@ export function BurgerConstructor({ className }) {
     ? [styles.components, styles['components_drop_prepare']]
     : [styles.components];
 
+  const moveCard = useCallback((dragIndex, hoverIndex) => {
+    dispatch(sortOrder({ dragIndex, hoverIndex }));
+  }, []);
+
   return (
     <div className={className + ' ' + styles.wrapper}>
       <ul className={stylesComponents.join(' ')} ref={drop}>
@@ -49,7 +54,18 @@ export function BurgerConstructor({ className }) {
         </li>
         <li className={styles.part}>
           <ul className={styles.components + ' ' + styles['components_inside']}>
-            <IngredientsSelected />
+            {order.items.length > 0 ? (
+              order.items.map((el, index) => (
+                <IngredientsSelected
+                  data={el}
+                  index={index}
+                  moveCard={moveCard}
+                  key={el.key}
+                />
+              ))
+            ) : (
+              <div className="constructor-element"></div>
+            )}
           </ul>
         </li>
         <li className={styles.part}>

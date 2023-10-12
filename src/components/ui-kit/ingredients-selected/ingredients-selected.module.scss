@@ -2,6 +2,10 @@
 
 .component {
   composes: component from '../../layout/burger-constructor/burger-constructor.module.scss';
+
+  &:active {
+    cursor: grab;
+  }
 }
 
 .handle {

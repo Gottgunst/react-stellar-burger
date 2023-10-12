@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../../ui-kit/ingredient/ingredient';
 import IngredientDetails from '../../ui-kit/ingredient-details/ingredient-details';
@@ -6,6 +6,7 @@ import Modal from '../../ui-kit/modal/modal';
 import { useModal } from '../../../hooks/useModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeTab, getInfo, increment, addToOrder } from '../../../services';
+import { activeGroup } from '../../../services/ingredients/selectors';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -18,8 +19,8 @@ import { BurgerIngredientsPropTypes } from './burger-ingredients.types.js';
 ##################### */
 export function BurgerIngredients({ className }) {
   const dispatch = useDispatch();
-
-  const ingredients = useSelector((state) => state.ingredients);
+  const ingredients = useSelector((store) => store.ingredients);
+  const activeTab = useSelector(activeGroup);
 
   const { isModalOpen, openModal, closeModal } = useModal();
 
@@ -48,7 +49,8 @@ export function BurgerIngredients({ className }) {
         saucePos < border ? (mainPos < border ? 'main' : 'sauce') : 'bun';
 
       // если есть флаг, то авто-скролл не мучаем,
-      if (!jumpFlag) dispatch(changeTab({ type: targetGroup }));
+      if (!jumpFlag && activeTab.type !== targetGroup)
+        dispatch(changeTab({ type: targetGroup }));
     },
   };
 
