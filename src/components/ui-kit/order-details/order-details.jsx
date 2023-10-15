@@ -1,30 +1,27 @@
-import React, { useContext } from 'react';
+import { useSelector } from 'react-redux';
 // import ReactDOM from 'react-dom';
 // import {   } from '@ya.praktikum/react-developer-burger-ui-components';
-import { OrderContext } from '../../../utils/context';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
 import styles from './order-details.module.scss';
-// import { OrderDetailsPropTypes } from './order-details.types.js';
 
 /* ####################
 |||||||||||||||||||||||
 ##################### */
 function OrderDetails() {
-  const [orderState] = useContext(OrderContext);
-
+  const order = useSelector((store) => store.order);
   return (
     <div className={styles.wrapper}>
-      {orderState.success ? (
+      {order.success ? (
         <>
           <h2 className={styles.title}>'Заказ оформлен'</h2>
-          <p className={styles.digit}>{orderState.id}</p>
+          <p className={styles.digit}>{order.orderId}</p>
           <p className={styles['digit-caption']}>идентификатор заказа</p>
           <div className={styles.icon}></div>
           <p className={styles.status}>Ваш заказ начали готовить:</p>
-          <p className={styles.status}>{orderState.name}</p>
+          <p className={styles.status}>{order.name}</p>
           <p className={styles['status-caption']}>
             Дождитесь готовности на орбитальной станции
           </p>
@@ -41,8 +38,3 @@ function OrderDetails() {
 }
 
 export default OrderDetails;
-
-/* #####################
-ТИПЫ ===================
-##################### */
-// OrderDetails.propTypes = OrderDetailsPropTypes;

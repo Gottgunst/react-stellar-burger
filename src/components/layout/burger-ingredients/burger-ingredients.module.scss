@@ -2,10 +2,12 @@
 
 .wrapper {
   composes: pt-10 pl-5 from global;
+
   display: flex;
   flex-direction: column;
-  max-height: calc(100lvh - 88px);
+
   box-sizing: border-box;
+  max-height: calc(100lvh - 88px);
 }
 
 .title {
@@ -20,8 +22,8 @@
 
 .ingredients-wrapper {
   composes: mt-10 custom-scroll from global;
-  flex-grow: 1;
   overflow-y: scroll;
+  flex-grow: 1;
 
   &::-webkit-scrollbar-thumb {
     border-radius: 0;
@@ -45,8 +47,9 @@
 
 .ingredient {
   composes: pl-4 from global;
+
   display: grid;
   grid-template-columns: repeat(auto-fill, 272px);
-  column-gap: $gap-6;
   row-gap: $gap-8;
+  column-gap: $gap-6;
 }

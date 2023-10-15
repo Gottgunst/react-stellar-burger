@@ -1,54 +1,71 @@
-import { useContext } from 'react';
+import { useCallback } from 'react';
 import {
   CurrencyIcon,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import Bun from '../../ui-kit/bun/bun';
+import IngredientsSelected from '../../ui-kit/ingredients-selected/ingredients-selected';
 import Modal from '../../ui-kit/modal/modal';
 import OrderDetails from '../../ui-kit/order-details/order-details';
 import { useModal } from '../../../hooks/useModal';
-import { OrderContext } from '../../../utils/context';
-import { burgerApi } from '../../../utils/data';
+import { useSelector, useDispatch } from 'react-redux';
+import { sendOrder, resetQuantity, sortOrder } from '../../../services';
+import { useDrop } from 'react-dnd';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
 import styles from './burger-constructor.module.scss';
 import { BurgerConstructorPropTypes } from './burger-constructor.types.js';
-import Bun from '../../ui-kit/bun/bun';
-import IngredientsSelected from '../../ui-kit/ingredients-selected/ingredients-selected';
 
 /* ####################
 |||||||||||||||||||||||
 ##################### */
 export function BurgerConstructor({ className }) {
-  const [orderState, dispatch] = useContext(OrderContext);
+  const order = useSelector((store) => store.order);
+  const dispatch = useDispatch();
 
   const { isModalOpen, openModal, closeModal } = useModal();
 
-  const createOrder = () => {
-    const items = [...orderState.items, orderState.bun].map((e) => e._id);
-    burgerApi
-      .makeRequest('/orders', 'POST', {
-        ingredients: items,
-      })
-      .then((res) => {
-        dispatch({ act: 'complete', income: res });
-      })
-      .catch((err) => {
-        console.warn('STATUS', err.status, '#######', err);
-        return err;
-      });
-  };
+  const [{ canDrop, isOver }, drop] = useDrop(() => ({
+    accept: 'box',
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  }));
+
+  const isActive = canDrop && isOver;
+  let stylesComponents = isActive
+    ? [styles.components, styles['components_drop_ready']]
+    : canDrop
+    ? [styles.components, styles['components_drop_prepare']]
+    : [styles.components];
+
+  const moveCard = useCallback((dragIndex, hoverIndex) => {
+    dispatch(sortOrder({ dragIndex, hoverIndex }));
+  }, []);
 
   return (
     <div className={className + ' ' + styles.wrapper}>
-      <ul className={styles.components}>
+      <ul className={stylesComponents.join(' ')} ref={drop}>
         <li className={styles.part}>
           <Bun type="top" />
         </li>
         <li className={styles.part}>
           <ul className={styles.components + ' ' + styles['components_inside']}>
-            <IngredientsSelected />
+            {order.items.length > 0 ? (
+              order.items.map((el, index) => (
+                <IngredientsSelected
+                  data={el}
+                  index={index}
+                  moveCard={moveCard}
+                  key={el.key}
+                />
+              ))
+            ) : (
+              <div className="constructor-element"></div>
+            )}
           </ul>
         </li>
         <li className={styles.part}>
@@ -57,7 +74,7 @@ export function BurgerConstructor({ className }) {
       </ul>
       <span className={styles.info}>
         <span className={styles.price}>
-          {orderState.price}
+          {order.price}
           <CurrencyIcon type="primary" />
         </span>
         <Button
@@ -66,7 +83,8 @@ export function BurgerConstructor({ className }) {
           size="large"
           onClick={() => {
             openModal();
-            createOrder();
+            dispatch(sendOrder());
+            dispatch(resetQuantity());
           }}
         >
           Оформить заказ

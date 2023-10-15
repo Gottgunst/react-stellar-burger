@@ -1,9 +1,15 @@
 @use '/src/styles/variables' as *;
 
-@property --round {
-  inherits: false; /* or true depending on context */
-  initial-value: 1;
-  syntax: '<integer>';
+@property --color {
+  inherits: false;
+  initial-value: rgba($color-accent, 40);
+  syntax: '<color>';
+}
+
+@property --color-0 {
+  inherits: false;
+  initial-value: rgba($color-accent, 0);
+  syntax: '<color>';
 }
 
 .wrapper {
@@ -31,6 +37,10 @@
   gap: $gap-4;
   align-items: flex-end;
 
+  /* stylelint-disable */
+  transition: --color 1s;
+  /* stylelint-enable */
+
   &_inside {
     composes: custom-scroll pr-2 from global;
 
@@ -40,8 +50,27 @@
     flex-grow: 1;
 
     // min-height: 272px;
+    min-width: 580px;
     max-height: calc(100lvh - 88px - 252px - 196px);
     margin-right: -19px;
+  }
+
+  &_drop_prepare {
+    background: radial-gradient(
+      ellipse farthest-corner at center center,
+      var(--color) 0%,
+      var(--color-0) 70%
+    );
+  }
+
+  &_drop_ready {
+    --color: rgb(227 60 213 / 6000%);
+
+    background: radial-gradient(
+      ellipse farthest-corner at center center,
+      var(--color) 0%,
+      var(--color-0) 70%
+    );
   }
 
   @media screen and (max-width: $screen-mobile) {

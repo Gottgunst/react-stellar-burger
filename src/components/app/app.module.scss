@@ -15,17 +15,6 @@
   max-height: 100%;
   margin: 0 auto;
 
-  @media screen and (max-width: $screen-mobile) {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      'header'
-      'ingredients'
-      'constructor';
-
-    max-height: 100lvh;
-    // overflow: hidden;
-  }
-
   & .header {
     grid-area: header;
   }
@@ -41,5 +30,16 @@
 
   & .constructor {
     grid-area: constructor;
+  }
+
+  @media screen and (max-width: $screen-mobile) {
+    grid-template-areas:
+      'header'
+      'ingredients'
+      'constructor';
+    grid-template-columns: 1fr;
+    max-height: 100lvh;
+
+    // overflow: hidden;
   }
 }

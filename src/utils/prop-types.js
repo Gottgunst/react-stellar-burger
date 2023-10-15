@@ -13,6 +13,7 @@ export const ingredientPropType = PropTypes.shape({
   image_mobile: PropTypes.string,
   image_large: PropTypes.string,
   __v: PropTypes.number,
+  quantity: PropTypes.number,
 });
 
 export const ApiPropType = PropTypes.shape({
@@ -22,6 +23,11 @@ export const ApiPropType = PropTypes.shape({
 });
 
 export const orderReducerPropType = PropTypes.shape({
+  state: PropTypes.object,
+  action: PropTypes.object,
+});
+
+export const ingredientsReducerPropType = PropTypes.shape({
   state: PropTypes.object,
   action: PropTypes.object,
 });
