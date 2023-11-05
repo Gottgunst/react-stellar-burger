@@ -16,14 +16,11 @@ export const sendOrder = createAsyncThunk(
       })
       .then((res) => {
         if (!res.success) {
-          throw new Error('wrum-wrum post');
+          console.warn('STATUS', res.status, '#######', res);
+          return rejectWithValue({ err: res });
         }
         // отправляем данные
         return res;
-      })
-      .catch((err) => {
-        console.warn('STATUS', err.status, '#######', err);
-        return rejectWithValue({ err: err });
       });
   },
 );

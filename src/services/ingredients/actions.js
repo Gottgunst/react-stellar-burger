@@ -5,24 +5,19 @@ import { addToOrder } from '../order/reducer';
 export const loadIngredients = createAsyncThunk(
   'ingredients/loadIngredients',
   async (_, { rejectWithValue, dispatch }) => {
-    return burgerApi
-      .makeRequest('/ingredients')
-      .then((res) => {
-        if (!res.success) {
-          throw new Error('wrum-wrum get');
-        }
-
-        // находим первую булку
-        const firstBun = res.data.find((e) => e.type === 'bun');
-        // устанавливаем булку по умолчанию
-        dispatch(addToOrder({ item: firstBun }));
-        // отправляем данные
-        return res.data;
-      })
-      .catch((err) => {
-        console.warn('STATUS', err.status, '#######', err);
+    return burgerApi.makeRequest('/ingredients').then((res) => {
+      if (!res.success) {
+        console.warn('STATUS', res.status, '#######', res);
         dispatch(addToOrder({ item: reserveData[0] }));
-        return rejectWithValue({ err: err, reserved: reserveData });
-      });
+        return rejectWithValue({ err: res, reserved: reserveData });
+      }
+
+      // находим первую булку
+      const firstBun = res.data.find((e) => e.type === 'bun');
+      // устанавливаем булку по умолчанию
+      dispatch(addToOrder({ item: firstBun }));
+      // отправляем данные
+      return res.data;
+    });
   },
 );

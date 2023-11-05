@@ -1,11 +1,12 @@
-import { useRef, useMemo } from 'react';
+import React from 'react';
+import { useRef } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../../ui-kit/ingredient/ingredient';
 import IngredientDetails from '../../ui-kit/ingredient-details/ingredient-details';
 import Modal from '../../ui-kit/modal/modal';
 import { useModal } from '../../../hooks/useModal';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeTab, getInfo, increment, addToOrder } from '../../../services';
+import { changeTab, getInfo } from '../../../services';
 import { activeGroup } from '../../../services/ingredients/selectors';
 
 /* ####################

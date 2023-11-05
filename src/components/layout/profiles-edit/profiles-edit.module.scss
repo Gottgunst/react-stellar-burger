@@ -1,0 +1,7 @@
+@use '/src/styles/variables' as *;
+
+.forms {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-6;
+}

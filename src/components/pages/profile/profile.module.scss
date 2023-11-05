@@ -1,0 +1,38 @@
+@use '/src/styles/variables' as *;
+
+.wrapper {
+  display: flex;
+  gap: $gap-15;
+  padding-top: $gap-30;
+}
+
+.nav {
+  max-width: 320px;
+}
+
+.link {
+  composes: text text_type_main-medium from global;
+
+  display: block;
+
+  line-height: 64px;
+  color: var(--text-inactive-color);
+  text-decoration: none;
+
+  transition: color 0.5s;
+
+  &:hover {
+    color: var(--text-primary-color);
+  }
+}
+
+.active {
+  pointer-events: none;
+  color: var(--text-primary-color);
+}
+
+.tip {
+  composes: pt-20 text text_type_main-default text_color_inactive from global;
+  display: block;
+  opacity: 0.4;
+}
