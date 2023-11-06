@@ -11,7 +11,7 @@ import { ButtonMenuPropTypes } from './button-menu.types.js';
 /* ####################
 |||||||||||||||||||||||
 ##################### */
-function ButtonMenu({ active = false, children }) {
+export function ButtonMenu({ active = false, children }) {
   //  const  type = 'primary';
   const styleList = active
     ? styles['item'] + ' ' + styles['item_active']
@@ -23,8 +23,6 @@ function ButtonMenu({ active = false, children }) {
     </a>
   );
 }
-
-export default ButtonMenu;
 
 /* #####################
 ТИПЫ ===================

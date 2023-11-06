@@ -9,7 +9,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { AppHeaderPropTypes } from './app-header.types.js';
 import { NavLink, useLocation } from 'react-router-dom';
-import { FEED, PROFILE } from '../../..';
+import { PATH } from '../../../utils/data';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -40,14 +40,14 @@ export function AppHeader({ className }) {
           </li>
           <li>
             <NavLink to="/feed" className={isActive}>
-              <ListIcon type={key === FEED ? 'primary' : 'secondary'} />
+              <ListIcon type={key === PATH.FEED ? 'primary' : 'secondary'} />
               Лента заказов
             </NavLink>
           </li>
           <li>
-            <NavLink to={'/' + PROFILE} className={isActive}>
+            <NavLink to={'/' + PATH.PROFILE} className={isActive}>
               <ProfileIcon
-                type={key.includes(PROFILE) ? 'primary' : 'secondary'}
+                type={key.includes(PATH.PROFILE) ? 'primary' : 'secondary'}
               />
               Личный кабинет
             </NavLink>

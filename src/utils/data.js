@@ -1,18 +1,44 @@
 import Api from './Api';
 
 /* ####################
+КОНФИГ ИМЕН ПУТЕЙ ======
+##################### */
+export const PATH = {
+  REGISTER: 'register',
+  LOGIN: 'login',
+  FORGOT: 'forgot-password',
+  RESET: 'reset-password',
+  PROFILE: 'profile',
+  FEED: 'feed',
+};
+
+/* ####################
 КОНФИГ API ============
 ##################### */
+export const POINT = {
+  INGREDIENTS: '/ingredients',
+  ORDERS: '/orders',
+  LOGIN: '/auth/login',
+  REGISTER: '/auth/register',
+  LOGOUT: '/auth/logout',
+  TOKEN: '/auth/token',
+};
+
 export const burgerApi = new Api({
   baseUrl: process.env.REACT_APP_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  paths: {
-    ingredients: '/ingredients',
-    orders: '/orders',
-  },
+  paths: POINT,
 });
+
+/* ####################
+КОНФИГ ФОРМ ============
+##################### */
+export const TARGET_POINT = new Map([
+  [PATH.LOGIN, POINT.LOGIN],
+  [PATH.REGISTER, POINT.REGISTER],
+]);
 
 /* ####################
 Резервная дата =========

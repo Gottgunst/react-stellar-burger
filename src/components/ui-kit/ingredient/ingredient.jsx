@@ -17,7 +17,7 @@ import { IngredientPropTypes } from './ingredient.types.js';
 /* ####################
 |||||||||||||||||||||||
 ##################### */
-function Ingredient({ data }) {
+export function Ingredient({ data }) {
   const dispatch = useDispatch();
   const [_, setOpenStatus] = useState(false);
 
@@ -69,8 +69,6 @@ function Ingredient({ data }) {
     </div>
   );
 }
-
-export default Ingredient;
 
 /* #####################
 ТИПЫ ===================

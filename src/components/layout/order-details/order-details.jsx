@@ -11,7 +11,8 @@ import styles from './order-details.module.scss';
 /* ####################
 |||||||||||||||||||||||
 ##################### */
-function OrderDetails() {
+
+export function OrderDetails() {
   const order = useSelector((store) => store.order);
   return (
     <div className={styles.wrapper}>
@@ -37,5 +38,3 @@ function OrderDetails() {
     </div>
   );
 }
-
-export default OrderDetails;

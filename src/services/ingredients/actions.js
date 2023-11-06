@@ -1,11 +1,11 @@
-import { burgerApi, reserveData } from '../../utils/data';
+import { POINT, burgerApi, reserveData } from '../../utils/data';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { addToOrder } from '../order/reducer';
 
 export const loadIngredients = createAsyncThunk(
   'ingredients/loadIngredients',
   async (_, { rejectWithValue, dispatch }) => {
-    return burgerApi.makeRequest('/ingredients').then((res) => {
+    return burgerApi.makeRequest(POINT.INGREDIENTS).then((res) => {
       if (!res.success) {
         console.warn('STATUS', res.status, '#######', res);
         dispatch(addToOrder({ item: reserveData[0] }));

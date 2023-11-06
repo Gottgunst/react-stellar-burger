@@ -10,18 +10,23 @@ import { Form } from 'react-router-dom';
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
 import styles from './profiles-edit.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { PATH } from '../../../utils/data';
 
 /* ####################
 |||||||||||||||||||||||
 ##################### */
 
 export function ProfilesEdit() {
-  const value = 'sad';
+  const dispatch = useDispatch();
 
   const onIconClick = (evt) => {
     console.log(evt);
   };
 
+  const { name, email, password } = useSelector(
+    (state) => state.forms[PATH.PROFILE],
+  );
   return (
     <Form className={styles.forms}>
       <Input
@@ -29,7 +34,7 @@ export function ProfilesEdit() {
         placeholder={'Имя'}
         // onChange={(e) => setValue(e.target.value)}
         icon={'EditIcon'}
-        value={value}
+        value={name}
         name={'Name'}
         error={false}
         onIconClick={onIconClick}
@@ -42,7 +47,7 @@ export function ProfilesEdit() {
         placeholder={'Логин'}
         // onChange={(e) => setValue(e.target.value)}
         icon="EditIcon"
-        value={value}
+        value={email}
         name={'Name'}
         error={false}
         onIconClick={onIconClick}
@@ -53,7 +58,7 @@ export function ProfilesEdit() {
       <PasswordInput
         placeholder="Пароль"
         // onChange={onChange}
-        value={value}
+        value={password}
         name={'password'}
         icon="EditIcon"
       />

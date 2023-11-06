@@ -1,5 +1,4 @@
 import React from 'react';
-// import { useState, useRef } from 'react';
 // import ReactDOM from 'react-dom';
 import {
   Button,
@@ -7,30 +6,27 @@ import {
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Form, NavLink, useLocation } from 'react-router-dom';
-import { FORGOT, LOGIN, REGISTER, RESET } from '../../..';
+import { PATH } from '../../../utils/data';
+import { useDispatch, useSelector } from 'react-redux';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
 import styles from './auth.module.scss';
+import { formSubmit, setForm } from '../../../services';
 
 /* ####################
 |||||||||||||||||||||||
 ##################### */
 export function Auth() {
   const location = useLocation();
-  const key = location.pathname.slice(1);
-
-  // const [value, setValue] = useState('value');
-  // const inputRef = useRef(null);
-  // const onIconClick = () => {
-  //   setTimeout(() => inputRef.current.focus(), 0);
-  //   alert('Icon Click Callback');
-  // };
+  const form = location.pathname.slice(1);
+  const isLOGIN = form === PATH.LOGIN;
+  const dispatch = useDispatch();
 
   const page = new Map([
     [
-      LOGIN,
+      PATH.LOGIN,
       {
         title: 'Вход',
         placeholder: null,
@@ -39,7 +35,7 @@ export function Auth() {
       },
     ],
     [
-      REGISTER,
+      PATH.REGISTER,
       {
         title: 'Регистрация',
         placeholder: null,
@@ -48,7 +44,7 @@ export function Auth() {
       },
     ],
     [
-      FORGOT,
+      PATH.FORGOT,
       {
         title: 'Восстановление пароля',
         placeholder: 'Укажите e-mail',
@@ -57,7 +53,7 @@ export function Auth() {
       },
     ],
     [
-      RESET,
+      PATH.RESET,
       {
         title: 'Восстановление пароля',
         placeholder: 'Введите новый пароль',
@@ -67,65 +63,75 @@ export function Auth() {
     ],
   ]);
 
-  const isLOGIN = key === LOGIN;
+  const { name, email, password, code } = useSelector(
+    (state) => state.forms[form],
+  );
+
+  const onFormChange = (e) => {
+    const name = e.target.name;
+    const data = e.target.value;
+    dispatch(setForm({ form, name, data }));
+  };
+  const onSubmit = (e) => {
+    dispatch(formSubmit({ form }));
+  };
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.title}>{page.get(key).title}</h1>
-      <Form className={styles.form}>
-        {key === REGISTER && (
+      <h1 className={styles.title}>{page.get(form).title}</h1>
+      <Form className={styles.form} onSubmit={onSubmit}>
+        {form === PATH.REGISTER && (
           <Input
             placeholder="Имя"
             type={'text'}
-            // onChange={(e) => setValue(e.target.value)}
-            name={'Name'}
+            onChange={onFormChange}
+            name={'name'}
             error={false}
             errorText={'Ошибка'}
             size={'default'}
-            value=""
+            value={name}
           />
         )}
-        {key !== RESET && (
+        {form !== PATH.RESET && (
           <Input
-            placeholder={page.get(key).placeholder || 'E-mail'}
+            placeholder={page.get(form).placeholder || 'E-mail'}
             type={'email'}
-            // onChange={(e) => setValue(e.target.value)}
-            name={'Email'}
+            onChange={onFormChange}
+            name={'email'}
             error={false}
-            // ref={inputRef}
-            // onIconClick={onIconClick}
             errorText={'Ошибка'}
             size={'default'}
-            value=""
+            value={email}
           />
         )}
-        {key !== FORGOT && (
+        {form !== PATH.FORGOT && (
           <PasswordInput
-            placeholder={page.get(key).placeholder || 'Пароль'}
-            // onChange={onChange}
+            placeholder={page.get(form).placeholder || 'Пароль'}
+            onChange={onFormChange}
             name={'password'}
-            value=""
+            value={password}
+            error={false}
           />
         )}
-        {key === RESET && (
+        {form === PATH.RESET && (
           <Input
             placeholder="Введите код из письма"
             type={'text'}
-            // onChange={(e) => setValue(e.target.value)}
-            name={'Code'}
+            onChange={onFormChange}
+            name={'code'}
             error={false}
             errorText={'Ошибка'}
             size={'default'}
-            value=""
+            value={code}
           />
         )}
-        <Button htmlType="button" type="primary" size="large">
-          {page.get(key).button}
+        <Button htmlType="submit" type="primary" size="large">
+          {page.get(form).button}
         </Button>
       </Form>
 
       <span className={styles.comment}>
-        {page.get(key).quText}
+        {page.get(form).quText}
         <NavLink to={isLOGIN ? '/register' : '/login'} className={styles.link}>
           {isLOGIN ? 'Зарегистрироваться' : 'Войти'}
         </NavLink>

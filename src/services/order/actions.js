@@ -1,4 +1,4 @@
-import { burgerApi } from '../../utils/data';
+import { POINT, burgerApi } from '../../utils/data';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { _packOrder } from './reducer';
 
@@ -11,7 +11,7 @@ export const sendOrder = createAsyncThunk(
     const { order } = getState();
 
     return burgerApi
-      .makeRequest('/orders', 'POST', {
+      .makeRequest(POINT.ORDERS, 'POST', {
         ingredients: order.packedItems,
       })
       .then((res) => {

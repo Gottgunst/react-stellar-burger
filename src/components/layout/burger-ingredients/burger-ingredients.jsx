@@ -1,13 +1,13 @@
 import React from 'react';
 import { useRef } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import Ingredient from '../../ui-kit/ingredient/ingredient';
-import IngredientDetails from '../../ui-kit/ingredient-details/ingredient-details';
-import Modal from '../../ui-kit/modal/modal';
+import { IngredientDetails } from '../';
+import { Modal, Ingredient } from '../../ui-kit/';
 import { useModal } from '../../../hooks/useModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeTab, getInfo } from '../../../services';
 import { activeGroup } from '../../../services/ingredients/selectors';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -55,6 +55,15 @@ export function BurgerIngredients({ className }) {
     },
   };
 
+  const location = useLocation();
+  const navigate = useNavigate();
+  const background = location.state && location.state.background;
+
+  const handleModalClose = () => {
+    // Возвращаемся к предыдущему пути при закрытии модалки
+    navigate(-1);
+  };
+
   return (
     <div className={className + ' ' + styles.wrapper}>
       <h1 className={styles.title}>Соберите бургер</h1>
@@ -100,7 +109,6 @@ export function BurgerIngredients({ className }) {
           ))}
         </ul>
       </div>
-
       <Modal status={isModalOpen} closeModal={closeModal}>
         <IngredientDetails />
       </Modal>

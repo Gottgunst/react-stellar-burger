@@ -4,10 +4,8 @@ import {
   CurrencyIcon,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import Bun from '../../ui-kit/bun/bun';
-import IngredientsSelected from '../../ui-kit/ingredients-selected/ingredients-selected';
-import Modal from '../../ui-kit/modal/modal';
-import OrderDetails from '../../ui-kit/order-details/order-details';
+import { Bun, IngredientsSelected, Modal } from '../../ui-kit/';
+import { OrderDetails } from '../';
 import { useModal } from '../../../hooks/useModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendOrder, resetQuantity, sortOrder } from '../../../services';

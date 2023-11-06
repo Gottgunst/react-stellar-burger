@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import ModalOverlay from '../modal-overlay/modal-overlay';
+import { ModalOverlay } from '../';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -12,7 +12,7 @@ import { ModalPropTypes } from './modal.types.js';
 /* ####################
 |||||||||||||||||||||||
 ##################### */
-function Modal({ status, closeModal, children }) {
+export function Modal({ status, closeModal, children }) {
   // запрещаем всплытие клика на основном модальном окне
   const dontCloseModal = (e) => {
     e.stopPropagation();
@@ -44,8 +44,6 @@ function Modal({ status, closeModal, children }) {
     document.getElementById('modal'),
   );
 }
-
-export default Modal;
 
 /* #####################
 ТИПЫ ===================

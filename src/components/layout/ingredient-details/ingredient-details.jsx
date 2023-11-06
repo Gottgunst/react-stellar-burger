@@ -11,7 +11,7 @@ import styles from './ingredient-details.module.scss';
 /* ####################
 |||||||||||||||||||||||
 ##################### */
-function IngredientDetails() {
+export function IngredientDetails() {
   const { focus } = useSelector((store) => store.ingredients);
 
   return (
@@ -40,5 +40,3 @@ function IngredientDetails() {
     )
   );
 }
-
-export default IngredientDetails;
