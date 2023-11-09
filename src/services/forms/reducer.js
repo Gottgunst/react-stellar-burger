@@ -40,9 +40,6 @@ export const formsSlice = createSlice({
         state.success = true;
         state.error = null;
         state[payload.form] = initialState[payload.form];
-      })
-      .addCase(getProfileData.fulfilled, (state, { payload }) => {
-        state[PATH.PROFILE] = payload;
       });
   },
 });

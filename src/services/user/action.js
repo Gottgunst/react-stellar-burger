@@ -3,12 +3,17 @@ import { setUser, setAuthChecked } from './reducer';
 import { POINT, burgerApi } from '../../utils/data';
 
 export const getUser = () => {
-  console.log('getUSer');
-  //   return (dispatch) => {
-  //     return burgerApi.makeRequest().then((res) => {
-  //       dispatch(setUser(res.user));
-  //     });
-  //   };
+  console.log('getUser');
+
+  return (dispatch) => {
+    return burgerApi
+      .makeRequest(POINT.TOKEN, 'POST', {
+        token: localStorage.getItem('refreshToken'),
+      })
+      .then((res) => {
+        dispatch(setUser(res.user));
+      });
+  };
 };
 
 export const login = createAsyncThunk('user/login', async () => {

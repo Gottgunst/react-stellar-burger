@@ -22,6 +22,12 @@ export const formSubmit = createAsyncThunk(
           case PATH.LOGIN:
           case PATH.REGISTER:
             dispatch(setUser(res));
+            dispatch(
+              setForm({
+                form: PATH.PROFILE,
+                formData: { ...res.user, password: forms[form].password },
+              }),
+            );
             localStorage.setItem('accessToken', res.accessToken);
             localStorage.setItem('refreshToken', res.refreshToken);
             break;
@@ -31,13 +37,5 @@ export const formSubmit = createAsyncThunk(
         }
         return { res, form };
       });
-  },
-);
-
-export const getProfileData = createAsyncThunk(
-  'forms/getProfileData',
-  async (_, { rejectWithValue, dispatch, getState }) => {
-    const { forms } = getState();
-    // return burgerApi.makeRequest(, 'GET', );
   },
 );
