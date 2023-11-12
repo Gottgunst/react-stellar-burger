@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 import { PATH } from './data';
+import Loading from '../components/ui-kit/loading/loading';
 
 const Protected = ({ onlyUnAuth = false, component }) => {
   const isAuthChecked = useSelector((store) => store.user.isAuthChecked);
@@ -10,7 +11,7 @@ const Protected = ({ onlyUnAuth = false, component }) => {
   if (!isAuthChecked) {
     // Запрос еще выполняется
     // Выводим прелоадер в ПР
-    return null;
+    return <Loading />;
   }
 
   if (onlyUnAuth && user) {
@@ -19,7 +20,7 @@ const Protected = ({ onlyUnAuth = false, component }) => {
   }
 
   if (!onlyUnAuth && !user) {
-    return <Navigate to={'/' + PATH.LOGIN} state={{ from: location }} />;
+    return <Navigate to={`/${PATH.LOGIN}`} state={{ from: location }} />;
   }
 
   return component;

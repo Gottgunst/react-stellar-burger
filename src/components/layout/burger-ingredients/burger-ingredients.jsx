@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRef } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { IngredientDetails } from '../';
 import { Modal, Ingredient } from '../../ui-kit/';
 import { useModal } from '../../../hooks/useModal';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeTab, getInfo } from '../../../services';
+import { changeTab } from '../../../services';
 import { activeGroup } from '../../../services/ingredients/selectors';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { PATH } from '../../../utils/data';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -20,10 +20,19 @@ import { BurgerIngredientsPropTypes } from './burger-ingredients.types.js';
 ##################### */
 export function BurgerIngredients({ className }) {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
   const ingredients = useSelector((store) => store.ingredients);
   const activeTab = useSelector(activeGroup);
 
   const { isModalOpen, openModal, closeModal } = useModal();
+
+  useEffect(() => {
+    // если при загрузке мы видим ссылку на ингредиент,
+    // но модальное окно закрыто, то отправляем на отдельную страницу ингредиента.
+    if (location.pathname.includes(PATH.INGREDIENTS) && !isModalOpen)
+      navigate(location.pathname, { replace: true });
+  }, []);
 
   const scroll = {
     bun: useRef(null),
@@ -53,15 +62,6 @@ export function BurgerIngredients({ className }) {
       if (!jumpFlag && activeTab.type !== targetGroup)
         dispatch(changeTab({ type: targetGroup }));
     },
-  };
-
-  const location = useLocation();
-  const navigate = useNavigate();
-  const background = location.state && location.state.background;
-
-  const handleModalClose = () => {
-    // Возвращаемся к предыдущему пути при закрытии модалки
-    navigate(-1);
   };
 
   return (
@@ -97,7 +97,10 @@ export function BurgerIngredients({ className }) {
                       key={item._id}
                       onClick={() => {
                         openModal();
-                        dispatch(getInfo({ item }));
+                        navigate(`/${PATH.INGREDIENTS}/${item._id}`, {
+                          state: { background: location },
+                          key: item._id,
+                        });
                       }}
                     >
                       <Ingredient data={item} />
@@ -110,7 +113,7 @@ export function BurgerIngredients({ className }) {
         </ul>
       </div>
       <Modal status={isModalOpen} closeModal={closeModal}>
-        <IngredientDetails />
+        <Outlet />
       </Modal>
     </div>
   );

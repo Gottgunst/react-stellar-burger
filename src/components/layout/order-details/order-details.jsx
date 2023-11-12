@@ -14,6 +14,7 @@ import styles from './order-details.module.scss';
 
 export function OrderDetails() {
   const order = useSelector((store) => store.order);
+
   return (
     <div className={styles.wrapper}>
       {order.success ? (

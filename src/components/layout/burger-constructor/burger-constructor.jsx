@@ -10,6 +10,8 @@ import { useModal } from '../../../hooks/useModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendOrder, resetQuantity, sortOrder } from '../../../services';
 import { useDrop } from 'react-dnd';
+import { PATH } from '../../../utils/data';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -22,6 +24,9 @@ import { BurgerConstructorPropTypes } from './burger-constructor.types.js';
 ##################### */
 export function BurgerConstructor({ className }) {
   const order = useSelector((store) => store.order);
+  const user = useSelector((store) => store.user.user);
+  const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { isModalOpen, openModal, closeModal } = useModal();
@@ -81,9 +86,16 @@ export function BurgerConstructor({ className }) {
           type="primary"
           size="large"
           onClick={() => {
-            openModal();
-            dispatch(sendOrder());
-            dispatch(resetQuantity());
+            console.log(user);
+            if (user) {
+              dispatch(sendOrder());
+              openModal();
+              // navigate(`/${PATH.PROFILE}/${order.orderId}`, {
+              //   state: { background: location },
+              //   key: order.orderId,
+              // });
+              dispatch(resetQuantity());
+            } else navigate(PATH.LOGIN);
           }}
         >
           Оформить заказ

@@ -5,16 +5,11 @@
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
-import Loading from '../../ui-kit/loading/loading';
-import styles from './feed.module.scss';
+import styles from './loading.module.scss';
 
 /* ####################
 |||||||||||||||||||||||
 ##################### */
-export function Feed() {
-  return (
-    <>
-      <Loading />
-    </>
-  );
+export default function Loading() {
+  return <center className="text text_type_main-medium">Загрузка…</center>;
 }

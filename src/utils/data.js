@@ -10,6 +10,8 @@ export const PATH = {
   RESET: 'reset-password',
   PROFILE: 'profile',
   FEED: 'feed',
+  INGREDIENTS: 'ingredients',
+  ORDERS: 'orders',
 };
 
 /* ####################
