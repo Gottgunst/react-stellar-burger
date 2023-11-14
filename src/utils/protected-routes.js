@@ -9,8 +9,6 @@ const Protected = ({ onlyUnAuth = false, component }) => {
   const location = useLocation();
 
   if (!isAuthChecked) {
-    // Запрос еще выполняется
-    // Выводим прелоадер в ПР
     return <Loading />;
   }
 

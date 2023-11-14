@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { getInfo } from '../services';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { PATH } from '../utils/data';
 
 export const useModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

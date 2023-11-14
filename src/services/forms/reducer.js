@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { formSubmit, getProfileData } from './actions';
+import { formSubmit } from './actions';
 import { PATH } from '../../utils/data';
 
 const initialState = {
@@ -8,9 +8,6 @@ const initialState = {
   [PATH.FORGOT]: { email: '' },
   [PATH.RESET]: { password: '', code: '' },
   [PATH.PROFILE]: { email: '', password: '', name: '' },
-  success: false,
-  error: null,
-  loading: false,
 };
 
 export const formsSlice = createSlice({
@@ -18,31 +15,24 @@ export const formsSlice = createSlice({
   initialState,
   reducers: {
     setForm: (state, { payload }) => {
-      if (payload.formData) state[payload.form] = payload.formData;
+      if (payload.formData)
+        state[payload.form] = { ...state[payload.form], ...payload.formData };
       else state[payload.form][payload.name] = payload.data;
+    },
+    setProfileForm: (state, { payload }) => {
+      if (payload.formData) {
+        state[PATH.PROFILE] = payload.formData;
+      } else {
+        state[PATH.PROFILE][payload.name] = payload.data;
+      }
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(formSubmit.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-        state.success = false;
-      })
-      .addCase(formSubmit.rejected, (state, { payload }) => {
-        state.loading = false;
-        state.success = false;
-        state.error = payload;
-        // state[payload.form] = initialState[payload.form];
-      })
-      .addCase(formSubmit.fulfilled, (state, { payload }) => {
-        state.loading = false;
-        state.success = true;
-        state.error = null;
-        state[payload.form] = initialState[payload.form];
-      });
+    builder.addCase(formSubmit.fulfilled, (state, { payload }) => {
+      state[payload.form] = initialState[payload.form];
+    });
   },
 });
 
 export const reducer = formsSlice.reducer;
-export const { setForm } = formsSlice.actions;
+export const { setForm, setProfileForm } = formsSlice.actions;

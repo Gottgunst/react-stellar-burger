@@ -1,9 +1,9 @@
 @use '/src/styles/variables' as *;
 
 .wrapper {
+  composes: pl-5 pr-5 pt-30 from global;
   display: flex;
   gap: $gap-15;
-  padding-top: $gap-30;
 }
 
 .nav {

@@ -11,5 +11,5 @@ import styles from './loading.module.scss';
 |||||||||||||||||||||||
 ##################### */
 export default function Loading() {
-  return <center className="text text_type_main-medium">Загрузка…</center>;
+  return <center className="text text_type_main-medium p-20">Загрузка…</center>;
 }

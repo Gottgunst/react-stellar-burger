@@ -24,12 +24,14 @@ export const POINT = {
   REGISTER: '/auth/register',
   LOGOUT: '/auth/logout',
   TOKEN: '/auth/token',
+  USER: '/auth/user',
 };
 
 export const burgerApi = new Api({
   baseUrl: process.env.REACT_APP_API_URL,
   headers: {
     'Content-Type': 'application/json',
+    authorization: localStorage.getItem('accessToken') || '',
   },
   paths: POINT,
 });
@@ -40,6 +42,9 @@ export const burgerApi = new Api({
 export const TARGET_POINT = new Map([
   [PATH.LOGIN, POINT.LOGIN],
   [PATH.REGISTER, POINT.REGISTER],
+  [PATH.FORGOT, POINT.TOKEN],
+  [PATH.RESET, POINT.TOKEN],
+  [PATH.PROFILE, POINT.USER],
 ]);
 
 /* ####################
