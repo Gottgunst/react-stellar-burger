@@ -1,24 +1,20 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { setUser, setAuthChecked } from './reducer';
-import { PATH, POINT, burgerApi } from '../../utils/data';
-import { setForm } from '../forms/reducer';
+import { POINT, burgerApi } from '../../utils/data';
 
 export const getUser = () => {
-  console.log('getUser');
-
-  const body = {
-    token: localStorage.getItem('refreshToken'),
-  };
-
   return (dispatch) => {
-    return burgerApi
-      .makeRequest(POINT.TOKEN, 'POST', body)
-      .then((res) => {
-        dispatch(setUser(res.user));
-      })
-      .catch((err) => {
-        console.warn('## GET USER ERR ##', err);
-      });
+    console.log('getUser');
+    const body = {
+      token: localStorage.getItem('refreshToken'),
+    };
+
+    return burgerApi.makeRequest(POINT.TOKEN, 'POST', body).then((res) => {
+      dispatch(setUser(res.user));
+    });
+    // .catch((err) => {
+    //   console.warn('## GET USER ERR ##', err);
+    // });
   };
 };
 
@@ -27,12 +23,35 @@ export const login = createAsyncThunk(
   async ({ point, body }, { rejectWithValue }) => {
     return burgerApi.makeRequest(point, 'POST', body).then((res) => {
       if (!res.success) {
-        console.warn('STATUS', res.status, '#######', res);
-        return rejectWithValue({ err: res, point });
+        return rejectWithValue({ ...res, point });
       }
-
       //дополняем профиль паролем из формы
       res.user.password = body.password;
+      return res;
+    });
+  },
+);
+
+export const passwordForgot = createAsyncThunk(
+  'user/passwordForgot',
+  async (body, { rejectWithValue, dispatch }) => {
+    return burgerApi.makeRequest(POINT.FORGOT, 'POST', body).then((res) => {
+      if (!res.success) {
+        return rejectWithValue({ ...res, point: POINT.FORGOT });
+      }
+      return res;
+    });
+  },
+);
+
+export const passwordReset = createAsyncThunk(
+  'user/passwordReset',
+  async (body, { rejectWithValue, dispatch }) => {
+    return burgerApi.makeRequest(POINT.RESET, 'POST', body).then((res) => {
+      if (!res.success) {
+        return rejectWithValue({ ...res, point: POINT.RESET });
+      }
+      console.log(res);
       return res;
     });
   },
@@ -43,6 +62,11 @@ export const patchProfile = createAsyncThunk(
   async (body, { rejectWithValue, dispatch }) => {
     return burgerApi.makeRequest(POINT.USER, 'PATCH', body).then((res) => {
       if (!res.success) {
+        if (res.message === 'jwt expired') {
+          dispatch(getUser());
+          dispatch(patchProfile(body));
+        }
+
         console.warn('STATUS', res.status, '#######', res);
         return rejectWithValue({ err: res });
       }

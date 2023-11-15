@@ -97,7 +97,7 @@ export function BurgerIngredients({ className }) {
                       key={item._id}
                       onClick={() => {
                         openModal();
-                        navigate(`/${PATH.INGREDIENTS}/${item._id}`, {
+                        navigate(`${PATH.INGREDIENTS}/${item._id}`, {
                           state: { background: location },
                           key: item._id,
                         });

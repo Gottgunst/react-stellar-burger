@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 // import ReactDOM from 'react-dom';
 import {
   Button,
   Input,
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Form, NavLink, useLocation } from 'react-router-dom';
+import { Form, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { PATH } from '../../../utils/data';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -13,17 +13,22 @@ import { useDispatch, useSelector } from 'react-redux';
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
 import styles from './auth.module.scss';
-import { formSubmit, setForm } from '../../../services';
+import { formSubmit, resetError, setForm } from '../../../services';
 
 /* ####################
 |||||||||||||||||||||||
 ##################### */
 export function Auth() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [reDir, setReDir] = useState(false);
   const form = location.pathname.slice(1);
-  const isLOGIN = form === PATH.LOGIN;
+  const isPage = {
+    RESET: form === PATH.RESET,
+    FORGOT: form === PATH.FORGOT,
+    LOGIN: form === PATH.LOGIN,
+  };
   const dispatch = useDispatch();
-
   const page = new Map([
     [
       PATH.LOGIN,
@@ -63,23 +68,40 @@ export function Auth() {
     ],
   ]);
 
-  const { name, email, password, code } = useSelector(
+  const { name, email, password, token } = useSelector(
     (state) => state.forms[form],
   );
+  const userStatus = useSelector((state) => state.user);
 
   const onFormChange = (e) => {
     const name = e.target.name;
     const data = e.target.value;
     dispatch(setForm({ form, name, data }));
+
+    if (userStatus.error) dispatch(resetError());
   };
+
   const onSubmit = (e) => {
+    e.preventDefault();
     dispatch(formSubmit({ form }));
+    if (isPage.FORGOT) setReDir(true);
   };
+
+  useEffect(() => {
+    dispatch(resetError());
+
+    if (isPage.RESET && !userStatus.resetMode)
+      navigate(`/${PATH.LOGIN}`, { replace: true });
+    if (isPage.FORGOT && userStatus.resetMode && reDir) {
+      setReDir(false);
+      navigate(`/${PATH.RESET}`, { state: { from: location } });
+    }
+  }, [location, userStatus.resetMode]);
 
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.title}>{page.get(form).title}</h1>
-      <Form className={styles.form} onSubmit={onSubmit}>
+      <form className={styles.form} onSubmit={onSubmit}>
         {form === PATH.REGISTER && (
           <Input
             placeholder="Имя"
@@ -118,26 +140,29 @@ export function Auth() {
             placeholder="Введите код из письма"
             type={'text'}
             onChange={onFormChange}
-            name={'code'}
+            name={'token'}
             error={false}
             errorText={'Ошибка'}
             size={'default'}
-            value={code}
+            value={token}
           />
         )}
         <Button htmlType="submit" type="primary" size="large">
-          {page.get(form).button}
+          {userStatus.error ? userStatus.error.message : page.get(form).button}
         </Button>
-      </Form>
+      </form>
 
       <span className={styles.comment}>
         {page.get(form).quText}
-        <NavLink to={isLOGIN ? '/register' : '/login'} className={styles.link}>
-          {isLOGIN ? 'Зарегистрироваться' : 'Войти'}
+        <NavLink
+          to={isPage.LOGIN ? '/register' : '/login'}
+          className={styles.link}
+        >
+          {isPage.LOGIN ? 'Зарегистрироваться' : 'Войти'}
         </NavLink>
       </span>
 
-      {isLOGIN && (
+      {isPage.LOGIN && (
         <span className={styles.comment}>
           Забыли пароль?{' '}
           <NavLink to="/forgot-password" className={styles.link}>

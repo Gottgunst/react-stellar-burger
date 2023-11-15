@@ -18,7 +18,7 @@ export const useModal = () => {
     dispatch(getInfo(null));
 
     //временное условие для работы с оформлением заказа
-    if (location.pathname === '') navigate(-1);
+    if (location.pathname !== '') navigate(-1);
   }, []);
 
   return {

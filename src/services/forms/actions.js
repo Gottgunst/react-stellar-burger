@@ -1,7 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { PATH, TARGET_POINT } from '../../utils/data';
-import { login } from '../user/action';
-import { setForm } from './reducer';
+import { PATH, POINT } from '../../utils/data';
+import { login, passwordForgot, passwordReset } from '../user/action';
 
 export const formSubmit = createAsyncThunk(
   'forms/formSubmit',
@@ -10,14 +9,16 @@ export const formSubmit = createAsyncThunk(
 
     switch (form) {
       case PATH.LOGIN:
+        dispatch(login({ point: POINT.LOGIN, body: forms[form] }));
+        break;
       case PATH.REGISTER:
-        dispatch(login({ point: TARGET_POINT.get(form), body: forms[form] }));
+        dispatch(login({ point: POINT.REGISTER, body: forms[form] }));
         break;
       case PATH.FORGOT:
-        //
+        dispatch(passwordForgot(forms[form]));
         break;
       case PATH.RESET:
-        //
+        dispatch(passwordReset(forms[form]));
         break;
       default:
         console.warn('default form case');

@@ -25,6 +25,8 @@ export const POINT = {
   LOGOUT: '/auth/logout',
   TOKEN: '/auth/token',
   USER: '/auth/user',
+  FORGOT: '/password-reset',
+  RESET: '/password-reset/reset',
 };
 
 export const burgerApi = new Api({
@@ -35,17 +37,6 @@ export const burgerApi = new Api({
   },
   paths: POINT,
 });
-
-/* ####################
-КОНФИГ ФОРМ ============
-##################### */
-export const TARGET_POINT = new Map([
-  [PATH.LOGIN, POINT.LOGIN],
-  [PATH.REGISTER, POINT.REGISTER],
-  [PATH.FORGOT, POINT.TOKEN],
-  [PATH.RESET, POINT.TOKEN],
-  [PATH.PROFILE, POINT.USER],
-]);
 
 /* ####################
 Резервная дата =========

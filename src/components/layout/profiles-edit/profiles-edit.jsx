@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import ReactDOM from 'react-dom';
 import {
+  Button,
   Input,
-  PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Form } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { PATH } from '../../../utils/data';
 import { patchProfile } from '../../../services/user/action';
-import { setForm, setPassword, setProfileForm } from '../../../services';
+import { setPassword, setProfileForm } from '../../../services';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -28,61 +27,19 @@ export function ProfilesEdit() {
 
   const onEdit = {
     disable: false,
-    icon: 'CheckMarkIcon',
+    icon: 'CloseIcon',
   };
   const onView = {
     disable: true,
     icon: 'EditIcon',
   };
-  const [params, setParams] = useState({
+  const onInitial = {
     name: onView,
     email: onView,
     password: onView,
-  });
-  let applyFlag = false;
-
-  const applyChanges = (input) => {
-    applyFlag = true;
-    if (profileForm[input.name] !== user[input.name])
-      dispatch(patchProfile({ [input.name]: profileForm[input.name] }));
-
-    // запустим если пришёл ответ…
-    if (!userStatus.loading && userStatus.success) {
-      if (input.name === 'password') {
-        dispatch(setPassword(password));
-        dispatch(
-          setProfileForm({
-            name: 'password',
-            data: '•'.repeat(password.length),
-          }),
-        );
-      }
-    }
-    // нужно условие иначе
-    input.blur();
+    passwordType: 'password',
   };
-
-  const onIconClick = (e) => {
-    const input = e.target.closest('div.input').querySelector('input');
-
-    if (params[input.name].disable) {
-      setParams({ ...params, [input.name]: onEdit });
-
-      if (input.name === 'password')
-        dispatch(
-          setProfileForm({
-            name: 'password',
-            data: user.password,
-          }),
-        );
-
-      setTimeout(() => {
-        input.focus();
-      }, 0.1);
-    } else {
-      applyChanges(input);
-    }
-  };
+  const [params, setParams] = useState(onInitial);
 
   const onFormChange = (e) => {
     const inputName = e.target.name;
@@ -93,27 +50,91 @@ export function ProfilesEdit() {
   const catchEnter = (e) => {
     const input = e.target;
     if (e.key === 'Enter') {
-      applyChanges(input);
+      onSubmit(e);
     }
     if (e.key === 'Escape') {
-      e.target.blur(e);
+      endEdit(input);
     }
   };
 
-  const catchBlur = (e) => {
-    const input = e.target;
-    setParams({ ...params, [input.name]: onView });
-    if (!applyFlag)
-      dispatch(
-        setProfileForm({
-          formData: { ...user, password: '•'.repeat(user.password.length) },
-        }),
-      );
-    applyFlag = false;
+  const startEdit = (input) => {
+    const changeView =
+      input.name === 'password'
+        ? { [input.name]: onEdit, passwordType: 'text' }
+        : { [input.name]: onEdit };
+
+    setParams({ ...params, ...changeView });
+
+    setTimeout(() => {
+      input.focus();
+    }, 0.1);
   };
 
+  const endEdit = (input) => {
+    let changeView = null;
+    // запустим если пришёл ответ…
+
+    // if (userStatus.success === true) {
+    if (input.type === 'submit' || input.type === 'click') {
+      changeView = onInitial;
+    } else {
+      changeView =
+        input.name === 'password'
+          ? { [input.name]: onView, passwordType: 'password' }
+          : { [input.name]: onView };
+      input.blur();
+    }
+    setParams({ ...params, ...changeView });
+    dispatch(
+      setProfileForm({
+        formData: user,
+      }),
+    );
+    // }
+  };
+
+  const onIconClick = (e) => {
+    const input = e.target.closest('div.input').querySelector('input');
+
+    if (params[input.name].disable) {
+      startEdit(input);
+    } else {
+      endEdit(input);
+    }
+  };
+
+  const onSubmit = (input) => {
+    input.preventDefault();
+
+    if (input.type === 'submit') {
+      dispatch(patchProfile(profileForm));
+      dispatch(setPassword(password));
+
+      endEdit(input);
+    } else {
+      const key = input.target.name;
+
+      if (profileForm[key] !== user[key])
+        dispatch(patchProfile({ [key]: profileForm[key] }));
+
+      if (key === 'password') {
+        dispatch(setPassword(password));
+      }
+
+      endEdit(input.target);
+    }
+  };
+
+  useEffect(() => {
+    dispatch(
+      setProfileForm({
+        formData: user,
+      }),
+    );
+  }, [userStatus.success]);
+
   return (
-    <Form className={styles.forms}>
+    <form className={styles.forms} onSubmit={onSubmit}>
       <Input
         type={'text'}
         placeholder={'Имя'}
@@ -121,13 +142,12 @@ export function ProfilesEdit() {
         icon={params.name.icon}
         value={name}
         name={'name'}
-        error={false}
+        // error={false}
         onIconClick={onIconClick}
-        errorText={'Ошибка'}
+        // errorText={'Ошибка'}
         size={'default'}
         disabled={params.name.disable}
         onKeyDown={catchEnter}
-        onBlur={catchBlur}
       />
       <Input
         type={'email'}
@@ -136,29 +156,46 @@ export function ProfilesEdit() {
         icon={params.email.icon}
         value={email}
         name={'email'}
-        error={false}
+        // error={false}
         onIconClick={onIconClick}
-        errorText={'Ошибка'}
+        // errorText={'Ошибка'}
         size={'default'}
         disabled={params.email.disable}
         onKeyDown={catchEnter}
-        onBlur={catchBlur}
       />
       <Input
-        type={'text'}
+        type={params.passwordType}
         placeholder={'Пароль'}
         onChange={onFormChange}
         icon={params.password.icon}
         value={password}
         name={'password'}
-        error={false}
+        // error={false}
         onIconClick={onIconClick}
-        errorText={'Ошибка'}
+        // errorText={'Ошибка'}
         size={'default'}
         disabled={params.password.disable}
         onKeyDown={catchEnter}
-        onBlur={catchBlur}
       />
-    </Form>
+      {[
+        params.name.disable,
+        params.email.disable,
+        params.password.disable,
+      ].some((el) => el === false) && (
+        <div className={styles.buttons}>
+          <Button
+            htmlType="button"
+            type="secondary"
+            size="medium"
+            onClick={endEdit}
+          >
+            Отмена
+          </Button>
+          <Button htmlType="submit" type="primary" size="medium">
+            Сохранить
+          </Button>
+        </div>
+      )}
+    </form>
   );
 }

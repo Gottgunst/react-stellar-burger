@@ -90,7 +90,7 @@ export function BurgerConstructor({ className }) {
             if (user) {
               dispatch(sendOrder());
               openModal();
-              // navigate(`/${PATH.PROFILE}/${order.orderId}`, {
+              // navigate(`${PATH.PROFILE}/${order.orderId}`, {
               //   state: { background: location },
               //   key: order.orderId,
               // });

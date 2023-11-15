@@ -18,6 +18,8 @@ export default class Api {
   }
 
   makeRequest(keyPath, method = 'GET', body) {
+    const point = `${this._baseUrl}${this._composeUrl(keyPath)}`;
+
     const options = {
       method: method.toUpperCase(),
       headers: this._headers,
@@ -27,14 +29,10 @@ export default class Api {
       options.body = JSON.stringify(body);
     }
 
-    return fetch(`${this._baseUrl}${this._composeUrl(keyPath)}`, options).then(
-      (res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(res);
-      },
-    );
+    return fetch(point, options).then((res) => {
+      if (!res.ok) console.error('ErrAPI STATUS', res.status, point, options);
+      return res.json();
+    });
   }
 }
 

@@ -6,7 +6,7 @@ const initialState = {
   [PATH.LOGIN]: { email: '', password: '' },
   [PATH.REGISTER]: { email: '', password: '', name: '' },
   [PATH.FORGOT]: { email: '' },
-  [PATH.RESET]: { password: '', code: '' },
+  [PATH.RESET]: { password: '', token: '' },
   [PATH.PROFILE]: { email: '', password: '', name: '' },
 };
 
