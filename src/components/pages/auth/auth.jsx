@@ -105,7 +105,7 @@ export function Auth() {
         {form === PATH.REGISTER && (
           <Input
             placeholder="Имя"
-            type={'text'}
+            type={'name'}
             onChange={onFormChange}
             name={'name'}
             error={false}

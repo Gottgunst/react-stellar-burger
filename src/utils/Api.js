@@ -17,6 +17,10 @@ export default class Api {
     }
   }
 
+  updateToken(newHeaders) {
+    this._headers = { ...this._headers, ...newHeaders };
+  }
+
   makeRequest(keyPath, method = 'GET', body) {
     const point = `${this._baseUrl}${this._composeUrl(keyPath)}`;
 

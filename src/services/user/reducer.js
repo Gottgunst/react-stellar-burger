@@ -6,7 +6,9 @@ import {
   passwordForgot,
   passwordReset,
   getUser,
+  updateToken,
 } from './action';
+import { burgerApi } from '../../utils/data';
 
 const initialState = {
   user: null,
@@ -113,7 +115,6 @@ export const userSlice = createSlice({
         state.resetMode = true;
         alert(payload.message);
       })
-
       .addCase(passwordReset.pending, pending)
       .addCase(passwordReset.rejected, rejected)
       .addCase(passwordReset.fulfilled, (state, { payload }) => {
@@ -121,6 +122,14 @@ export const userSlice = createSlice({
 
         state.resetMode = false;
         alert(payload.message);
+      })
+      .addCase(updateToken.rejected, rejected)
+      .addCase(updateToken.fulfilled, (state, { payload }) => {
+        console.log('update token');
+
+        burgerApi.updateToken({ authorization: payload.accessToken });
+        localStorage.setItem('accessToken', payload.accessToken);
+        localStorage.setItem('refreshToken', payload.refreshToken);
       });
   },
 });

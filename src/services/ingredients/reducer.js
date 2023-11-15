@@ -43,7 +43,7 @@ export const ingredientsSlice = createSlice({
         : (state.items[itemId].quantity = 0);
     },
     resetQuantity(state) {
-      state.items.forEach((e) => (e.type === 'bun' ? null : (e.quantity = 0)));
+      state.items.forEach((e) => (e.quantity = 0));
     },
   },
   extraReducers: (builder) => {
@@ -59,11 +59,7 @@ export const ingredientsSlice = createSlice({
       })
       .addCase(loadIngredients.fulfilled, (state, { payload }) => {
         state.loading = false;
-        // находим индекс первой булки
-        // const firsBun = payload.findIndex((e) => e.type === 'bun');
         state.items = payload.map((e, index) => {
-          // добавляем свойство с кол-вом элементов в заказе
-          // const q = index === firsBun ? 1 : 0;
           return { ...e, quantity: 0 };
         });
       });

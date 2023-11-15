@@ -9,7 +9,7 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 ##################### */
 import styles from './bun-select.module.scss';
 import { BunSelectPropTypes } from './bun-select.types.js';
-import { addToOrder } from '../../../services';
+import { addToOrder, increment } from '../../../services';
 
 /* ####################
 |||||||||||||||||||||||
@@ -29,6 +29,7 @@ export function BunSelect({ className }) {
             key={bun._id}
             onClick={() => {
               dispatch(addToOrder({ item: bun }));
+              dispatch(increment({ item: bun }));
             }}
             className={styles.bun}
           >

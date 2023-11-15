@@ -1,6 +1,7 @@
 import { POINT, burgerApi } from '../../utils/data';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { _packOrder } from './reducer';
+import { updateToken } from '../user/action';
 
 export const sendOrder = createAsyncThunk(
   'order/completeOrder',
@@ -16,8 +17,14 @@ export const sendOrder = createAsyncThunk(
       })
       .then((res) => {
         if (!res.success) {
-          console.error('STATUS Order', res.status, '#######', res);
-          return rejectWithValue({ err: res });
+          if (res.message === 'jwt expired') {
+            dispatch(updateToken()).then((res) => {
+              dispatch(sendOrder());
+            });
+          } else {
+            console.error('STATUS Order', res.status, '#######', res);
+            return rejectWithValue({ err: res });
+          }
         }
         // отправляем данные
         return res;
