@@ -12,10 +12,10 @@ export const loadIngredients = createAsyncThunk(
         return rejectWithValue({ err: res, reserved: reserveData });
       }
 
-      // находим первую булку
-      const firstBun = res.data.find((e) => e.type === 'bun');
-      // устанавливаем булку по умолчанию
-      dispatch(addToOrder({ item: firstBun }));
+      // // находим первую булку
+      // const firstBun = res.data.find((e) => e.type === 'bun');
+      // // устанавливаем булку по умолчанию
+      // dispatch(addToOrder({ item: firstBun }));
       // отправляем данные
       return res.data;
     });

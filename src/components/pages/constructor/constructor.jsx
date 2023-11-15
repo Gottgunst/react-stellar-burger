@@ -1,16 +1,12 @@
 import { useEffect } from 'react';
-import {
-  BurgerConstructor,
-  BurgerIngredients,
-  IngredientDetails,
-} from '../../layout';
+import { BurgerConstructor, BurgerIngredients, BunSelect } from '../../layout';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInfo, loadIngredients } from '../../../services';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Outlet, useLocation } from 'react-router-dom';
 import { PATH } from '../../../utils/data';
-import Loading from '../../ui-kit/loading/loading';
+import { Loading } from '../../ui-kit';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -22,11 +18,10 @@ import styles from './constructor.module.scss';
 ##################### */
 export function Constructor() {
   const location = useLocation();
-  const { loading, focus } = useSelector((store) => store.ingredients);
-
+  const { loading } = useSelector((store) => store.ingredients);
+  const order = useSelector((store) => store.order);
   const background = location.state && location.state.background;
   const dispatch = useDispatch();
-
   // console.log('background', background, location);
 
   const oneIngredientFlag =
@@ -45,7 +40,12 @@ export function Constructor() {
     <div className={styles.wrapper}>
       <DndProvider backend={HTML5Backend}>
         <BurgerIngredients className={styles.ingredients} />
-        <BurgerConstructor className={styles.constructor} />
+
+        {!order.bun ? (
+          <BunSelect className={styles.constructor} />
+        ) : (
+          <BurgerConstructor className={styles.constructor} />
+        )}
       </DndProvider>
     </div>
   ) : (

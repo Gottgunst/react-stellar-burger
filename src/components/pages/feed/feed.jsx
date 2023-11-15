@@ -5,7 +5,7 @@
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
-import Loading from '../../ui-kit/loading/loading';
+import { Loading } from '../../ui-kit';
 import styles from './feed.module.scss';
 
 /* ####################

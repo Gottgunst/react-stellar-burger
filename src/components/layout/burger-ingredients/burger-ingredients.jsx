@@ -22,10 +22,11 @@ export function BurgerIngredients({ className }) {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const isModalOpen = useSelector((store) => store.modal.isModalOpen);
   const ingredients = useSelector((store) => store.ingredients);
   const activeTab = useSelector(activeGroup);
 
-  const { isModalOpen, openModal, closeModal } = useModal();
+  const { openModal, closeModal } = useModal();
 
   useEffect(() => {
     // если при загрузке мы видим ссылку на ингредиент,

@@ -5,7 +5,6 @@ import {
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Bun, IngredientsSelected, Modal } from '../../ui-kit/';
-import { OrderDetails } from '../';
 import { useModal } from '../../../hooks/useModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendOrder, resetQuantity, sortOrder } from '../../../services';
@@ -24,12 +23,13 @@ import { BurgerConstructorPropTypes } from './burger-constructor.types.js';
 ##################### */
 export function BurgerConstructor({ className }) {
   const order = useSelector((store) => store.order);
+  const isModalOpen = useSelector((store) => store.modal.isModalOpen);
   const user = useSelector((store) => store.user.user);
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { isModalOpen, openModal, closeModal } = useModal();
+  const { openModal, closeModal } = useModal();
 
   const [{ canDrop, isOver }, drop] = useDrop(() => ({
     accept: 'box',
@@ -86,14 +86,13 @@ export function BurgerConstructor({ className }) {
           type="primary"
           size="large"
           onClick={() => {
-            console.log(user);
             if (user) {
-              dispatch(sendOrder());
               openModal();
-              // navigate(`${PATH.PROFILE}/${order.orderId}`, {
-              //   state: { background: location },
-              //   key: order.orderId,
-              // });
+              navigate(`${PATH.ORDERS}/new`, {
+                state: { background: location },
+                key: 'new order',
+              });
+              dispatch(sendOrder());
               dispatch(resetQuantity());
             } else navigate(PATH.LOGIN);
           }}
@@ -101,7 +100,7 @@ export function BurgerConstructor({ className }) {
           Оформить заказ
         </Button>
         <Modal status={isModalOpen} closeModal={closeModal}>
-          <OrderDetails />
+          <Outlet />
         </Modal>
       </span>
     </div>

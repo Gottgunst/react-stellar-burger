@@ -1,22 +1,28 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { setUser, setAuthChecked } from './reducer';
+import { setAuthChecked } from './reducer';
 import { POINT, burgerApi } from '../../utils/data';
 
-export const getUser = () => {
+export const checkUserAuth = () => {
   return (dispatch) => {
-    console.log('getUser');
-    const body = {
-      token: localStorage.getItem('refreshToken'),
-    };
-
-    return burgerApi.makeRequest(POINT.TOKEN, 'POST', body).then((res) => {
-      dispatch(setUser(res.user));
-    });
-    // .catch((err) => {
-    //   console.warn('## GET USER ERR ##', err);
-    // });
+    if (localStorage.getItem('accessToken')) {
+      dispatch(getUser());
+    } else {
+      dispatch(setAuthChecked(true));
+    }
   };
 };
+
+export const getUser = createAsyncThunk(
+  'user/getUser',
+  async (_, { rejectWithValue }) => {
+    return burgerApi.makeRequest(POINT.USER, 'GET').then((res) => {
+      if (!res.success) {
+        return rejectWithValue(res);
+      }
+      return res;
+    });
+  },
+);
 
 export const login = createAsyncThunk(
   'user/login',
@@ -25,6 +31,7 @@ export const login = createAsyncThunk(
       if (!res.success) {
         return rejectWithValue({ ...res, point });
       }
+
       //дополняем профиль паролем из формы
       res.user.password = body.password;
       return res;
@@ -58,38 +65,44 @@ export const passwordReset = createAsyncThunk(
 );
 
 export const patchProfile = createAsyncThunk(
-  'user/profile',
+  'user/patchProfile',
   async (body, { rejectWithValue, dispatch }) => {
     return burgerApi.makeRequest(POINT.USER, 'PATCH', body).then((res) => {
       if (!res.success) {
         if (res.message === 'jwt expired') {
-          dispatch(getUser());
-          dispatch(patchProfile(body));
+          console.log(res.message);
+          dispatch(updateToken()).then((res) => {
+            console.log('repeat');
+            dispatch(patchProfile(body));
+          });
+        } else {
+          console.warn('STATUS', res.status, '#######', res);
+          return rejectWithValue({ err: res });
         }
-
-        console.warn('STATUS', res.status, '#######', res);
-        return rejectWithValue({ err: res });
       }
       return res;
     });
   },
 );
 
-export const checkUserAuth = () => {
-  return (dispatch) => {
-    if (localStorage.getItem('accessToken')) {
-      dispatch(getUser())
-        .catch(() => {
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
-          dispatch(setUser(null));
-        })
-        .finally(() => dispatch(setAuthChecked(true)));
-    } else {
-      dispatch(setAuthChecked(true));
-    }
-  };
-};
+export const updateToken = createAsyncThunk(
+  'user/patchProfile',
+  async (_, { dispatch }) => {
+    const body = {
+      token: localStorage.getItem('refreshToken'),
+    };
+
+    return burgerApi
+      .makeRequest(POINT.TOKEN, 'POST', body)
+      .then((res) => {
+        console.log('update locale', res);
+        return res;
+      })
+      .catch((err) => {
+        console.warn('## TOKEN  ##', err);
+      });
+  },
+);
 
 export const logout = createAsyncThunk('user/logout', async () => {
   const body = {
@@ -97,8 +110,6 @@ export const logout = createAsyncThunk('user/logout', async () => {
   };
 
   burgerApi.makeRequest(POINT.LOGOUT, 'POST', body).then((res) => {
-    console.log('Logout', res, body);
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    return res;
   });
 });

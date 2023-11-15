@@ -24,7 +24,6 @@ export function Modal({ status, closeModal, children }) {
         closeModal(e);
       }
     };
-
     if (status) document.addEventListener('keydown', catchEsc);
 
     return () => {

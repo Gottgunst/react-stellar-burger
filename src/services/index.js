@@ -27,3 +27,5 @@ export {
 
 export { setForm, setProfileForm } from './forms/reducer';
 export { formSubmit } from './forms/actions';
+
+export { setModal } from './modal/reducer';

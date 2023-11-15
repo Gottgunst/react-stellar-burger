@@ -5,3 +5,4 @@ export { BurgerIngredients } from './burger-ingredients/burger-ingredients';
 export { ProfilesEdit } from './profiles-edit/profiles-edit';
 export { IngredientDetails } from './ingredient-details/ingredient-details';
 export { OrderDetails } from './order-details/order-details';
+export { BunSelect } from './bun-select/bun-select';

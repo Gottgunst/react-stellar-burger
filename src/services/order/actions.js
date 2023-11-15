@@ -16,7 +16,7 @@ export const sendOrder = createAsyncThunk(
       })
       .then((res) => {
         if (!res.success) {
-          console.warn('STATUS', res.status, '#######', res);
+          console.error('STATUS Order', res.status, '#######', res);
           return rejectWithValue({ err: res });
         }
         // отправляем данные

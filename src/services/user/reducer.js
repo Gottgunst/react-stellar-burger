@@ -5,6 +5,7 @@ import {
   patchProfile,
   passwordForgot,
   passwordReset,
+  getUser,
 } from './action';
 
 const initialState = {
@@ -54,6 +55,27 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(getUser.pending, pending)
+      .addCase(getUser.rejected, (state, { payload }) => {
+        rejected(state, { payload });
+
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('password');
+
+        userSlice.caseReducers.setUser(null);
+        state.isAuthChecked = true;
+      })
+      .addCase(getUser.fulfilled, (state, { payload }) => {
+        fulfilled(state);
+        state.isAuthChecked = true;
+
+        state.user = {
+          ...state.user,
+          ...payload.user,
+          password: localStorage.getItem('password'),
+        };
+      })
       .addCase(login.pending, pending)
       .addCase(login.rejected, rejected)
       .addCase(login.fulfilled, (state, { payload }) => {
@@ -61,13 +83,18 @@ export const userSlice = createSlice({
 
         state.user = payload.user;
         state.isAuthChecked = true;
+
         localStorage.setItem('accessToken', payload.accessToken);
         localStorage.setItem('refreshToken', payload.refreshToken);
+        localStorage.setItem('password', payload.user.password);
       })
       .addCase(logout.pending, pending)
       .addCase(logout.rejected, rejected)
       .addCase(logout.fulfilled, (state) => {
         fulfilled(state);
+
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
 
         state.user = null;
       })
@@ -75,6 +102,7 @@ export const userSlice = createSlice({
       .addCase(patchProfile.rejected, rejected)
       .addCase(patchProfile.fulfilled, (state, { payload }) => {
         fulfilled(state);
+
         state.user = { ...state.user, ...payload.user };
       })
       .addCase(passwordForgot.pending, pending)
