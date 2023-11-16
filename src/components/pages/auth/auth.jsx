@@ -74,9 +74,7 @@ export function Auth() {
   const userStatus = useSelector((state) => state.user);
 
   const onFormChange = (e) => {
-    const name = e.target.name;
-    const data = e.target.value;
-    dispatch(setForm({ form, name, data }));
+    dispatch(setForm({ form, name: e.target.name, data: e.target.value }));
 
     if (userStatus.error) dispatch(resetError());
   };
@@ -105,7 +103,7 @@ export function Auth() {
         {form === PATH.REGISTER && (
           <Input
             placeholder="Имя"
-            type={'name'}
+            type={'text'}
             onChange={onFormChange}
             name={'name'}
             error={false}

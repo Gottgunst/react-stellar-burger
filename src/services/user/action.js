@@ -12,12 +12,31 @@ export const checkUserAuth = () => {
   };
 };
 
+// export const checkSuccess = (res, point) => {
+//   if (!res.success) {
+//
+//     return Promise.reject({ ...res, point });
+//   }
+//   return res;
+// };
+
+// export const checkJWT = (res, rejectWithValue, point, dispatch, repeat) => {
+//   if (!res.success) {
+//     if (res.message === 'jwt expired') {
+//       dispatch(updateToken()).then((res) => dispatch(repeat));
+//     } else {
+//       return rejectWithValue({ ...res, point });
+//     }
+//   }
+//   return res;
+// };
+
 export const getUser = createAsyncThunk(
   'user/getUser',
   async (_, { rejectWithValue }) => {
     return burgerApi.makeRequest(POINT.USER, 'GET').then((res) => {
       if (!res.success) {
-        return rejectWithValue(res);
+        return rejectWithValue({ ...res, point: POINT.USER });
       }
       return res;
     });
@@ -31,7 +50,6 @@ export const login = createAsyncThunk(
       if (!res.success) {
         return rejectWithValue({ ...res, point });
       }
-
       //дополняем профиль паролем из формы
       res.user.password = body.password;
       return res;
@@ -58,7 +76,6 @@ export const passwordReset = createAsyncThunk(
       if (!res.success) {
         return rejectWithValue({ ...res, point: POINT.RESET });
       }
-      console.log(res);
       return res;
     });
   },
@@ -74,8 +91,7 @@ export const patchProfile = createAsyncThunk(
             dispatch(patchProfile(body));
           });
         } else {
-          console.warn('STATUS', res.status, '#######', res);
-          return rejectWithValue({ err: res });
+          return rejectWithValue({ ...res, point: POINT.USER });
         }
       }
       return res;
@@ -85,23 +101,32 @@ export const patchProfile = createAsyncThunk(
 
 export const updateToken = createAsyncThunk(
   'user/updateToken',
-  async (_, { dispatch }) => {
+  async (_, { rejectWithValue }) => {
     const body = {
       token: localStorage.getItem('refreshToken'),
     };
 
     return burgerApi.makeRequest(POINT.TOKEN, 'POST', body).then((res) => {
+      if (!res.success) {
+        return rejectWithValue({ ...res, point: POINT.TOKEN });
+      }
       return res;
     });
   },
 );
 
-export const logout = createAsyncThunk('user/logout', async () => {
-  const body = {
-    token: localStorage.getItem('refreshToken'),
-  };
+export const logout = createAsyncThunk(
+  'user/logout',
+  async (_, { rejectWithValue }) => {
+    const body = {
+      token: localStorage.getItem('refreshToken'),
+    };
 
-  burgerApi.makeRequest(POINT.LOGOUT, 'POST', body).then((res) => {
-    return res;
-  });
-});
+    return burgerApi.makeRequest(POINT.LOGOUT, 'POST', body).then((res) => {
+      if (!res.success) {
+        return rejectWithValue({ ...res, point: POINT.LOGOUT });
+      }
+      return res;
+    });
+  },
+);

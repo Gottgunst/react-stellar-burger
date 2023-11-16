@@ -8,7 +8,7 @@ import {
   MenuIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { AppHeaderPropTypes } from './app-header.types.js';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import { PATH } from '../../../utils/data';
 
 /* ####################
@@ -27,9 +27,9 @@ export function AppHeader({ className }) {
 
   return (
     <header className={className + ' ' + styles.header}>
-      <a className={styles.logo} href="/">
+      <Link to="/" className={styles.logo}>
         <Logo />
-      </a>
+      </Link>
       <nav className={styles.navigation}>
         <ul className={styles.list}>
           <li>
@@ -39,7 +39,7 @@ export function AppHeader({ className }) {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/feed" className={isActive}>
+            <NavLink to={'/' + PATH.FEED} className={isActive}>
               <ListIcon type={key === PATH.FEED ? 'primary' : 'secondary'} />
               Лента заказов
             </NavLink>

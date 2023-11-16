@@ -19,6 +19,24 @@
 
 .buns {
   composes: pt-10 from global;
+
+  &_drop_prepare {
+    background: radial-gradient(
+      ellipse farthest-corner at center center,
+      var(--color) 0%,
+      var(--color-0) 70%
+    );
+  }
+
+  &_drop_ready {
+    --color: rgb(227 60 213 / 6000%);
+
+    background: radial-gradient(
+      ellipse farthest-corner at center center,
+      var(--color) 0%,
+      var(--color-0) 70%
+    );
+  }
 }
 
 .bun {

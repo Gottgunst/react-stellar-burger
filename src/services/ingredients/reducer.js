@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { loadIngredients } from './actions';
+import { reserveData } from '../../utils/data';
 
 export const ingredientsSlice = createSlice({
   name: 'ingredients',
@@ -54,12 +55,12 @@ export const ingredientsSlice = createSlice({
       })
       .addCase(loadIngredients.rejected, (state, { payload }) => {
         state.loading = false;
-        state.error = payload.err;
-        state.items = payload.reserved;
+        state.error = payload;
+        state.items = reserveData;
       })
       .addCase(loadIngredients.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.items = payload.map((e, index) => {
+        state.items = payload.data.map((e, index) => {
           return { ...e, quantity: 0 };
         });
       });

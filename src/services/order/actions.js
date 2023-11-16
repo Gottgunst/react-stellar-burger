@@ -10,24 +10,22 @@ export const sendOrder = createAsyncThunk(
     dispatch(_packOrder());
     // получаем стейт
     const { order } = getState();
+    const body = {
+      ingredients: order.packedItems,
+    };
 
-    return burgerApi
-      .makeRequest(POINT.ORDERS, 'POST', {
-        ingredients: order.packedItems,
-      })
-      .then((res) => {
-        if (!res.success) {
-          if (res.message === 'jwt expired') {
-            dispatch(updateToken()).then((res) => {
-              dispatch(sendOrder());
-            });
-          } else {
-            console.error('STATUS Order', res.status, '#######', res);
-            return rejectWithValue({ err: res });
-          }
+    return burgerApi.makeRequest(POINT.ORDERS, 'POST', body).then((res) => {
+      if (!res.success) {
+        if (res.message === 'jwt expired') {
+          dispatch(updateToken()).then((res) => {
+            dispatch(sendOrder());
+          });
+        } else {
+          console.error('STATUS Order', res.status, '#######', res);
+          return rejectWithValue({ err: res });
         }
-        // отправляем данные
-        return res;
-      });
+      }
+      return res;
+    });
   },
 );

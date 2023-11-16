@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
-import { PATH } from './data';
-import { Loading } from '../components/ui-kit';
+import { PATH } from '../../utils/data';
+import { Loading } from '../ui-kit';
 
 const Protected = ({ onlyUnAuth = false, component }) => {
   const isAuthChecked = useSelector((store) => store.user.isAuthChecked);

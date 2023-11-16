@@ -26,7 +26,7 @@ const pending = (state) => {
   state.error = null;
 };
 const rejected = (state, { payload }) => {
-  console.log(payload);
+  console.log('rejected', payload);
   state.error = payload;
   state.loading = false;
   state.success = false;
@@ -86,6 +86,7 @@ export const userSlice = createSlice({
         state.user = payload.user;
         state.isAuthChecked = true;
 
+        burgerApi.updateToken({ authorization: payload.accessToken });
         localStorage.setItem('accessToken', payload.accessToken);
         localStorage.setItem('refreshToken', payload.refreshToken);
         localStorage.setItem('password', payload.user.password);

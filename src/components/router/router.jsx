@@ -9,7 +9,7 @@ import {
   IngredientDetails,
   OrderDetails,
 } from '../layout';
-import { OnlyAuth, OnlyUnAuth } from '../../utils/protected-routes';
+import { OnlyAuth, OnlyUnAuth } from './protected-routes';
 import { PATH } from '../../utils/data';
 
 /* ####################

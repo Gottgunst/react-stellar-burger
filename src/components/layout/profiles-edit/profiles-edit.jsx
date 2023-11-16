@@ -42,13 +42,12 @@ export function ProfilesEdit() {
   const [params, setParams] = useState(onInitial);
 
   const onFormChange = (e) => {
-    const inputName = e.target.name;
-    const newData = e.target.value;
-    dispatch(setProfileForm({ name: inputName, data: newData }));
+    dispatch(setProfileForm({ name: e.target.name, data: e.target.value }));
   };
 
   const catchEnter = (e) => {
     const input = e.target;
+    // Замена для логики onSubmit, чтобы можно было с поля снять фокус
     if (e.key === 'Enter') {
       onSubmit(e);
     }

@@ -2,14 +2,13 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 // import ReactDOM from 'react-dom';
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { addToOrder, increment } from '../../../services';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
 import styles from './bun-select.module.scss';
 import { BunSelectPropTypes } from './bun-select.types.js';
-import { addToOrder, increment } from '../../../services';
 
 /* ####################
 |||||||||||||||||||||||
@@ -20,10 +19,29 @@ export function BunSelect({ className }) {
 
   const dispatch = useDispatch();
 
+  const [{ canDrop, isOver }, drop] = useDrop(() => ({
+    accept: 'box',
+    canDrop(item) {
+      if (item.type !== 'bun') return false;
+      return true;
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  }));
+
+  const isActive = canDrop && isOver;
+  let stylesComponents = isActive
+    ? [styles.buns, styles['buns_drop_ready']]
+    : canDrop
+    ? [styles.buns, styles['buns_drop_prepare']]
+    : [styles.buns];
+
   return (
     <div className={className + ' ' + styles.wrapper}>
       <h2 className={styles.title}>Выберите булочку:</h2>
-      <ul className={styles.buns}>
+      <ul className={stylesComponents.join(' ')} ref={drop}>
         {bunVars.map((bun) => (
           <li
             key={bun._id}
