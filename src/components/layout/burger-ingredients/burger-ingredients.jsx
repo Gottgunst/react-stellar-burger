@@ -1,12 +1,13 @@
-import { useRef, useMemo } from 'react';
+import React, { useEffect } from 'react';
+import { useRef } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import Ingredient from '../../ui-kit/ingredient/ingredient';
-import IngredientDetails from '../../ui-kit/ingredient-details/ingredient-details';
-import Modal from '../../ui-kit/modal/modal';
+import { Modal, Ingredient } from '../../ui-kit/';
 import { useModal } from '../../../hooks/useModal';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeTab, getInfo, increment, addToOrder } from '../../../services';
+import { changeTab } from '../../../services';
 import { activeGroup } from '../../../services/ingredients/selectors';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { PATH } from '../../../utils/data';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -19,10 +20,20 @@ import { BurgerIngredientsPropTypes } from './burger-ingredients.types.js';
 ##################### */
 export function BurgerIngredients({ className }) {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isModalOpen = useSelector((store) => store.modal.isModalOpen);
   const ingredients = useSelector((store) => store.ingredients);
   const activeTab = useSelector(activeGroup);
 
-  const { isModalOpen, openModal, closeModal } = useModal();
+  const { openModal, closeModal } = useModal();
+
+  useEffect(() => {
+    // если при загрузке мы видим ссылку на ингредиент,
+    // но модальное окно закрыто, то отправляем на отдельную страницу ингредиента.
+    if (location.pathname.includes(PATH.INGREDIENTS) && !isModalOpen)
+      navigate(location.pathname, { replace: true });
+  }, []);
 
   const scroll = {
     bun: useRef(null),
@@ -87,7 +98,10 @@ export function BurgerIngredients({ className }) {
                       key={item._id}
                       onClick={() => {
                         openModal();
-                        dispatch(getInfo({ item }));
+                        navigate(`${PATH.INGREDIENTS}/${item._id}`, {
+                          state: { background: location },
+                          key: item._id,
+                        });
                       }}
                     >
                       <Ingredient data={item} />
@@ -99,9 +113,8 @@ export function BurgerIngredients({ className }) {
           ))}
         </ul>
       </div>
-
       <Modal status={isModalOpen} closeModal={closeModal}>
-        <IngredientDetails />
+        <Outlet />
       </Modal>
     </div>
   );

@@ -9,6 +9,8 @@ $gap-8: calc(var(--offset-base-size, 4px) * 8);
 $gap-10: calc(var(--offset-base-size, 4px) * 10);
 $gap-13: calc(var(--offset-base-size, 4px) * 13);
 $gap-15: calc(var(--offset-base-size, 4px) * 15);
+$gap-30: calc(var(--offset-base-size, 4px) * 30);
+$gap-45: calc(var(--offset-base-size, 4px) * 45);
 $border-radius: 40px;
 $border-modal: 1px solid var(--interface-modal-edge, rgb(76 76 255 / 20%));
 $z-index-top: 10;

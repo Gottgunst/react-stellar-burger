@@ -1,16 +1,16 @@
+import React from 'react';
 import { useCallback } from 'react';
 import {
   CurrencyIcon,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import Bun from '../../ui-kit/bun/bun';
-import IngredientsSelected from '../../ui-kit/ingredients-selected/ingredients-selected';
-import Modal from '../../ui-kit/modal/modal';
-import OrderDetails from '../../ui-kit/order-details/order-details';
+import { Bun, IngredientsSelected, Modal } from '../../ui-kit/';
 import { useModal } from '../../../hooks/useModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendOrder, resetQuantity, sortOrder } from '../../../services';
 import { useDrop } from 'react-dnd';
+import { PATH } from '../../../utils/data';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -23,9 +23,13 @@ import { BurgerConstructorPropTypes } from './burger-constructor.types.js';
 ##################### */
 export function BurgerConstructor({ className }) {
   const order = useSelector((store) => store.order);
+  const isModalOpen = useSelector((store) => store.modal.isModalOpen);
+  const user = useSelector((store) => store.user.user);
+  const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { isModalOpen, openModal, closeModal } = useModal();
+  const { openModal, closeModal } = useModal();
 
   const [{ canDrop, isOver }, drop] = useDrop(() => ({
     accept: 'box',
@@ -82,15 +86,21 @@ export function BurgerConstructor({ className }) {
           type="primary"
           size="large"
           onClick={() => {
-            openModal();
-            dispatch(sendOrder());
-            dispatch(resetQuantity());
+            if (user) {
+              openModal();
+              navigate(`${PATH.ORDERS}/new`, {
+                state: { background: location },
+                key: 'new order',
+              });
+              dispatch(sendOrder());
+              dispatch(resetQuantity());
+            } else navigate(PATH.LOGIN);
           }}
         >
           Оформить заказ
         </Button>
         <Modal status={isModalOpen} closeModal={closeModal}>
-          <OrderDetails />
+          <Outlet />
         </Modal>
       </span>
     </div>

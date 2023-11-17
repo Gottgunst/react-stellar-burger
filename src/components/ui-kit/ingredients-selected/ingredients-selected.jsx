@@ -1,3 +1,4 @@
+import React from 'react';
 import { useRef } from 'react';
 import {
   ConstructorElement,
@@ -16,7 +17,7 @@ import { IngredientSelectedPropTypes } from './ingredient-selected.types.js';
 /* ####################
 |||||||||||||||||||||||
 ##################### */
-function IngredientsSelected({ data, index, moveCard }) {
+export function IngredientsSelected({ data, index, moveCard }) {
   const dispatch = useDispatch();
 
   const ref = useRef(null);
@@ -68,8 +69,6 @@ function IngredientsSelected({ data, index, moveCard }) {
     </li>
   );
 }
-
-export default IngredientsSelected;
 
 /* #####################
 ТИПЫ ===================

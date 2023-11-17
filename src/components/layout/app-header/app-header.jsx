@@ -6,52 +6,51 @@ import {
   ListIcon,
   ProfileIcon,
   MenuIcon,
-  ArrowUpIcon,
-  ArrowDownIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import ButtonMenu from '../../ui-kit/button-menu/button-menu';
+import { AppHeaderPropTypes } from './app-header.types.js';
+import { NavLink, Link, useLocation } from 'react-router-dom';
+import { PATH } from '../../../utils/data';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
 import styles from './app-header.module.scss';
-import { AppHeaderPropTypes } from './app-header.types.js';
 
 /* ####################
 |||||||||||||||||||||||
 ##################### */
 export function AppHeader({ className }) {
+  const location = useLocation();
+  const key = location.pathname.slice(1);
+  const isActive = ({ isActive }) =>
+    isActive ? styles.link + ' ' + styles.active : styles.link;
+
   return (
     <header className={className + ' ' + styles.header}>
-      <a className={styles.logo} href="/">
+      <Link to="/" className={styles.logo}>
         <Logo />
-      </a>
+      </Link>
       <nav className={styles.navigation}>
         <ul className={styles.list}>
           <li>
-            <ButtonMenu active>
-              <BurgerIcon type="primary" />
+            <NavLink to="/" className={isActive}>
+              <BurgerIcon type={key === '' ? 'primary' : 'secondary'} />
               Конструктор
-            </ButtonMenu>
+            </NavLink>
           </li>
           <li>
-            <ButtonMenu>
-              <ListIcon type="secondary" />
+            <NavLink to={'/' + PATH.FEED} className={isActive}>
+              <ListIcon type={key === PATH.FEED ? 'primary' : 'secondary'} />
               Лента заказов
-            </ButtonMenu>
+            </NavLink>
           </li>
           <li>
-            <ButtonMenu>
-              <ProfileIcon type="secondary" />
+            <NavLink to={'/' + PATH.PROFILE} className={isActive}>
+              <ProfileIcon
+                type={key.includes(PATH.PROFILE) ? 'primary' : 'secondary'}
+              />
               Личный кабинет
-            </ButtonMenu>
-            {/* <ArrowUpIcon type="primary" />
-            <ArrowDownIcon type="primary" />
-            <ul>
-              <li>Профиль</li>
-              <li>История заказов</li>
-              <li>Выход</li>
-            </ul> */}
+            </NavLink>
           </li>
         </ul>
 

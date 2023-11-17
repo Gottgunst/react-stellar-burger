@@ -1,4 +1,4 @@
-// import React from 'react';
+import React from 'react';
 import { createPortal } from 'react-dom';
 // import {   } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -11,7 +11,7 @@ import { ModalOverlayPropTypes } from './modal-overlay.types.js';
 /* ####################
 |||||||||||||||||||||||
 ##################### */
-function ModalOverlay({ status, onMouseDown, children }) {
+export function ModalOverlay({ status, onMouseDown, children }) {
   const modalClases = `${styles.bg} ${status ? styles['bg_opened'] : ''}`;
 
   return (
@@ -20,8 +20,6 @@ function ModalOverlay({ status, onMouseDown, children }) {
     </div>
   );
 }
-
-export default ModalOverlay;
 
 /* #####################
 ТИПЫ ===================

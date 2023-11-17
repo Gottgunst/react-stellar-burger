@@ -1,3 +1,4 @@
+import React from 'react';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from 'react-redux';
 
@@ -9,7 +10,7 @@ import { BunPropTypes } from './bun.types.js';
 /* ####################
 |||||||||||||||||||||||
 ##################### */
-function Bun({ type = 'top' }) {
+export function Bun({ type = 'top' }) {
   const order = useSelector((store) => store.order);
 
   const topPosition = type === 'top';
@@ -31,8 +32,6 @@ function Bun({ type = 'top' }) {
     </>
   );
 }
-
-export default Bun;
 
 /* #####################
 ТИПЫ ===================

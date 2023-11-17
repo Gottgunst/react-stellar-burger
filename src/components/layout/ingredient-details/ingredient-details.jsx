@@ -1,18 +1,26 @@
-// import React from 'react';
+import React, { useEffect } from 'react';
 // import ReactDOM from 'react-dom';
 // import {   } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
 import styles from './ingredient-details.module.scss';
+import { getInfo } from '../../../services';
 
 /* ####################
 |||||||||||||||||||||||
 ##################### */
-function IngredientDetails() {
+export function IngredientDetails() {
+  const dispatch = useDispatch();
   const { focus } = useSelector((store) => store.ingredients);
+  const { id } = useParams();
+
+  useEffect(() => {
+    dispatch(getInfo({ item: { _id: id } }));
+  }, []);
 
   return (
     focus && (
@@ -40,5 +48,3 @@ function IngredientDetails() {
     )
   );
 }
-
-export default IngredientDetails;

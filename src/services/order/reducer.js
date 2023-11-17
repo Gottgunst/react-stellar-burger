@@ -1,19 +1,21 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit';
 import { sendOrder } from './actions';
 
+const initialState = {
+  bun: null,
+  items: [],
+  price: 0,
+  packedItems: [],
+  orderId: null,
+  name: null,
+  success: false,
+  error: null,
+  loading: false,
+};
+
 export const orderSlice = createSlice({
   name: 'order',
-  initialState: {
-    bun: {},
-    items: [],
-    price: 0,
-    packedItems: [],
-    orderId: null,
-    name: null,
-    success: false,
-    error: null,
-    loading: false,
-  },
+  initialState,
   reducers: {
     addToOrder: {
       reducer: (state, { payload }) => {
@@ -71,7 +73,8 @@ export const orderSlice = createSlice({
         state.orderId = payload.order.number;
         state.name = payload.name;
         state.items = [];
-        orderSlice.caseReducers._calcPrice(state);
+        state.bun = null;
+        state.price = 0;
       });
   },
 });

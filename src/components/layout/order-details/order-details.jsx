@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 // import ReactDOM from 'react-dom';
 // import {   } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -10,8 +11,10 @@ import styles from './order-details.module.scss';
 /* ####################
 |||||||||||||||||||||||
 ##################### */
-function OrderDetails() {
+
+export function OrderDetails() {
   const order = useSelector((store) => store.order);
+
   return (
     <div className={styles.wrapper}>
       {order.success ? (
@@ -36,5 +39,3 @@ function OrderDetails() {
     </div>
   );
 }
-
-export default OrderDetails;

@@ -3,11 +3,9 @@
 .app {
   display: grid;
   grid-template-areas:
-    'header header'
-    'ingredients constructor';
-  grid-template-columns: 1fr 1fr;
+    'header'
+    'content';
   grid-template-rows: 88px auto;
-  column-gap: 40px;
 
   min-width: $screen-min;
   max-width: $screen-max;
@@ -19,27 +17,7 @@
     grid-area: header;
   }
 
-  & .ingredients {
-    grid-area: ingredients;
-
-    @media screen and (max-width: $screen-mobile) {
-      overflow: hidden;
-      max-height: calc(100lvh - 88px - 72px);
-    }
-  }
-
-  & .constructor {
-    grid-area: constructor;
-  }
-
   @media screen and (max-width: $screen-mobile) {
-    grid-template-areas:
-      'header'
-      'ingredients'
-      'constructor';
-    grid-template-columns: 1fr;
     max-height: 100lvh;
-
-    // overflow: hidden;
   }
 }

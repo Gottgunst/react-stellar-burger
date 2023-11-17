@@ -1,6 +1,7 @@
-import { burgerApi } from '../../utils/data';
+import { POINT, burgerApi } from '../../utils/data';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { _packOrder } from './reducer';
+import { updateToken } from '../user/action';
 
 export const sendOrder = createAsyncThunk(
   'order/completeOrder',
@@ -9,21 +10,22 @@ export const sendOrder = createAsyncThunk(
     dispatch(_packOrder());
     // получаем стейт
     const { order } = getState();
+    const body = {
+      ingredients: order.packedItems,
+    };
 
-    return burgerApi
-      .makeRequest('/orders', 'POST', {
-        ingredients: order.packedItems,
-      })
-      .then((res) => {
-        if (!res.success) {
-          throw new Error('wrum-wrum post');
+    return burgerApi.makeRequest(POINT.ORDERS, 'POST', body).then((res) => {
+      if (!res.success) {
+        if (res.message === 'jwt expired') {
+          dispatch(updateToken()).then((res) => {
+            dispatch(sendOrder());
+          });
+        } else {
+          console.error('STATUS Order', res.status, '#######', res);
+          return rejectWithValue({ err: res });
         }
-        // отправляем данные
-        return res;
-      })
-      .catch((err) => {
-        console.warn('STATUS', err.status, '#######', err);
-        return rejectWithValue({ err: err });
-      });
+      }
+      return res;
+    });
   },
 );

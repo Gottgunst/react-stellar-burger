@@ -1,0 +1,41 @@
+@use '/src/styles/variables' as *;
+
+.wrapper {
+  display: grid;
+  grid-area: content;
+  grid-template-areas: 'ingredients constructor';
+  grid-template-columns: 1fr 1fr;
+  column-gap: 40px;
+
+  @media screen and (max-width: $screen-mobile) {
+    grid-template-areas:
+      'ingredients'
+      'constructor';
+    grid-template-columns: 1fr;
+    max-height: 100lvh;
+  }
+}
+
+.ingredients {
+  grid-area: ingredients;
+
+  @media screen and (max-width: $screen-mobile) {
+    overflow: hidden;
+    max-height: calc(100lvh - 88px - 72px);
+  }
+}
+
+.constructor {
+  grid-area: constructor;
+}
+
+.one-ingredient-wrapper {
+  composes: pt-30 from global;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+
+  & h2 {
+    width: auto;
+  }
+}
