@@ -1,53 +1,102 @@
 @use '/src/styles/variables' as *;
 
 .wrapper {
-  composes: pl-15 pr-15 pt-20 pb-20 from global;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.list {
+  composes: pr-6 pt-6 custom-scroll from global;
+
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  gap: $gap-4;
+
+  box-sizing: border-box;
+  width: 100%;
+  height: 358px;
+}
+
+.ingredient {
+  display: flex;
+  gap: $gap-4;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+}
+
+.image {
+  flex-shrink: 0;
+
+  width: 64px;
+  height: 64px;
+
+  object-fit: cover;
+  object-position: center;
+  background: radial-gradient(
+    ellipse farthest-corner at bottom center,
+    #801ab340 0%,
+    #801ab300 70%
+  );
+  border: 2px solid var(--button-normal, #801ab2);
+  border-radius: 100px;
 }
 
 .title {
-  display: none;
+  composes: text text_type_main-medium pt-10 from global;
 
-  @media screen and (max-width: $screen-mobile) {
-    composes: text text_type_main-large from global;
-    display: block;
-  }
+  overflow: hidden;
+
+  width: 100%;
+
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .digit {
-  composes: text text_type_digits-large from global;
-  text-shadow:
-    0 4px 32px rgb(51 51 255 / 50%),
-    0 0 8px rgb(51 51 255 / 25%),
-    0 0 16px rgb(51 51 255 / 25%);
+  composes: text text_type_digits-default from global;
 
-  @media screen and (max-width: $screen-mobile) {
-    color: #4c4cff;
-  }
-}
+  display: flex;
+  flex-shrink: 0;
+  gap: $gap-1;
 
-.digit-caption {
-  composes: pt-8 text text_type_main-medium from global;
-}
-
-.icon {
-  composes: m-15 from global;
-
-  width: 120px;
-  height: 120px;
-
-  background-image: url('../../../images/done.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  color: #fff;
 }
 
 .status {
-  composes: text text_type_main-small from global;
+  composes: text text_type_main-default pt-3 from global;
+
+  width: 100%;
+  padding-bottom: 5px;
+
+  color: var(--interface-success, #0cc);
+  text-align: left;
 }
 
-.status-caption {
-  composes: text text_type_main-default text_color_inactive pt-2 from global;
+.name {
+  composes: text text_type_main-default from global;
+
+  overflow: hidden;
+  display: -webkit-box;
+  flex-grow: 1;
+
+  text-overflow: ellipsis;
+
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.bottom {
+  composes: text text_type_main-default text_color_inactive pt-10 from global;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }

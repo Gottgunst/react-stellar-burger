@@ -8,6 +8,7 @@ import {
   ProfilesEdit,
   IngredientDetails,
   OrderDetails,
+  NewOrder,
 } from '../layout';
 import { OnlyAuth, OnlyUnAuth } from './protected-routes';
 import { PATH } from '../../utils/data';
@@ -32,7 +33,7 @@ function Router() {
             },
             {
               path: `${PATH.ORDERS}/new`,
-              element: <OrderDetails />,
+              element: <NewOrder />,
             },
           ],
         },
@@ -76,14 +77,13 @@ function Router() {
               path: '',
               element: <ProfilesEdit />,
             },
-            // {
-            //   path: `${PATH.ORDERS}/:id`,
-            //   element: <OrderDetails />,
-            // },
+            {
+              path: `${PATH.ORDERS}/:id`,
+              element: <OrderDetails />,
+            },
             {
               path: PATH.ORDERS,
               element: <OrderList />,
-              children: [],
             },
           ],
         },

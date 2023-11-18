@@ -20,6 +20,7 @@ export const PATH = {
 export const POINT = {
   INGREDIENTS: '/ingredients',
   ORDERS: '/orders',
+  ORDERS_ALL: 'orders/all',
   LOGIN: '/auth/login',
   REGISTER: '/auth/register',
   LOGOUT: '/auth/logout',
@@ -34,6 +35,14 @@ export const burgerApi = new Api({
   headers: {
     'Content-Type': 'application/json',
     authorization: localStorage.getItem('accessToken') || '',
+  },
+  paths: POINT,
+});
+
+export const burgerWss = new Api({
+  baseUrl: process.env.REACT_APP_WSS_URL,
+  headers: {
+    'Content-Type': 'application/json',
   },
   paths: POINT,
 });

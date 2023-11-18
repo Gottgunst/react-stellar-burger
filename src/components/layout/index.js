@@ -1,3 +1,4 @@
+export { NewOrder } from './new-order/new-order';
 export { OrderList } from './order-list/order-list';
 export { AppHeader } from './app-header/app-header';
 export { BurgerConstructor } from './burger-constructor/burger-constructor';
