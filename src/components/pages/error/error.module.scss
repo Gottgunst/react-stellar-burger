@@ -1,4 +1,23 @@
 @use '/src/styles/variables' as *;
 
-.error {
+.app {
+  display: grid;
+  grid-template-areas:
+    'header'
+    'content';
+  grid-template-rows: 88px auto;
+
+  min-width: $screen-min;
+  max-width: $screen-max;
+  min-height: 100lvh;
+  max-height: 100%;
+  margin: 0 auto;
+
+  & .header {
+    grid-area: header;
+  }
+
+  @media screen and (max-width: $screen-mobile) {
+    max-height: 100lvh;
+  }
 }

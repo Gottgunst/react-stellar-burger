@@ -1,3 +1,4 @@
+export { OrderCard } from './order-card/order-card';
 export { Loading } from './loading/loading';
 export { Bun } from './bun/bun';
 export { ButtonMenu } from './button-menu/button-menu';

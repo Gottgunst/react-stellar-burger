@@ -1,4 +1,48 @@
 @use '/src/styles/variables' as *;
 
-.feed {
+.wrapper {
+  composes: pt-10 from global;
+
+  display: grid;
+  grid-area: content;
+  grid-template-areas: 'list stat';
+  grid-template-columns: 1fr 1fr;
+  column-gap: 40px;
+
+  @media screen and (max-width: $screen-mobile) {
+    grid-template-areas:
+      'list'
+      'stat';
+    grid-template-columns: 1fr;
+    max-height: 100lvh;
+  }
+}
+
+.title {
+  composes: text text_type_main-large pb-5 from global;
+  flex-shrink: 0;
+}
+
+.list {
+  grid-area: list;
+
+  @media screen and (max-width: $screen-mobile) {
+    overflow: hidden;
+    max-height: calc(100lvh - 88px - 72px);
+  }
+}
+
+.stat {
+  grid-area: stat;
+}
+
+.focus-order-wrapper {
+  composes: pt-30 from global;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+
+  & h2 {
+    width: auto;
+  }
 }

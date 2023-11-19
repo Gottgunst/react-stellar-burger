@@ -1,0 +1,124 @@
+@use '/src/styles/variables' as *;
+
+.wrapper {
+  composes: p-6 from global;
+
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  gap: $gap-6;
+  align-items: center;
+
+  max-width: 640px;
+  margin: 0 auto;
+
+  background: #1c1c21;
+  border-radius: $border-radius;
+}
+
+.line {
+  composes: text text_type_main-default text_color_inactive from global;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+}
+
+.list {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.ingredient {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+}
+
+.image {
+  box-sizing: border-box;
+  width: 64px;
+  height: 64px;
+
+  object-fit: cover;
+  object-position: center;
+  background: radial-gradient(
+      ellipse farthest-corner at bottom center,
+      #801ab340 0%,
+      #801ab300 70%
+    ),
+    #131316;
+  border: 2px solid var(--button-normal, #801ab2);
+  border-radius: 100px;
+}
+
+.title {
+  composes: text text_type_main-medium pt-10 from global;
+
+  overflow: hidden;
+
+  width: 100%;
+
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.digit {
+  composes: text text_type_digits-default from global;
+
+  display: flex;
+  flex-shrink: 0;
+  gap: $gap-1;
+
+  color: #fff;
+}
+
+.status {
+  composes: text text_type_main-default pt-3 from global;
+
+  width: 100%;
+  padding-bottom: 5px;
+
+  color: var(--interface-success, #0cc);
+  text-align: left;
+}
+
+.name {
+  composes: text text_type_main-default from global;
+
+  overflow: hidden;
+  display: -webkit-box;
+  flex-grow: 1;
+
+  text-overflow: ellipsis;
+
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.shadow {
+  composes: text text_type_main-default from global;
+
+  position: absolute;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 60px;
+  height: 60px;
+
+  color: #fff;
+
+  background: rgb(28 28 33 / 60%);
+  border-radius: 100px;
+}

@@ -2,12 +2,12 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 // import ReactDOM from 'react-dom';
 // import {   } from '@ya.praktikum/react-developer-burger-ui-components';
+import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
 import styles from './order-details.module.scss';
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 /* ####################
 |||||||||||||||||||||||
@@ -15,7 +15,7 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 
 export function OrderDetails() {
   const order = useSelector((store) => store.feed.focus);
-  const allIngredients = useSelector((store) => store.ingredients.items);
+  const ingredients = useSelector((store) => store.ingredients.itemsMap);
 
   return (
     <div className={styles.wrapper}>
@@ -27,18 +27,20 @@ export function OrderDetails() {
 
       <h3 className={styles.title}>Состав:</h3>
       <ul className={styles.list}>
-        {allIngredients.map((e) =>
-          order.ingredients.some((id) => id === e._id) ? (
-            <li className={styles.ingredient} key={e._id}>
-              <img className={styles.image} alt={e.name} src={e.image} />
-              <div className={styles.name}>{e.name}</div>
-              <span className={styles.digit}>
-                1 x {e.price}
-                <CurrencyIcon type="primary" />
-              </span>
-            </li>
-          ) : null,
-        )}
+        {order.ingredients.map((id) => (
+          <li className={styles.ingredient} key={ingredients[id]._id}>
+            <img
+              className={styles.image}
+              alt={ingredients[id].name}
+              src={ingredients[id].image}
+            />
+            <div className={styles.name}>{ingredients[id].name}</div>
+            <span className={styles.digit}>
+              1 x {ingredients[id].price}
+              <CurrencyIcon type="primary" />
+            </span>
+          </li>
+        ))}
       </ul>
 
       <div className={styles.bottom}>
