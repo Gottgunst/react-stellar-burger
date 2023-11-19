@@ -88,7 +88,7 @@ export function BurgerConstructor({ className }) {
           onClick={() => {
             if (user) {
               openModal();
-              navigate(`${PATH.ORDERS}/new`, {
+              navigate(`${PATH.FEED}/new`, {
                 state: { background: location },
                 key: 'new order',
               });

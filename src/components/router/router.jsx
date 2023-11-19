@@ -26,13 +26,14 @@ function Router() {
         {
           path: '',
           element: <Constructor />,
+
           children: [
             {
               path: `${PATH.INGREDIENTS}/:id`,
               element: <IngredientDetails />,
             },
             {
-              path: `${PATH.ORDERS}/new`,
+              path: `${PATH.FEED}/new`,
               element: <NewOrder />,
             },
           ],
@@ -48,7 +49,7 @@ function Router() {
           element: <Feed />,
           children: [
             {
-              path: `${PATH.FEED}/:id`,
+              path: `:id`,
               element: <OrderDetails />,
             },
           ],
@@ -78,12 +79,14 @@ function Router() {
               element: <ProfilesEdit />,
             },
             {
-              path: `${PATH.ORDERS}/:id`,
-              element: <OrderDetails />,
-            },
-            {
               path: PATH.ORDERS,
               element: <OrderList />,
+              children: [
+                {
+                  path: `:id`,
+                  element: <OrderDetails />,
+                },
+              ],
             },
           ],
         },

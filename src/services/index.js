@@ -1,5 +1,3 @@
-export { checkSuccess, checkExpired } from './check';
-
 export { addToOrder, removeFromOrder, sortOrder } from './order/reducer';
 export { sendOrder } from './order/actions';
 

@@ -92,8 +92,9 @@ export function BurgerIngredients({ className }) {
                 {group.name}
               </h2>
               <ul className={styles.ingredient}>
-                {ingredients.items.map((item) =>
-                  group.type === item.type ? (
+                {Object.keys(ingredients.itemsMap).map((id) => {
+                  const item = ingredients.itemsMap[id];
+                  return group.type === item.type ? (
                     <li
                       key={item._id}
                       onClick={() => {
@@ -106,8 +107,8 @@ export function BurgerIngredients({ className }) {
                     >
                       <Ingredient data={item} />
                     </li>
-                  ) : null,
-                )}
+                  ) : null;
+                })}
               </ul>
             </li>
           ))}

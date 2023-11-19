@@ -4,6 +4,7 @@ import { reducer as ingredientsReducer } from './ingredients/reducer';
 import { reducer as userReducer } from './user/reducer';
 import { reducer as formsReducer } from './forms/reducer';
 import { reducer as modalReducer } from './modal/reducer';
+import { reducer as feedReducer } from './feed/reducer';
 
 export default configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export default configureStore({
     user: userReducer,
     forms: formsReducer,
     modal: modalReducer,
+    feed: feedReducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
 });

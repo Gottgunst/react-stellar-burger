@@ -31,3 +31,13 @@ export const ingredientsReducerPropType = PropTypes.shape({
   state: PropTypes.object,
   action: PropTypes.object,
 });
+
+export const orderPropType = PropTypes.shape({
+  _id: PropTypes.string,
+  name: PropTypes.string,
+  ingredients: PropTypes.array,
+  status: PropTypes.string,
+  number: PropTypes.number,
+  createdAt: PropTypes.string,
+  updatedAt: PropTypes.string,
+});
