@@ -80,7 +80,7 @@ function Router() {
             },
             {
               path: PATH.ORDERS,
-              element: <OrderList />,
+              element: <OrderList type="myFeed" />,
               children: [
                 {
                   path: `:id`,

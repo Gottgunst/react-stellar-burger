@@ -4,7 +4,7 @@
   display: grid;
   grid-area: content;
   grid-template-areas: 'list stat';
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 608px auto;
   column-gap: $gap-15;
 
   box-sizing: border-box;
@@ -26,8 +26,12 @@
 
 .list {
   composes: pt-10 from global;
+
   grid-area: list;
-  max-height: calc(100lvh - 188px);
+
+  box-sizing: border-box;
+  max-width: 604px;
+  max-height: calc(100lvh - 148px);
 
   @media screen and (max-width: $screen-mobile) {
     overflow: hidden;

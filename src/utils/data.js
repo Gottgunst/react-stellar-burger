@@ -20,7 +20,7 @@ export const PATH = {
 export const POINT = {
   INGREDIENTS: '/ingredients',
   ORDERS: '/orders',
-  ORDERS_ALL: 'orders/all',
+  ORDERS_ALL: '/orders/all',
   LOGIN: '/auth/login',
   REGISTER: '/auth/register',
   LOGOUT: '/auth/logout',
@@ -39,10 +39,26 @@ export const burgerApi = new Api({
   paths: POINT,
 });
 
-export const burgerWss = new Api({
-  baseUrl: process.env.REACT_APP_WSS_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  paths: POINT,
-});
+export const WebsocketStatus = {
+  CONNECTING: 'CONNECTING...',
+  ONLINE: 'ONLINE',
+  OFFLINE: 'OFFLINE',
+};
+
+export const orderStatus = {
+  creating: 'Создан',
+  pending: 'Готовится',
+  done: 'Выполнен',
+  cancel: 'Отменён',
+};
+
+export const initialOrdersState = {
+  status: WebsocketStatus.OFFLINE,
+  connectingError: '',
+  orders: [],
+  total: 0,
+  totalToday: 0,
+  focus: {},
+  loading: false,
+  error: null,
+};

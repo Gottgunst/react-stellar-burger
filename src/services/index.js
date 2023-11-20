@@ -1,3 +1,8 @@
+export { connect as myFeedConnect } from './my-feed/actions';
+
+export { loadOneOrder, connect as feedConnect } from './feed/actions';
+export { getOrderInfo } from './feed/reducer';
+
 export { addToOrder, removeFromOrder, sortOrder } from './order/reducer';
 export { sendOrder } from './order/actions';
 

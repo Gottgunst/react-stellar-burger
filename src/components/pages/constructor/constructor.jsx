@@ -25,7 +25,7 @@ export function Constructor() {
   // console.log('background', background, location);
 
   const oneIngredientFlag =
-    location.pathname.includes(PATH.INGREDIENTS) && !background;
+    location.pathname.includes(`${PATH.INGREDIENTS}/`) && !background;
 
   useEffect(() => {
     // Инициализация данных из API

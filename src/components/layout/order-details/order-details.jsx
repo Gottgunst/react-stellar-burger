@@ -3,6 +3,9 @@ import { useSelector } from 'react-redux';
 // import ReactDOM from 'react-dom';
 // import {   } from '@ya.praktikum/react-developer-burger-ui-components';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { orderStatus } from '../../../utils/data';
+import moment from 'moment';
+import 'moment/locale/ru';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -16,19 +19,20 @@ import styles from './order-details.module.scss';
 export function OrderDetails() {
   const order = useSelector((store) => store.feed.focus);
   const ingredients = useSelector((store) => store.ingredients.itemsMap);
-
+  const time = moment(order.createdAt).locale('ru').calendar();
   return (
     <div className={styles.wrapper}>
-      <p className={styles.digit}>{order._id}</p>
-      <h2 className={styles.title}>
-        Black Hole Singularity острый бургер {order.name}
-      </h2>
-      <span className={styles.status}>Выполнен</span>
+      <p className={styles.digit}>#{order?.number}</p>
+      <h2 className={styles.title}>{order?.name}</h2>
+      <span className={styles.status}>{orderStatus[order?.status]}</span>
 
       <h3 className={styles.title}>Состав:</h3>
       <ul className={styles.list}>
-        {order.ingredients.map((id) => (
-          <li className={styles.ingredient} key={ingredients[id]._id}>
+        {[...order?.ingredients].reverse().map((id, index) => (
+          <li
+            className={styles.ingredient}
+            key={ingredients[id]._id + 'list' + index}
+          >
             <img
               className={styles.image}
               alt={ingredients[id].name}
@@ -44,7 +48,7 @@ export function OrderDetails() {
       </ul>
 
       <div className={styles.bottom}>
-        <span>Вчера, 13:50 i-GMT+3</span>
+        <span>{time}</span>
         <span className={styles.digit}>
           510
           <CurrencyIcon type="primary" />

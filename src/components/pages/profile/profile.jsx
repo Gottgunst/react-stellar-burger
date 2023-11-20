@@ -1,10 +1,16 @@
-import React from 'react';
+import { useEffect } from 'react';
 // import ReactDOM from 'react-dom';
 // import {   } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { PATH } from '../../../utils/data';
-import { useDispatch } from 'react-redux';
-import { logout } from '../../../services/';
+import { PATH, POINT } from '../../../utils/data';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getOrderInfo,
+  loadIngredients,
+  loadOneOrder,
+  logout,
+  myFeedConnect,
+} from '../../../services/';
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
@@ -19,9 +25,30 @@ export function Profile() {
     dispatch(logout());
   };
   const location = useLocation();
+  const { loading } = useSelector((store) => store.ingredients);
+  const background = location.state && location.state.background;
+  const oneOrderFlag =
+    location.pathname.includes(`${PATH.FEED}/`) && !background;
 
   const isActive = ({ isActive }) =>
     isActive ? styles.link + ' ' + styles.active : styles.link;
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken').split(' ').pop();
+
+    // Инициализация данных из API
+    dispatch(
+      myFeedConnect(
+        `${process.env.REACT_APP_WSS_URL}${POINT.ORDERS}?token=${token}`,
+      ),
+    );
+    dispatch(loadIngredients());
+    //очищаем фокус при перезагрузке страницы
+    dispatch(getOrderInfo(null));
+    // dispatch(loadOneOrder());
+
+    oneOrderFlag && dispatch(loadOneOrder(location.pathname.split('/').pop()));
+  }, []);
 
   return (
     <div className={styles.wrapper}>

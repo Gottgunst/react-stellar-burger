@@ -1,19 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { WebsocketStatus, initialOrdersState } from '../../utils/data';
-import {
-  wsConnecting,
-  wsOpen,
-  wsClose,
-  wsError,
-  wsMessage,
-  loadOneOrder,
-} from './actions';
+import { wsConnecting, wsOpen, wsClose, wsError, wsMessage } from './actions';
 
-export const feedSlice = createSlice({
-  name: 'feed',
+export const myFeedSlice = createSlice({
+  name: 'myFeed',
   initialState: initialOrdersState,
   reducers: {
-    getOrderInfo(state, { payload }) {
+    getMyOrderInfo(state, { payload }) {
       payload ? (state.focus = payload) : (state.focus = null);
     },
   },
@@ -33,19 +26,12 @@ export const feedSlice = createSlice({
         state.connectingError = payload;
       })
       .addCase(wsMessage, (state, { payload }) => {
-        state.orders = payload.orders;
+        state.orders = [...payload.orders].reverse();
         state.total = payload.total;
         state.totalToday = payload.totalToday;
-      })
-      .addCase(loadOneOrder.pending, (state) => {})
-      .addCase(loadOneOrder.rejected, (state, { payload }) => {
-        console.log('er ', payload);
-      })
-      .addCase(loadOneOrder.fulfilled, (state, { payload }) => {
-        state.focus = payload.orders[0];
       });
   },
 });
 
-export const reducer = feedSlice.reducer;
-export const { getOrderInfo } = feedSlice.actions;
+export const reducer = myFeedSlice.reducer;
+export const { getMyOrderInfo } = myFeedSlice.actions;
