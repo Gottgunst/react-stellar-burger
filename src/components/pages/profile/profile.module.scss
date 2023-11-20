@@ -1,12 +1,13 @@
 @use '/src/styles/variables' as *;
 
 .wrapper {
-  composes: pl-5 pr-5 pt-30 from global;
+  composes: pl-5 pr-5 from global;
   display: flex;
   gap: $gap-15;
 }
 
 .nav {
+  composes: pt-30 from global;
   max-width: 320px;
 }
 
@@ -35,4 +36,9 @@
   composes: pt-20 text text_type_main-default text_color_inactive from global;
   display: block;
   opacity: 0.4;
+}
+
+.outlet {
+  flex-grow: 1;
+  max-height: calc(100lvh - 88px);
 }

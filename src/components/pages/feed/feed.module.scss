@@ -1,13 +1,14 @@
 @use '/src/styles/variables' as *;
 
 .wrapper {
-  composes: pt-10 from global;
-
   display: grid;
   grid-area: content;
   grid-template-areas: 'list stat';
   grid-template-columns: 1fr 1fr;
-  column-gap: 40px;
+  column-gap: $gap-15;
+
+  box-sizing: border-box;
+  height: 100%;
 
   @media screen and (max-width: $screen-mobile) {
     grid-template-areas:
@@ -24,7 +25,9 @@
 }
 
 .list {
+  composes: pt-10 from global;
   grid-area: list;
+  max-height: calc(100lvh - 188px);
 
   @media screen and (max-width: $screen-mobile) {
     overflow: hidden;

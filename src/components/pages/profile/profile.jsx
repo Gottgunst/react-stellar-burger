@@ -50,7 +50,9 @@ export function Profile() {
             : ' просмотреть свою историю заказов'}
         </span>
       </nav>
-      <Outlet />
+      <div className={styles.outlet}>
+        <Outlet />
+      </div>
     </div>
   );
 }

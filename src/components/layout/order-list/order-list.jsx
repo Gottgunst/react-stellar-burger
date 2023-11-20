@@ -32,24 +32,27 @@ export function OrderList() {
   }, []);
 
   return (
-    <div className={styles.wrapper}>
-      <ul>
-        <li
-          onClick={() => {
-            openModal();
-            navigate(`card`, {
-              state: { background: location },
-              key: 'card',
-            });
-          }}
-          key={'card'}
-        >
-          <OrderCard order={order} />
-        </li>
+    <>
+      <ul className={styles.wrapper}>
+        {[...new Array(10)].map((e, index) => (
+          <li
+            className={styles.card}
+            onClick={() => {
+              openModal();
+              navigate(`card`, {
+                state: { background: location },
+                key: 'card',
+              });
+            }}
+            key={'card' + index}
+          >
+            <OrderCard order={order} />
+          </li>
+        ))}
       </ul>
       <Modal status={isModalOpen} closeModal={closeModal}>
         <Outlet />
       </Modal>
-    </div>
+    </>
   );
 }
