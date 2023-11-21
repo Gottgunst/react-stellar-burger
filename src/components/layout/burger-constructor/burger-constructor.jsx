@@ -23,7 +23,7 @@ import { BurgerConstructorPropTypes } from './burger-constructor.types.js';
 ##################### */
 export function BurgerConstructor({ className }) {
   const order = useSelector((store) => store.order);
-  const isModalOpen = useSelector((store) => store.modal.isModalOpen);
+  const { isModalOpen } = useSelector((store) => store.modal);
   const user = useSelector((store) => store.user.user);
   const location = useLocation();
   const navigate = useNavigate();

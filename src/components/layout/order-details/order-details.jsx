@@ -11,6 +11,7 @@ import 'moment/locale/ru';
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
 import styles from './order-details.module.scss';
+import { Loading } from '../../ui-kit';
 
 /* ####################
 |||||||||||||||||||||||
@@ -18,9 +19,15 @@ import styles from './order-details.module.scss';
 
 export function OrderDetails() {
   const order = useSelector((store) => store.feed.focus);
+  const { loading } = useSelector((store) => store.feed);
   const ingredients = useSelector((store) => store.ingredients.itemsMap);
-  const time = moment(order.createdAt).locale('ru').calendar();
-  return (
+  const time = moment(order?.createdAt).locale('ru').calendar();
+
+  console.log(order);
+
+  return order === false || loading ? (
+    <Loading />
+  ) : (
     <div className={styles.wrapper}>
       <p className={styles.digit}>#{order?.number}</p>
       <h2 className={styles.title}>{order?.name}</h2>
@@ -28,7 +35,7 @@ export function OrderDetails() {
 
       <h3 className={styles.title}>Состав:</h3>
       <ul className={styles.list}>
-        {[...order?.ingredients].reverse().map((id, index) => (
+        {order?.ingredients?.map((id, index) => (
           <li
             className={styles.ingredient}
             key={ingredients[id]._id + 'list' + index}

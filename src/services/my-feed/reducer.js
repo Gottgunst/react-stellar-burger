@@ -26,7 +26,7 @@ export const myFeedSlice = createSlice({
         state.connectingError = payload;
       })
       .addCase(wsMessage, (state, { payload }) => {
-        state.orders = [...payload.orders].reverse();
+        state.orders = payload.orders;
         state.total = payload.total;
         state.totalToday = payload.totalToday;
       });

@@ -23,7 +23,7 @@ export function OrderCard({ order }) {
   const ingredients = useSelector((store) => store.ingredients.itemsMap);
   const { loading } = useSelector((store) => store.ingredients);
 
-  const cost = order?.ingredients.reduce((prev, id) => {
+  const cost = order?.ingredients?.reduce((prev, id) => {
     return prev + ingredients[id]?.price;
   }, 0);
 
@@ -43,7 +43,7 @@ export function OrderCard({ order }) {
       </h3>
       <div className={styles.line}>
         <ul className={styles.list}>
-          {[...order?.ingredients]?.reverse().map(
+          {order?.ingredients?.map(
             (id, index) =>
               index < 6 && (
                 <li

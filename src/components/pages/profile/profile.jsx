@@ -15,6 +15,8 @@ import {
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
 import styles from './profile.module.scss';
+import { Loading } from '../../ui-kit';
+import { useModal } from '../../../hooks/useModal';
 
 /* ####################
 |||||||||||||||||||||||
@@ -25,10 +27,14 @@ export function Profile() {
     dispatch(logout());
   };
   const location = useLocation();
+  const { openModal } = useModal();
+  const { isModalOpen } = useSelector((store) => store.modal);
   const { loading } = useSelector((store) => store.ingredients);
   const background = location.state && location.state.background;
   const oneOrderFlag =
-    location.pathname.includes(`${PATH.FEED}/`) && !background;
+    location.pathname.includes(`${PATH.ORDERS}/`) && !background;
+
+  const endOfPath = location.pathname.split('/').pop();
 
   const isActive = ({ isActive }) =>
     isActive ? styles.link + ' ' + styles.active : styles.link;
@@ -45,12 +51,17 @@ export function Profile() {
     dispatch(loadIngredients());
     //очищаем фокус при перезагрузке страницы
     dispatch(getOrderInfo(null));
-    // dispatch(loadOneOrder());
 
-    oneOrderFlag && dispatch(loadOneOrder(location.pathname.split('/').pop()));
+    if (oneOrderFlag) dispatch(loadOneOrder(endOfPath));
+    else if (!isModalOpen && background) {
+      openModal();
+      dispatch(loadOneOrder(endOfPath));
+    }
   }, []);
 
-  return (
+  return loading ? (
+    <Loading />
+  ) : !oneOrderFlag ? (
     <div className={styles.wrapper}>
       <nav className={styles.nav}>
         <ul>
@@ -80,6 +91,10 @@ export function Profile() {
       <div className={styles.outlet}>
         <Outlet />
       </div>
+    </div>
+  ) : (
+    <div className={styles['focus-order-wrapper']}>
+      <Outlet />
     </div>
   );
 }

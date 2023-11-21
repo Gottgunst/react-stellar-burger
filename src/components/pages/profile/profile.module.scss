@@ -42,3 +42,14 @@
   flex-grow: 1;
   max-height: calc(100lvh - 88px);
 }
+
+.focus-order-wrapper {
+  composes: pt-30 from global;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+
+  & h2 {
+    width: auto;
+  }
+}

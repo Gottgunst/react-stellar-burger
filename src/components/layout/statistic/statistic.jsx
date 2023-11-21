@@ -21,7 +21,7 @@ export function Statistic() {
           <ul className={styles['orders-list']}>
             {orders.map(
               (order, index) =>
-                index < 10 &&
+                index < 30 &&
                 order.status === 'done' && (
                   <li
                     className={styles.orders + ' ' + styles['orders_done']}
@@ -38,7 +38,7 @@ export function Statistic() {
           <ul className={styles['orders-list']}>
             {orders.map(
               (order, index) =>
-                index < 10 &&
+                index < 30 &&
                 order.status !== 'done' && (
                   <li className={styles.orders} key={order.number}>
                     {order.number}
