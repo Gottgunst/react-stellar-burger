@@ -1,6 +1,4 @@
-import { POINT, burgerApi } from '../../utils/data';
-import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { checkExpired } from '../check';
+import { createAction } from '@reduxjs/toolkit';
 
 export const connect = createAction('FEED_CONNECT');
 export const disconnect = createAction('FEED_DISCONNECT');
@@ -9,16 +7,6 @@ export const wsOpen = createAction('FEED_WS_OPEN');
 export const wsClose = createAction('FEED_WS_CLOSE');
 export const wsMessage = createAction('FEED_WS_MESSAGE');
 export const wsError = createAction('FEED_WS_ERROR');
-
-export const loadOneOrder = createAsyncThunk(
-  'feed/loadOneOrder',
-  async (number, thunkApi) => {
-    const point = `${POINT.ORDERS}/${number}`;
-    return burgerApi
-      .makeRequest(point)
-      .then((res) => checkExpired(res, point, loadOneOrder(number), thunkApi));
-  },
-);
 
 // ################
 // ################

@@ -8,18 +8,19 @@ import { useParams } from 'react-router-dom';
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
 import styles from './ingredient-details.module.scss';
-import { getInfo } from '../../../services';
+import { setFocus } from '../../../services';
 
 /* ####################
 |||||||||||||||||||||||
 ##################### */
 export function IngredientDetails() {
   const dispatch = useDispatch();
-  const { focus } = useSelector((store) => store.ingredients);
   const { id } = useParams();
+  const { focus } = useSelector((store) => store.modal);
+  const { itemsMap } = useSelector((store) => store.ingredients);
 
   useEffect(() => {
-    dispatch(getInfo({ item: { _id: id } }));
+    dispatch(setFocus(itemsMap[id]));
   }, []);
 
   return (

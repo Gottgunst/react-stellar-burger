@@ -51,7 +51,7 @@ export function OrderCard({ order }) {
                   key={index}
                   style={{ zIndex: 6 - index }}
                 >
-                  {index === 5 && order.ingredients.length > 5 ? (
+                  {index === 5 && order.ingredients.length > 6 ? (
                     <div className={styles.shadow}>
                       +{order.ingredients.length - 5}
                     </div>

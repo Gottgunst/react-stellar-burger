@@ -1,22 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { WebsocketStatus, initialOrdersState } from '../../utils/data';
-import {
-  wsConnecting,
-  wsOpen,
-  wsClose,
-  wsError,
-  wsMessage,
-  loadOneOrder,
-} from './actions';
+import { wsConnecting, wsOpen, wsClose, wsError, wsMessage } from './actions';
 
 export const feedSlice = createSlice({
   name: 'feed',
   initialState: initialOrdersState,
-  reducers: {
-    getOrderInfo(state, { payload }) {
-      payload ? (state.focus = payload) : (state.focus = null);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(wsConnecting, (state) => {
@@ -36,13 +25,6 @@ export const feedSlice = createSlice({
         state.orders = payload.orders;
         state.total = payload.total;
         state.totalToday = payload.totalToday;
-      })
-      .addCase(loadOneOrder.pending, (state) => {})
-      .addCase(loadOneOrder.rejected, (state, { payload }) => {
-        console.log('er ', payload);
-      })
-      .addCase(loadOneOrder.fulfilled, (state, { payload }) => {
-        state.focus = payload.orders[0];
       });
   },
 });

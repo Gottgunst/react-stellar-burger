@@ -1,12 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { loadIngredients } from './actions';
-import { reserveData } from '../../utils/data';
 
 export const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState: {
     itemsMap: {},
-    focus: null,
     loading: false,
     error: null,
     group: [
@@ -20,11 +18,6 @@ export const ingredientsSlice = createSlice({
       state.group.forEach(
         (e) => (e.active = e.type === payload.type ? true : false),
       );
-    },
-    getInfo(state, { payload }) {
-      payload
-        ? (state.focus = state.itemsMap[payload.item._id])
-        : (state.focus = null);
     },
     increment(state, { payload }) {
       if (payload.item.type !== 'bun') {

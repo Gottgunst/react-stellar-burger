@@ -2,10 +2,15 @@ import { useEffect } from 'react';
 // import ReactDOM from 'react-dom';
 // import {   } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet, useLoaderData, useLocation } from 'react-router-dom';
+import {
+  Outlet,
+  useLoaderData,
+  useLocation,
+  useParams,
+} from 'react-router-dom';
 import { Loading } from '../../ui-kit';
 import { OrderList, Statistic } from '../../layout';
-import { getOrderInfo, loadIngredients } from '../../../services';
+import { loadIngredients, setFocus } from '../../../services';
 import { PATH, POINT, WebsocketStatus } from '../../../utils/data';
 import { feedConnect, loadOneOrder } from '../../../services';
 
@@ -22,13 +27,12 @@ export function Feed() {
   const location = useLocation();
   const dispatch = useDispatch();
   const { openModal } = useModal();
+  const { id } = useParams();
   const { loading } = useSelector((store) => store.ingredients);
   const { isModalOpen } = useSelector((store) => store.modal);
   const background = location.state && location.state.background;
   const oneOrderFlag =
     location.pathname.includes(`/${PATH.FEED}/`) && !background;
-
-  const endOfPath = useLoaderData();
 
   useEffect(() => {
     // Инициализация данных из API
@@ -37,12 +41,12 @@ export function Feed() {
     );
     dispatch(loadIngredients());
     //очищаем фокус при перезагрузке страницы
-    dispatch(getOrderInfo(null));
+    dispatch(setFocus(null));
 
-    if (oneOrderFlag) dispatch(loadOneOrder(endOfPath));
+    if (oneOrderFlag) dispatch(loadOneOrder(id));
     else if (!isModalOpen && background) {
       openModal();
-      dispatch(loadOneOrder(endOfPath.id));
+      dispatch(loadOneOrder(id));
     }
   }, []);
 

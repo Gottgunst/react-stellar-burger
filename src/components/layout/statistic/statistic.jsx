@@ -25,7 +25,7 @@ export function Statistic() {
                 order.status === 'done' && (
                   <li
                     className={styles.orders + ' ' + styles['orders_done']}
-                    key={order.number}
+                    key={order.number + 'done'}
                   >
                     {order.number}
                   </li>
@@ -40,7 +40,7 @@ export function Statistic() {
               (order, index) =>
                 index < 30 &&
                 order.status !== 'done' && (
-                  <li className={styles.orders} key={order.number}>
+                  <li className={styles.orders} key={order.number + 'progress'}>
                     {order.number}
                   </li>
                 ),

@@ -5,11 +5,7 @@ import { wsConnecting, wsOpen, wsClose, wsError, wsMessage } from './actions';
 export const myFeedSlice = createSlice({
   name: 'myFeed',
   initialState: initialOrdersState,
-  reducers: {
-    getMyOrderInfo(state, { payload }) {
-      payload ? (state.focus = payload) : (state.focus = null);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(wsConnecting, (state) => {

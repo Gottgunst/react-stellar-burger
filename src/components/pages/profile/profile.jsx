@@ -1,7 +1,13 @@
 import { useEffect } from 'react';
 // import ReactDOM from 'react-dom';
 // import {   } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useParams,
+} from 'react-router-dom';
 import { PATH, POINT } from '../../../utils/data';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -10,6 +16,7 @@ import {
   loadOneOrder,
   logout,
   myFeedConnect,
+  setFocus,
 } from '../../../services/';
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -23,21 +30,22 @@ import { useModal } from '../../../hooks/useModal';
 ##################### */
 export function Profile() {
   const dispatch = useDispatch();
-  const onLogout = () => {
-    dispatch(logout());
-  };
   const location = useLocation();
   const { openModal } = useModal();
+  const { id } = useParams();
   const { isModalOpen } = useSelector((store) => store.modal);
   const { loading } = useSelector((store) => store.ingredients);
+
   const background = location.state && location.state.background;
   const oneOrderFlag =
     location.pathname.includes(`${PATH.ORDERS}/`) && !background;
 
-  const endOfPath = location.pathname.split('/').pop();
-
   const isActive = ({ isActive }) =>
     isActive ? styles.link + ' ' + styles.active : styles.link;
+
+  const onLogout = () => {
+    dispatch(logout());
+  };
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken').split(' ').pop();
@@ -50,12 +58,12 @@ export function Profile() {
     );
     dispatch(loadIngredients());
     //очищаем фокус при перезагрузке страницы
-    dispatch(getOrderInfo(null));
+    dispatch(setFocus(null));
 
-    if (oneOrderFlag) dispatch(loadOneOrder(endOfPath));
+    if (oneOrderFlag) dispatch(loadOneOrder(id));
     else if (!isModalOpen && background) {
       openModal();
-      dispatch(loadOneOrder(endOfPath));
+      dispatch(loadOneOrder(id));
     }
   }, []);
 

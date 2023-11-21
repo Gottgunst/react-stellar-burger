@@ -2,12 +2,13 @@ import { useEffect } from 'react';
 // import ReactDOM from 'react-dom';
 // import {   } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrderInfo } from '../../../services';
+import { getOrderInfo, setFocus } from '../../../services';
 import {
   Outlet,
   useLoaderData,
   useLocation,
   useNavigate,
+  useParams,
 } from 'react-router-dom';
 import { OrderCard, Modal } from '../../ui-kit/';
 import { useModal } from '../../../hooks/useModal';
@@ -24,16 +25,14 @@ import { OrderDetails } from '../order-details/order-details';
 |||||||||||||||||||||||
 ##################### */
 export function OrderList({ type }) {
-  const loaderParams = useLoaderData();
-
-  console.log('id', loaderParams);
-
   const dispatch = useDispatch();
-  const { isModalOpen } = useSelector((store) => store.modal);
   const location = useLocation();
   const navigate = useNavigate();
+  const { id } = useParams();
   const { openModal, closeModal } = useModal();
-  const orders = useSelector((store) => store[type].orders);
+  const { isModalOpen } = useSelector((store) => store.modal);
+  const { orders } = useSelector((store) => store[type]);
+
   const background = location.state && location.state.background;
   const oneOrderFlag =
     location.pathname.includes(`/${PATH.ORDERS}/`) && !background;
@@ -45,7 +44,7 @@ export function OrderList({ type }) {
           <li
             className={styles.card}
             onClick={() => {
-              dispatch(getOrderInfo(order));
+              dispatch(setFocus(order));
 
               openModal();
               navigate(`${order.number}`, {

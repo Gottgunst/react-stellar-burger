@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { getInfo, getOrderInfo, setModal } from '../services';
+import { setModal } from '../services';
 import { useNavigate } from 'react-router-dom';
 
 export const useModal = () => {

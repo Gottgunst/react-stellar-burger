@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { BurgerConstructor, BurgerIngredients, BunSelect } from '../../layout';
 import { useDispatch, useSelector } from 'react-redux';
-import { getInfo, loadIngredients } from '../../../services';
+import { getInfo, loadIngredients, setFocus } from '../../../services';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -22,11 +22,9 @@ export function Constructor() {
   const navigate = useNavigate();
   const { loading } = useSelector((store) => store.ingredients);
   const { isModalOpen } = useSelector((store) => store.modal);
-  const { openModal } = useModal();
   const order = useSelector((store) => store.order);
   const background = location.state && location.state.background;
   const dispatch = useDispatch();
-  // console.log('background', background, location);
 
   const oneIngredientFlag =
     location.pathname.includes(`${PATH.INGREDIENTS}/`) && !background;
@@ -37,7 +35,7 @@ export function Constructor() {
     // Инициализация данных из API
     dispatch(loadIngredients());
     //очищаем фокус при перезагрузке страницы
-    dispatch(getInfo(null));
+    dispatch(setFocus(null));
 
     // если перезагрузили страницу при модальном окне нового заказа
     // перенаправляем на главную страницу

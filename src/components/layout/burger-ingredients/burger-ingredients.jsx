@@ -4,7 +4,7 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Modal, Ingredient } from '../../ui-kit/';
 import { useModal } from '../../../hooks/useModal';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeTab } from '../../../services';
+import { changeTab, setFocus } from '../../../services';
 import { activeGroup } from '../../../services/ingredients/selectors';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { PATH } from '../../../utils/data';
@@ -29,6 +29,7 @@ export function BurgerIngredients({ className }) {
   const { openModal, closeModal } = useModal();
 
   useEffect(() => {
+    dispatch(setFocus(null));
     // если при загрузке мы видим ссылку на ингредиент,
     // но модальное окно закрыто, то отправляем на отдельную страницу ингредиента.
     if (location.pathname.includes(PATH.INGREDIENTS) && !isModalOpen)
