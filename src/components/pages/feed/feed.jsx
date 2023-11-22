@@ -6,8 +6,8 @@ import { Outlet, useLocation, useParams } from 'react-router-dom';
 import { Loading } from '../../ui-kit';
 import { OrderList, Statistic } from '../../layout';
 import { loadIngredients, setFocus } from '../../../services';
-import { PATH, POINT, WebsocketStatus } from '../../../utils/data';
-import { feedConnect, loadOneOrder, isItemsMap } from '../../../services';
+import { PATH } from '../../../utils/data';
+import { loadOneOrder } from '../../../services';
 import { useModal } from '../../../hooks/useModal';
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -22,8 +22,6 @@ export function Feed() {
   const dispatch = useDispatch();
   const { openModal } = useModal();
   const { id } = useParams();
-  const { tokenData } = useSelector((store) => store.user);
-  const { status } = useSelector((store) => store.feed);
   const { isModalOpen, loading } = useSelector((store) => store.modal);
   const { orders } = useSelector((store) => store['feed']);
   const background = location.state && location.state.background;
@@ -32,13 +30,6 @@ export function Feed() {
 
   useEffect(() => {
     if (!oneOrderFlag) {
-      // Инициализация данных из WSS
-
-      if (status === WebsocketStatus.OFFLINE) {
-        dispatch(
-          feedConnect(`${process.env.REACT_APP_WSS_URL}${POINT.ORDERS_ALL}`),
-        );
-      }
       dispatch(loadIngredients());
 
       //если перезагрузили а модальник открыт
@@ -51,7 +42,7 @@ export function Feed() {
       // иначе грузим через API
       dispatch(loadOneOrder(id));
     }
-  }, [tokenData]);
+  }, []);
 
   return loading ? (
     <Loading />

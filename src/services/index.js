@@ -1,6 +1,12 @@
-export { connect as myFeedConnect } from './my-feed/actions';
+export {
+  connect as myFeedWsConnect,
+  disconnect as myFeedWsDisconnect,
+} from './my-feed/actions';
 
-export { connect as feedConnect } from './feed/actions';
+export {
+  connect as feedWsConnect,
+  disconnect as feedWsDisconnect,
+} from './feed/actions';
 
 export { addToOrder, removeFromOrder, sortOrder } from './order/reducer';
 export { sendOrder } from './order/actions';

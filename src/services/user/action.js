@@ -2,7 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { POINT, burgerApi } from '../../utils/data';
 import { checkExpired, checkSuccess } from '../check';
 import { setAuthChecked } from './reducer';
-import { disconnect } from '../my-feed/actions';
 
 export const checkUserAuth = () => {
   return (dispatch) => {
@@ -20,18 +19,6 @@ export const getUser = createAsyncThunk('user/getUser', async (_, thunkAPI) => {
   return burgerApi
     .makeRequest(point, 'GET')
     .then((res) => checkExpired(res, point, getUser(), thunkAPI));
-  // .then((res) => {
-  //   if (!res.success) {
-  //     if (res.message === 'jwt expired') {
-  //       dispatch(updateToken()).then((res) => {
-  //         dispatch(getUser());
-  //       });
-  //     } else {
-  //       return rejectWithValue({ ...res, point: POINT.USER });
-  //     }
-  //   }
-  //   return res;
-  // });
 });
 
 export const login = createAsyncThunk(
@@ -78,18 +65,6 @@ export const patchProfile = createAsyncThunk(
     return burgerApi
       .makeRequest(point, 'PATCH', body)
       .then((res) => checkExpired(res, point, patchProfile(body), thunkAPI));
-    // .then((res) => {
-    //   if (!res.success) {
-    //     if (res.message === 'jwt expired') {
-    //       dispatch(updateToken()).then((res) => {
-    //         dispatch(patchProfile(body));
-    //       });
-    //     } else {
-    //       return rejectWithValue({ ...res, point: POINT.USER });
-    //     }
-    //   }
-    //   return res;
-    // });
   },
 );
 
@@ -112,7 +87,6 @@ export const logout = createAsyncThunk('user/logout', async (_, thunkAPI) => {
   const body = {
     token: localStorage.getItem('refreshToken'),
   };
-  thunkAPI.dispatch(disconnect);
 
   return burgerApi
     .makeRequest(point, 'POST', body)

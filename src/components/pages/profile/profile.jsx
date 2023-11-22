@@ -8,21 +8,20 @@ import {
   useLocation,
   useParams,
 } from 'react-router-dom';
-import { PATH, POINT, WebsocketStatus } from '../../../utils/data';
+import { PATH } from '../../../utils/data';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   loadIngredients,
   loadOneOrder,
   logout,
-  myFeedConnect,
   setFocus,
 } from '../../../services/';
+import { Loading } from '../../ui-kit';
+import { useModal } from '../../../hooks/useModal';
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
 import styles from './profile.module.scss';
-import { Loading } from '../../ui-kit';
-import { useModal } from '../../../hooks/useModal';
 
 /* ####################
 |||||||||||||||||||||||
@@ -32,14 +31,11 @@ export function Profile() {
   const location = useLocation();
   const { openModal } = useModal();
   const { id } = useParams();
-  const { status } = useSelector((store) => store.myFeed);
   const { isModalOpen, loading } = useSelector((store) => store.modal);
-  const { tokenData } = useSelector((store) => store.user);
   const { orders } = useSelector((store) => store['myFeed']);
-  const { itemsMap } = useSelector((store) => store.ingredients);
   const background = location.state && location.state.background;
-  const oneOrderFlag =
-    location.pathname.includes(`${PATH.ORDERS}/`) && !background;
+  const isOrdersPath = location.pathname.includes(`${PATH.ORDERS}/`);
+  const oneOrderFlag = isOrdersPath && !background;
 
   const isActive = ({ isActive }) =>
     isActive ? styles.link + ' ' + styles.active : styles.link;
@@ -50,16 +46,6 @@ export function Profile() {
 
   useEffect(() => {
     if (!oneOrderFlag) {
-      // Инициализация данных из WSS
-      if (status === WebsocketStatus.OFFLINE) {
-        const token = localStorage.getItem('accessToken').split(' ').pop();
-        dispatch(
-          myFeedConnect(
-            `${process.env.REACT_APP_WSS_URL}${POINT.ORDERS}?token=${token}`,
-          ),
-        );
-      }
-
       dispatch(loadIngredients());
 
       //если перезагрузили а модальник открыт
@@ -72,7 +58,7 @@ export function Profile() {
       // иначе грузим через API
       dispatch(loadOneOrder(id));
     }
-  }, [tokenData]);
+  }, []);
 
   return loading ? (
     <Loading />

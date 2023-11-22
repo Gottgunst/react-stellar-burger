@@ -7,17 +7,22 @@ import {
   useLoaderData,
   useLocation,
   useNavigate,
-  useParams,
 } from 'react-router-dom';
 import { OrderCard, Modal } from '../../ui-kit/';
 import { useModal } from '../../../hooks/useModal';
-import { PATH } from '../../../utils/data';
+import { PATH, POINT, WebsocketStatus } from '../../../utils/data';
 import { OrderDetails } from '../order-details/order-details';
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
 import styles from './order-list.module.scss';
 import { OrderListPropTypes } from './order-list.types.js';
+import {
+  feedWsConnect,
+  feedWsDisconnect,
+  myFeedWsConnect,
+  myFeedWsDisconnect,
+} from '../../../services';
 
 /* ####################
 |||||||||||||||||||||||
@@ -26,6 +31,8 @@ export function OrderList({ type }) {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const { status } = useSelector((store) => store[type]);
+  const { tokenData } = useSelector((store) => store.user);
   const { openModal, closeModal } = useModal();
   const { isModalOpen } = useSelector((store) => store.modal);
   const { orders } = useSelector((store) => store[type]);
@@ -33,6 +40,29 @@ export function OrderList({ type }) {
   const background = location.state && location.state.background;
   const oneOrderFlag =
     location.pathname.includes(`/${PATH.ORDERS}/`) && !background;
+
+  useEffect(() => {
+    // Инициализация данных из WSS
+    if (status === WebsocketStatus.OFFLINE) {
+      dispatch(
+        {
+          feed: feedWsConnect(
+            `${process.env.REACT_APP_WSS_URL}${POINT.ORDERS_ALL}`,
+          ),
+          myFeed: myFeedWsConnect(
+            `${process.env.REACT_APP_WSS_URL}${
+              POINT.ORDERS
+            }?token=${localStorage.getItem('accessToken').split(' ').pop()}`,
+          ),
+        }[type],
+      );
+    }
+    return () => {
+      dispatch(
+        { feed: feedWsDisconnect(), myFeed: myFeedWsDisconnect() }[type],
+      );
+    };
+  }, [tokenData]);
 
   return !oneOrderFlag ? (
     <>

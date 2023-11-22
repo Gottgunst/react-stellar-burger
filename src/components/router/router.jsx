@@ -50,9 +50,6 @@ function Router() {
         {
           path: PATH.FEED,
           element: <Feed />,
-          loader: ({ params }) => {
-            return params;
-          },
           children: [
             {
               path: `:id`,
@@ -87,9 +84,6 @@ function Router() {
             {
               path: PATH.ORDERS,
               element: <OrderList type="myFeed" />,
-              loader: ({ params }) => {
-                return params;
-              },
               children: [
                 {
                   path: `:id`,

@@ -1,3 +1,5 @@
+import { updateToken } from '../user/action';
+
 export const socketMiddleware = (wsActions) => {
   return (store) => {
     let socket = null;
@@ -34,12 +36,20 @@ export const socketMiddleware = (wsActions) => {
           const { data } = event;
           const parsedData = JSON.parse(data);
 
+          // if (parsedData.message === 'Invalid or missing token') {
+          //   dispatch(updateToken());
+          //   dispatch(wsConnect());
+          // }
           dispatch(onMessage(parsedData));
         };
 
         socket.onclose = (event) => {
           dispatch(onClose());
         };
+
+        // Так как браузерный веб-сокет не обладает возможностью переподключения
+        // из-за обрыва соединения - желательно это делать самому через setTimeout
+        // if()
 
         if (wsSendMessage && type === wsSendMessage.type) {
           socket.send(JSON.stringify(action.payload));
