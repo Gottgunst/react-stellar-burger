@@ -9,6 +9,7 @@ import {
   updateToken,
 } from './action';
 import { burgerApi } from '../../utils/data';
+import moment from 'moment';
 
 const initialState = {
   user: null,
@@ -17,6 +18,7 @@ const initialState = {
   loading: false,
   error: null,
   success: false,
+  tokenDate: null,
 };
 
 const pending = (state) => {
@@ -90,6 +92,7 @@ export const userSlice = createSlice({
         localStorage.setItem('accessToken', payload.accessToken);
         localStorage.setItem('refreshToken', payload.refreshToken);
         localStorage.setItem('password', payload.user.password);
+        state.tokenDate = moment().format();
       })
       .addCase(logout.pending, pending)
       .addCase(logout.rejected, rejected)
@@ -131,6 +134,8 @@ export const userSlice = createSlice({
         burgerApi.updateToken({ authorization: payload.accessToken });
         localStorage.setItem('accessToken', payload.accessToken);
         localStorage.setItem('refreshToken', payload.refreshToken);
+
+        state.tokenDate = moment().format();
       });
   },
 });

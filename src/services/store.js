@@ -21,13 +21,14 @@ import {
 
 import {
   connect as myFeedWsConnect,
-  disconnect as myfeedWsDisconnect,
-  wsOpen as myfeedWsOpen,
-  wsClose as myfeedWsClose,
-  wsMessage as myfeedWsMessage,
-  wsError as myfeedWsError,
-  wsConnecting as myfeedWsConnecting,
+  disconnect as myFeedWsDisconnect,
+  wsOpen as myFeedWsOpen,
+  wsClose as myFeedWsClose,
+  wsMessage as myFeedWsMessage,
+  wsError as myFeedWsError,
+  wsConnecting as myFeedWsConnecting,
 } from './my-feed/actions';
+import { ordersMiddleware } from './middleware/orders-middleware';
 
 const feedMiddleware = socketMiddleware({
   wsConnect: feedWsConnect,
@@ -41,12 +42,12 @@ const feedMiddleware = socketMiddleware({
 
 const myFeedMiddleware = socketMiddleware({
   wsConnect: myFeedWsConnect,
-  wsDisconnect: myfeedWsDisconnect,
-  wsConnecting: myfeedWsConnecting,
-  onOpen: myfeedWsOpen,
-  onClose: myfeedWsClose,
-  onError: myfeedWsError,
-  onMessage: myfeedWsMessage,
+  wsDisconnect: myFeedWsDisconnect,
+  wsConnecting: myFeedWsConnecting,
+  onOpen: myFeedWsOpen,
+  onClose: myFeedWsClose,
+  onError: myFeedWsError,
+  onMessage: myFeedWsMessage,
 });
 
 // #########################
@@ -67,5 +68,8 @@ export default configureStore({
   },
   devTools: process.env.NODE_ENV !== 'production',
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(feedMiddleware).concat(myFeedMiddleware),
+    getDefaultMiddleware()
+      .concat(feedMiddleware)
+      .concat(myFeedMiddleware)
+      .concat(ordersMiddleware),
 });

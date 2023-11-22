@@ -12,6 +12,7 @@ export {
   resetQuantity,
 } from './ingredients/reducer';
 export { loadIngredients } from './ingredients/actions';
+export { isItemsMap } from './ingredients/selectors';
 
 export {
   setAuthChecked,

@@ -8,6 +8,40 @@ export const wsClose = createAction('FEED_WS_CLOSE');
 export const wsMessage = createAction('FEED_WS_MESSAGE');
 export const wsError = createAction('FEED_WS_ERROR');
 
+export const calcCost = (ingredients, itemsMap) => {
+  let cost = 0;
+  let newArray = [];
+  let hasBun = false;
+  let hasUnknownIngredient = false;
+
+  ingredients.forEach((id) => {
+    //все ингредиенты должны быть из itemsMap
+    if (itemsMap[id]) {
+      // должна быть булка
+      if (itemsMap[id].type === 'bun') {
+        hasBun = true;
+      }
+
+      //ловим повторные ингредиенты
+      const again = newArray.findIndex((el) => el.id === id);
+      if (again > -1) {
+        //убираем двойные булки
+        if (itemsMap[id].type !== 'bun') {
+          newArray[again].q += 1;
+          cost += itemsMap[id].price;
+        }
+      } else {
+        newArray = [...newArray, { id, q: 1 }];
+        cost += itemsMap[id].price;
+      }
+    } else hasUnknownIngredient = true;
+  });
+
+  return hasBun && !hasUnknownIngredient
+    ? { ingredients: newArray.reverse(), cost }
+    : null;
+};
+
 // ################
 // ################
 // ################

@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { loadOneOrder } from './actions';
+import { calcCost } from '../feed/actions';
 
 export const modalSlice = createSlice({
   name: 'modal',
   initialState: {
     isModalOpen: false,
-    focus: {},
+    focus: null,
+    oneOrder: null,
     loading: false,
     error: null,
     success: false,
@@ -15,7 +17,15 @@ export const modalSlice = createSlice({
       state.isModalOpen = payload;
     },
     setFocus: (state, { payload }) => {
-      payload ? (state.focus = payload) : (state.focus = null);
+      state.focus = null;
+      state.focus = payload;
+    },
+    parseOneOrder(state, { payload }) {
+      const order = payload.orders[0];
+
+      const costAndIngredients = calcCost(order.ingredients, payload.itemsMap);
+      if (costAndIngredients)
+        state.oneOrder = { ...order, ...costAndIngredients };
     },
   },
   extraReducers: (builder) => {
@@ -32,7 +42,9 @@ export const modalSlice = createSlice({
         state.error = payload;
       })
       .addCase(loadOneOrder.fulfilled, (state, { payload }) => {
-        state.focus = payload.orders[0];
+        state.loading = false;
+        state.success = true;
+        modalSlice.caseReducers.parseOneOrder(state, { payload });
       });
   },
 });
