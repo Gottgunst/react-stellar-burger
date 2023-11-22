@@ -11,7 +11,6 @@ import {
 import { PATH, POINT, WebsocketStatus } from '../../../utils/data';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  getOrderInfo,
   loadIngredients,
   loadOneOrder,
   logout,

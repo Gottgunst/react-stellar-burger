@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { POINT, burgerApi } from '../../utils/data';
 import { checkExpired, checkSuccess } from '../check';
 import { setAuthChecked } from './reducer';
+import { disconnect } from '../my-feed/actions';
 
 export const checkUserAuth = () => {
   return (dispatch) => {
@@ -111,6 +112,7 @@ export const logout = createAsyncThunk('user/logout', async (_, thunkAPI) => {
   const body = {
     token: localStorage.getItem('refreshToken'),
   };
+  thunkAPI.dispatch(disconnect);
 
   return burgerApi
     .makeRequest(point, 'POST', body)
