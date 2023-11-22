@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
 import { BurgerConstructor, BurgerIngredients, BunSelect } from '../../layout';
 import { useDispatch, useSelector } from 'react-redux';
-import { getInfo, loadIngredients, setFocus } from '../../../services';
+import { loadIngredients } from '../../../services';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { PATH } from '../../../utils/data';
 import { Loading } from '../../ui-kit';
-import { useModal } from '../../../hooks/useModal';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -34,8 +33,6 @@ export function Constructor() {
   useEffect(() => {
     // Инициализация данных из API
     dispatch(loadIngredients());
-    //очищаем фокус при перезагрузке страницы
-    dispatch(setFocus(null));
 
     // если перезагрузили страницу при модальном окне нового заказа
     // перенаправляем на главную страницу

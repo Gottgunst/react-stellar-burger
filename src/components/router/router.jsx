@@ -56,7 +56,7 @@ function Router() {
           children: [
             {
               path: `:id`,
-              element: <OrderDetails />,
+              element: <OrderDetails type="feed" />,
             },
           ],
         },
@@ -93,7 +93,7 @@ function Router() {
               children: [
                 {
                   path: `:id`,
-                  element: <OrderDetails />,
+                  element: <OrderDetails type="myFeed" />,
                 },
               ],
             },

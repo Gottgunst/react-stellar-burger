@@ -23,10 +23,6 @@ export function OrderCard({ order }) {
   const ingredients = useSelector((store) => store.ingredients.itemsMap);
   const { loading } = useSelector((store) => store.ingredients);
 
-  const cost = order?.ingredients?.reduce((prev, id) => {
-    return prev + ingredients[id]?.price;
-  }, 0);
-
   const time = moment(order.createdAt).locale('ru').calendar();
 
   return loading ? null : (
@@ -44,7 +40,7 @@ export function OrderCard({ order }) {
       <div className={styles.line}>
         <ul className={styles.list}>
           {order?.ingredients?.map(
-            (id, index) =>
+            (item, index) =>
               index < 6 && (
                 <li
                   className={styles.ingredient}
@@ -59,8 +55,8 @@ export function OrderCard({ order }) {
 
                   <img
                     className={styles.image}
-                    alt={ingredients[id]?.name}
-                    src={ingredients[id]?.image}
+                    alt={ingredients[item.id]?.name}
+                    src={ingredients[item.id]?.image}
                   />
                 </li>
               ),
@@ -68,7 +64,7 @@ export function OrderCard({ order }) {
         </ul>
 
         <span className={styles.digit}>
-          {cost}
+          {order?.cost}
           <CurrencyIcon type="primary" />
         </span>
       </div>

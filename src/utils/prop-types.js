@@ -40,4 +40,5 @@ export const orderPropType = PropTypes.shape({
   number: PropTypes.number,
   createdAt: PropTypes.string,
   updatedAt: PropTypes.string,
+  cost: PropTypes.number,
 });

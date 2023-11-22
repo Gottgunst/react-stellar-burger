@@ -8,7 +8,7 @@ import {
   useLocation,
   useParams,
 } from 'react-router-dom';
-import { PATH, POINT } from '../../../utils/data';
+import { PATH, POINT, WebsocketStatus } from '../../../utils/data';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getOrderInfo,
@@ -33,9 +33,11 @@ export function Profile() {
   const location = useLocation();
   const { openModal } = useModal();
   const { id } = useParams();
-  const { isModalOpen } = useSelector((store) => store.modal);
-  const { loading } = useSelector((store) => store.ingredients);
-
+  const { status } = useSelector((store) => store.myFeed);
+  const { isModalOpen, loading } = useSelector((store) => store.modal);
+  const { tokenData } = useSelector((store) => store.user);
+  const { orders } = useSelector((store) => store['myFeed']);
+  const { itemsMap } = useSelector((store) => store.ingredients);
   const background = location.state && location.state.background;
   const oneOrderFlag =
     location.pathname.includes(`${PATH.ORDERS}/`) && !background;
@@ -48,24 +50,30 @@ export function Profile() {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken').split(' ').pop();
+    if (!oneOrderFlag) {
+      // Инициализация данных из WSS
+      if (status === WebsocketStatus.OFFLINE) {
+        const token = localStorage.getItem('accessToken').split(' ').pop();
+        dispatch(
+          myFeedConnect(
+            `${process.env.REACT_APP_WSS_URL}${POINT.ORDERS}?token=${token}`,
+          ),
+        );
+      }
 
-    // Инициализация данных из API
-    dispatch(
-      myFeedConnect(
-        `${process.env.REACT_APP_WSS_URL}${POINT.ORDERS}?token=${token}`,
-      ),
-    );
-    dispatch(loadIngredients());
-    //очищаем фокус при перезагрузке страницы
-    dispatch(setFocus(null));
+      dispatch(loadIngredients());
 
-    if (oneOrderFlag) dispatch(loadOneOrder(id));
-    else if (!isModalOpen && background) {
-      openModal();
+      //если перезагрузили а модальник открыт
+      if (!isModalOpen && background) {
+        if (orders === null) dispatch(loadOneOrder(id));
+        openModal();
+        dispatch(setFocus(orders[id]));
+      }
+    } else {
+      // иначе грузим через API
       dispatch(loadOneOrder(id));
     }
-  }, []);
+  }, [tokenData]);
 
   return loading ? (
     <Loading />

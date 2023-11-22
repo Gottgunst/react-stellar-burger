@@ -7,53 +7,65 @@ import { orderStatus } from '../../../utils/data';
 import moment from 'moment';
 import 'moment/locale/ru';
 import { Loading } from '../../ui-kit';
-import { useParams } from 'react-router-dom';
-import { setFocus } from '../../../services';
+import { useLocation, useParams } from 'react-router-dom';
+import { loadOneOrder, setFocus } from '../../../services';
 
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
 import styles from './order-details.module.scss';
+import { OrderDetailsPropTypes } from './order-detalis.types.js';
 
 /* ####################
 |||||||||||||||||||||||
 ##################### */
 
-export function OrderDetails() {
+export function OrderDetails({ type }) {
   const dispatch = useDispatch();
+  const location = useLocation();
   const { id } = useParams();
-  const { focus } = useSelector((store) => store.modal);
-  const { loading } = useSelector((store) => store.feed);
-  const ingredients = useSelector((store) => store.ingredients.itemsMap);
+  const { focus, loading, oneOrder } = useSelector((store) => store.modal);
+  const { isModalOpen } = useSelector((store) => store.modal);
+  const { itemsMap } = useSelector((store) => store.ingredients);
+  const { orders } = useSelector((store) => store[type]);
   const time = moment(focus?.createdAt).locale('ru').calendar();
 
-  // useEffect(() => {
-  //   dispatch(setFocus(itemsMap[id]));
-  // }, []);
+  const background = location.state && location.state.background;
 
-  return focus === false || loading ? (
+  useEffect(() => {
+    console.log();
+
+    // if (oneOrder) dispatch(setFocus(oneOrder));
+
+    if (!background && orders.length === 0) {
+      if (!oneOrder) dispatch(loadOneOrder(id));
+      dispatch(setFocus(oneOrder));
+    } else dispatch(setFocus(orders[id]));
+  }, [isModalOpen, orders, id, oneOrder]);
+
+  return loading || !focus ? (
     <Loading />
   ) : (
     <div className={styles.wrapper}>
       <p className={styles.digit}>#{focus?.number}</p>
-      <h2 className={styles.title}>{focus?.name}</h2>
+      <h3 className={styles.title}>{focus?.name}</h3>
       <span className={styles.status}>{orderStatus[focus?.status]}</span>
 
       <h3 className={styles.title}>Состав:</h3>
       <ul className={styles.list}>
-        {focus?.ingredients?.map((id, index) => (
+        {focus?.ingredients?.map((item, index) => (
           <li
             className={styles.ingredient}
-            key={ingredients[id]._id + 'list' + index}
+            key={itemsMap[item.id]?._id + 'list' + index}
           >
             <img
               className={styles.image}
-              alt={ingredients[id].name}
-              src={ingredients[id].image}
+              alt={itemsMap[item.id]?.name}
+              src={itemsMap[item.id]?.image}
             />
-            <div className={styles.name}>{ingredients[id].name}</div>
+            <div className={styles.name}>{itemsMap[item.id]?.name}</div>
             <span className={styles.digit}>
-              1 x {ingredients[id].price}
+              {item.q} x {itemsMap[item.id]?.price}
               <CurrencyIcon type="primary" />
             </span>
           </li>
@@ -63,10 +75,15 @@ export function OrderDetails() {
       <div className={styles.bottom}>
         <span>{time}</span>
         <span className={styles.digit}>
-          510
+          {focus?.cost}
           <CurrencyIcon type="primary" />
         </span>
       </div>
     </div>
   );
 }
+
+/* #####################
+ТИПЫ ===================
+##################### */
+OrderDetails.propTypes = OrderDetailsPropTypes;

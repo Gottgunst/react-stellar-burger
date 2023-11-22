@@ -19,32 +19,43 @@ export function Statistic() {
         <div>
           <h4 className={styles.title}>Готовы:</h4>
           <ul className={styles['orders-list']}>
-            {orders.map(
-              (order, index) =>
-                index < 30 &&
-                order.status === 'done' && (
-                  <li
-                    className={styles.orders + ' ' + styles['orders_done']}
-                    key={order.number + 'done'}
-                  >
-                    {order.number}
-                  </li>
-                ),
-            )}
+            {Object.keys(orders)
+              .sort((a, b) => b - a)
+              .map((number, index) => {
+                const order = orders[number];
+                return (
+                  index < 30 &&
+                  order.status === 'done' && (
+                    <li
+                      className={styles.orders + ' ' + styles['orders_done']}
+                      key={order.number + 'done'}
+                    >
+                      {order.number}
+                    </li>
+                  )
+                );
+              })}
           </ul>
         </div>
         <div>
           <h4 className={styles.title}>В работе:</h4>
           <ul className={styles['orders-list']}>
-            {orders.map(
-              (order, index) =>
-                index < 30 &&
-                order.status !== 'done' && (
-                  <li className={styles.orders} key={order.number + 'progress'}>
-                    {order.number}
-                  </li>
-                ),
-            )}
+            {Object.keys(orders)
+              .sort((a, b) => b - a)
+              .map((number, index) => {
+                const order = orders[number];
+                return (
+                  index < 30 &&
+                  order.status !== 'done' && (
+                    <li
+                      className={styles.orders}
+                      key={order.number + 'progress'}
+                    >
+                      {order.number}
+                    </li>
+                  )
+                );
+              })}
           </ul>
         </div>
       </div>

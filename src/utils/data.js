@@ -55,7 +55,7 @@ export const orderStatus = {
 export const initialOrdersState = {
   status: WebsocketStatus.OFFLINE,
   connectingError: '',
-  orders: [{}],
+  orders: [],
   total: 0,
   totalToday: 0,
   loading: false,
