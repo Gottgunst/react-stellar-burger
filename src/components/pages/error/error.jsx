@@ -5,11 +5,18 @@
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
 ##################### */
+import { AppHeader } from '../../layout';
 import styles from './error.module.scss';
 
 /* ####################
 |||||||||||||||||||||||
 ##################### */
 export function Error() {
-  return <div>404</div>;
+  return (
+    <div className={styles.app}>
+      <AppHeader className={styles.header} />
+
+      <h1>404</h1>
+    </div>
+  );
 }

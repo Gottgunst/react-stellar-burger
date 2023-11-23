@@ -8,14 +8,18 @@ import {
   ProfilesEdit,
   IngredientDetails,
   OrderDetails,
+  NewOrder,
 } from '../layout';
 import { OnlyAuth, OnlyUnAuth } from './protected-routes';
 import { PATH } from '../../utils/data';
+import { useSelector } from 'react-redux';
 
 /* ####################
 |||||||||||||||||||||||
 ##################### */
 function Router() {
+  const { isModalOpen } = useSelector((store) => store.modal);
+
   const router = createBrowserRouter([
     {
       path: '/',
@@ -25,14 +29,15 @@ function Router() {
         {
           path: '',
           element: <Constructor />,
+
           children: [
             {
               path: `${PATH.INGREDIENTS}/:id`,
               element: <IngredientDetails />,
             },
             {
-              path: `${PATH.ORDERS}/new`,
-              element: <OrderDetails />,
+              path: `${PATH.FEED}/new`,
+              element: <NewOrder />,
             },
           ],
         },
@@ -47,8 +52,8 @@ function Router() {
           element: <Feed />,
           children: [
             {
-              path: `${PATH.FEED}/:id`,
-              element: <OrderDetails />,
+              path: `:id`,
+              element: <OrderDetails type="feed" />,
             },
           ],
         },
@@ -76,14 +81,15 @@ function Router() {
               path: '',
               element: <ProfilesEdit />,
             },
-            // {
-            //   path: `${PATH.ORDERS}/:id`,
-            //   element: <OrderDetails />,
-            // },
             {
               path: PATH.ORDERS,
-              element: <OrderList />,
-              children: [],
+              element: <OrderList type="myFeed" />,
+              children: [
+                {
+                  path: `:id`,
+                  element: <OrderDetails type="myFeed" />,
+                },
+              ],
             },
           ],
         },

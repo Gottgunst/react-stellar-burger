@@ -1,12 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { loadIngredients } from './actions';
-import { reserveData } from '../../utils/data';
 
 export const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState: {
-    items: [],
-    focus: null,
+    itemsMap: {},
     loading: false,
     error: null,
     group: [
@@ -21,30 +19,26 @@ export const ingredientsSlice = createSlice({
         (e) => (e.active = e.type === payload.type ? true : false),
       );
     },
-    getInfo(state, { payload }) {
-      payload
-        ? (state.focus = state.items.find((e) => e._id === payload.item._id))
-        : (state.focus = null);
-    },
     increment(state, { payload }) {
-      const itemId = state.items.findIndex((e) => e._id === payload.item._id);
       if (payload.item.type !== 'bun') {
-        state.items[itemId].quantity += 1;
+        state.itemsMap[payload.item._id].quantity += 1;
       } else {
-        state.items.forEach((e) =>
-          e.type === 'bun' ? (e.quantity = 0) : null,
-        );
-        state.items[itemId].quantity = 1;
+        Object.keys(state.itemsMap).forEach((id) => {
+          if (state.itemsMap[id].type === 'bun')
+            state.itemsMap[id].quantity = 0;
+        });
+        state.itemsMap[payload.item._id].quantity = 1;
       }
     },
     decrement(state, { payload }) {
-      const itemId = state.items.findIndex((e) => e._id === payload.item._id);
-      state.items[itemId].quantity > 0
-        ? (state.items[itemId].quantity -= 1)
-        : (state.items[itemId].quantity = 0);
+      state.itemsMap[payload.item._id].quantity > 0
+        ? (state.itemsMap[payload.item._id].quantity -= 1)
+        : (state.itemsMap[payload.item._id].quantity = 0);
     },
     resetQuantity(state) {
-      state.items.forEach((e) => (e.quantity = 0));
+      Object.keys(state.itemsMap).forEach((id) => {
+        state.itemsMap[id].quantity = 0;
+      });
     },
   },
   extraReducers: (builder) => {
@@ -56,13 +50,15 @@ export const ingredientsSlice = createSlice({
       .addCase(loadIngredients.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
-        state.items = reserveData;
       })
       .addCase(loadIngredients.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.items = payload.data.map((e, index) => {
-          return { ...e, quantity: 0 };
+        const itemsObject = {};
+
+        payload.data.forEach((e) => {
+          itemsObject[e._id] = { ...e, quantity: 0 };
         });
+        state.itemsMap = itemsObject;
       });
   },
 });
