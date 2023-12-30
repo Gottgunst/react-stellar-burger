@@ -11,7 +11,6 @@ import {
   TResponseLogout,
   TUserAuth,
   TFormForgot,
-  TFormProfile,
   TFormReset,
   TRejectValue,
   GSelf,

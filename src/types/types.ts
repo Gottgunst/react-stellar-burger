@@ -24,6 +24,8 @@ export type TPathValue = GValueOf<TPath>;
 export type TWSStatus = typeof WebsocketStatus;
 export type TWSStatusValue = GValueOf<TWSStatus>;
 
+export type TMidAction = { type: string; payload: any };
+
 export type TMouseEvent = MouseEventHandler<HTMLDivElement | HTMLButtonElement>;
 
 /*############

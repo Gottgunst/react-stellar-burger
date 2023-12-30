@@ -1,15 +1,20 @@
-import { updateToken } from '../user/action';
+// import { updateToken } from '../user/action';
+import { Middleware } from 'redux';
+import { RootState, WsFeedAction, WsMyFeedAction } from 'services/store';
+import { TMidAction } from 'types';
 
-export const socketMiddleware = (wsActions) => {
+export const socketMiddleware = (
+  wsActions: WsFeedAction | WsMyFeedAction,
+): Middleware<{}, RootState> => {
   return (store) => {
-    let socket = null;
+    let socket: WebSocket | null = null;
 
     return (next) => (action) => {
       const { dispatch } = store;
-      const { type } = action;
+      const { type, payload } = action as TMidAction;
       const {
         wsConnect,
-        wsSendMessage,
+        // wsSendMessage,
         onOpen,
         onClose,
         onError,
@@ -19,7 +24,7 @@ export const socketMiddleware = (wsActions) => {
       } = wsActions;
 
       if (type === wsConnect.type) {
-        socket = new WebSocket(action.payload);
+        socket = new WebSocket(payload);
         dispatch(wsConnecting());
       }
 
@@ -37,7 +42,7 @@ export const socketMiddleware = (wsActions) => {
           const parsedData = JSON.parse(data);
 
           // if (data === 'ping') {
-          //   socket.send('pong');>>¸·
+          //   socket.send('pong');
           // }
 
           // if (parsedData.message === 'Invalid or missing token') {
@@ -55,9 +60,10 @@ export const socketMiddleware = (wsActions) => {
         // из-за обрыва соединения - желательно это делать самому через setTimeout
         // if()
 
-        if (wsSendMessage && type === wsSendMessage.type) {
-          socket.send(JSON.stringify(action.payload));
-        }
+        // Функции отправки сообщения в данном проекте нет
+        // if (wsSendMessage && type === wsSendMessage.type) {
+        //   socket.send(JSON.stringify(payload));
+        // }
 
         if (wsDisconnect.type === type) {
           socket.close();

@@ -7,8 +7,8 @@ import {
 import { TUserActions, reducer as userReducer } from './user/reducer';
 import { TFormsActions, reducer as formsReducer } from './forms/reducer';
 import { TModalActions, reducer as modalReducer } from './modal/reducer';
-import { TFeedActions, reducer as feedReducer } from './feed/reducer';
-import { TMyFeedActions, reducer as myFeedReducer } from './my-feed/reducer';
+import { reducer as feedReducer } from './feed/reducer';
+import { reducer as myFeedReducer } from './my-feed/reducer';
 
 import { socketMiddleware } from './middleware/socket-middleware';
 import { ordersMiddleware } from './middleware/orders-middleware';
@@ -82,16 +82,36 @@ export default store;
 /*#########################
 ------Типизация-------
 #########################*/
+export type WsFeedAction = {
+  wsConnect: typeof feedWsConnect;
+  wsDisconnect: typeof feedWsDisconnect;
+  wsConnecting: typeof feedWsConnecting;
+  onOpen: typeof feedWsOpen;
+  onClose: typeof feedWsClose;
+  onError: typeof feedWsError;
+  onMessage: typeof feedWsMessage;
+  wsSendMessage?: void;
+};
+
+export type WsMyFeedAction = {
+  wsConnect: typeof myFeedWsConnect;
+  wsDisconnect: typeof myFeedWsDisconnect;
+  wsConnecting: typeof myFeedWsConnecting;
+  onOpen: typeof myFeedWsOpen;
+  onClose: typeof myFeedWsClose;
+  onError: typeof myFeedWsError;
+  onMessage: typeof myFeedWsMessage;
+  wsSendMessage?: void;
+};
 
 // export type RootState = ReturnType<typeof store.getState>;
 export type RootState = ReturnType<typeof reducer>;
+export type AppDispatch = typeof store.dispatch;
 
 export type AppActions =
-  | TFeedActions
   | TFormsActions
   | TIngredientsActions
   | TModalActions
-  | TMyFeedActions
   | TOrderActions
   | TUserActions;
 
@@ -102,7 +122,6 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   AppActions
 >;
 
-export type AppDispatch = typeof store.dispatch;
 // export type AppDispatch<TReturnType = void> = (
 //   action: AppActions | AppThunk<TReturnType>,
 // ) => TReturnType;

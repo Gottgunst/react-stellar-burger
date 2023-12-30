@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { WebsocketStatus, initialOrdersState } from '../../utils/data';
 import {
   wsConnecting,
@@ -8,29 +8,35 @@ import {
   wsMessage,
   calcCost,
 } from './actions';
+import { TFeedOrders, TOrdersMap } from 'types';
 
 export const feedSlice = createSlice({
   name: 'feed',
   initialState: initialOrdersState,
   reducers: {
-    initialOrders(state, { payload, itemsMap }) {
-      const itemsObject = {};
-      payload.forEach((order) => {
+    initialOrders(state, { payload }: PayloadAction<TFeedOrders>) {
+      const { orders, itemsMap } = payload;
+      const itemsObject: TOrdersMap = {};
+
+      orders.forEach((order) => {
         const costAndIngredients = calcCost(order.ingredients, itemsMap);
+
         if (costAndIngredients)
           itemsObject[order.number] = { ...order, ...costAndIngredients };
       });
       state.orders = itemsObject;
     },
-    updateOrders(state, { payload, itemsMap }) {
-      const newItemsObject = {};
+    updateOrders(state, { payload }: PayloadAction<TFeedOrders>) {
+      const { orders, itemsMap } = payload;
+      const newItemsObject: TOrdersMap = {};
 
-      payload.forEach((order) => {
+      orders.forEach((order) => {
         // const lastNumber = Object.keys(state.orders).sort((a, b) => b - a)[0];
         const costAndIngredients = calcCost(order.ingredients, itemsMap);
 
-        if (costAndIngredients)
+        if (costAndIngredients) {
           newItemsObject[order.number] = { ...order, ...costAndIngredients };
+        }
       });
       state.orders = { ...state.orders, ...newItemsObject };
     },
@@ -50,16 +56,22 @@ export const feedSlice = createSlice({
       .addCase(wsError, (state, { payload }) => {
         state.connectingError = payload;
       })
-      .addCase(wsMessage, (state, { payload, itemsMap }) => {
+      .addCase(wsMessage, (state, { payload }) => {
         if (state.total === 0) {
           feedSlice.caseReducers.initialOrders(state, {
-            payload: payload.orders,
-            itemsMap: itemsMap,
+            payload: {
+              orders: payload.orders,
+              itemsMap: payload.itemsMap,
+            },
+            type: 'myFeed/initialOrders',
           });
         } else {
           feedSlice.caseReducers.updateOrders(state, {
-            payload: payload.orders,
-            itemsMap: itemsMap,
+            payload: {
+              orders: payload.orders,
+              itemsMap: payload.itemsMap,
+            },
+            type: 'myFeed/updateOrders',
           });
         }
         state.total = payload.total;
@@ -69,8 +81,8 @@ export const feedSlice = createSlice({
 });
 
 export const reducer = feedSlice.reducer;
-export const { getOrderInfo } = feedSlice.actions;
+// export const { initialOrders, updateOrders } = feedSlice.actions;
 
-export type TFeedActions = ReturnType<
-  (typeof feedSlice.actions)[keyof typeof feedSlice.actions]
->;
+// export type TFeedActions = ReturnType<
+//   (typeof feedSlice.actions)[keyof typeof feedSlice.actions]
+// >;

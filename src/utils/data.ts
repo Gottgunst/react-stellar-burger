@@ -1,5 +1,5 @@
 import Api from './Api';
-import { IApi, IOrdersFeed } from 'types';
+import { IApi, IOrdersFeedSlice } from 'types';
 
 /* ####################
 КОНФИГ ИМЕН ПУТЕЙ ======
@@ -67,4 +67,4 @@ export const initialOrdersState = {
   totalToday: 0,
   loading: false,
   error: null,
-} as IOrdersFeed;
+} as IOrdersFeedSlice;

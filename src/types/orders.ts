@@ -1,10 +1,15 @@
 import { orderStatus } from 'utils/data';
 import { GIn, IAsyncState, IIngredient, TItemsMap } from '.';
 import { TWSStatusValue } from './types';
+import { TResponse } from './user';
 
 export type TOrderStatus = typeof orderStatus;
 export type TOrderStatusKeys = keyof TOrderStatus;
-export type TIncomeOneOrder = { orders: IOrder[]; itemsMap: TItemsMap };
+
+export type TIncomeOneOrder = {
+  orders: IIncomeOrder<string>[];
+  itemsMap: TItemsMap;
+};
 
 export type TNewOrder = {
   name: string;
@@ -20,7 +25,7 @@ export interface IIncomeOrder<T> {
   number: number;
   createdAt: string;
   updatedAt: string;
-  price: number;
+  price?: number;
   owner?: {
     createdAt: string;
     email: string;
@@ -42,13 +47,23 @@ export interface IOrderSlice extends IAsyncState {
   name: GIn<string>;
 }
 
-export interface IOrdersFeed extends IAsyncState {
+export interface IOrdersFeedSlice extends IAsyncState {
   status: TWSStatusValue;
   connectingError: string;
-  orders: { [number: string]: IOrder };
-  total?: number;
-  totalToday?: number;
+  orders: TOrdersMap;
+  total: number;
+  totalToday: number;
 }
+export type TOrdersMap = { [number: string]: IOrder };
 
 export type TFeedIngredient = { id: string; q: number };
 export type TFeedType = 'feed' | 'myFeed';
+
+export type TResponseFeed = TResponse & {
+  total: number;
+  totalToday: number;
+  orders: IIncomeOrder<string>[];
+  itemsMap: TItemsMap;
+};
+
+export type TFeedOrders = Pick<TResponseFeed, 'orders' | 'itemsMap'>;

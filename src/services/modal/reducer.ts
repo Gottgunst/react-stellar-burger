@@ -39,7 +39,6 @@ export const modalSlice = createSlice({
         state.success = false;
       })
       .addCase(loadOneOrder.rejected, (state, { payload }) => {
-        console.log('er ', payload);
         state.loading = false;
         state.success = false;
         state.error = payload;

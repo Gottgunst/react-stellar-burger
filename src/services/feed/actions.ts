@@ -1,16 +1,22 @@
 import { createAction } from '@reduxjs/toolkit';
+import { TFeedIngredient, TItemsMap, TResponseFeed } from 'types';
 
-export const connect = createAction<string>('FEED_CONNECT');
-export const disconnect = createAction<void>('FEED_DISCONNECT');
+export const connect = createAction<string, 'FEED_CONNECT'>('FEED_CONNECT');
+export const disconnect = createAction('FEED_DISCONNECT');
 export const wsConnecting = createAction('FEED_WS_CONNECTING');
 export const wsOpen = createAction('FEED_WS_OPEN');
 export const wsClose = createAction('FEED_WS_CLOSE');
-export const wsMessage = createAction('FEED_WS_MESSAGE');
-export const wsError = createAction('FEED_WS_ERROR');
+export const wsMessage = createAction<TResponseFeed, 'FEED_WS_MESSAGE'>(
+  'FEED_WS_MESSAGE',
+);
+export const wsError = createAction<string, 'FEED_WS_ERROR'>('FEED_WS_ERROR');
 
-export const calcCost = (ingredients, itemsMap) => {
+export const calcCost = (
+  ingredients: string[],
+  itemsMap: TItemsMap,
+): { ingredients: TFeedIngredient[]; cost: number } | null => {
   let cost = 0;
-  let newArray = [];
+  let newArray: TFeedIngredient[] = [];
   let hasBun = false;
   let hasUnknownIngredient = false;
 

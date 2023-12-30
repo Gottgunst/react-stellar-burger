@@ -36,8 +36,6 @@ export const OrderDetails: React.FC<TOrderDetailsProps> = ({ type }) => {
   const background: boolean = location.state && location.state.background;
 
   useEffect(() => {
-    console.log();
-
     // if (oneOrder) dispatch(setFocus(oneOrder));
 
     if (!background && (orders.length as unknown as number) === 0) {

@@ -36,13 +36,16 @@ export type {
   IIncomeOrder,
   IOrder,
   IOrderSlice,
-  IOrdersFeed,
+  IOrdersFeedSlice,
   TIncomeOneOrder,
   TOrderStatus,
   TOrderStatusKeys,
   TFeedType,
   TNewOrder,
   TFeedIngredient,
+  TResponseFeed,
+  TFeedOrders,
+  TOrdersMap,
 } from './orders';
 export type {
   GIn,
@@ -57,6 +60,7 @@ export type {
   GSelf,
   TWSStatus,
   TWSStatusValue,
+  TMidAction,
 } from './types';
 export type {
   IIncomeUser,
