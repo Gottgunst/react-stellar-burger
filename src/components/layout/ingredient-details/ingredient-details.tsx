@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'hooks/useRedux';
-import { useLocation, useParams } from 'react-router-dom';
-import { loadIngredients, setFocus } from 'services';
+import { useParams } from 'react-router-dom';
+import { setFocus } from 'services';
 import { Loading } from 'components/ui-kit';
 /* ####################
 СТИЛИ и ТИПИЗАЦИЯ ======
@@ -14,20 +14,15 @@ import { IIngredient } from 'types';
 ##################### */
 export const IngredientDetails: React.FC = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const { id } = useParams();
   const { focus } = useSelector((store) => store.modal);
   const { itemsMap } = useSelector((store) => store.ingredients);
   const { isModalOpen } = useSelector((store) => store.modal);
-  const background = location.state && location.state.background;
 
   const ingredient = focus as IIngredient;
-  const itemsMapLength = itemsMap.length as unknown as number;
 
   useEffect(() => {
-    if (!background && itemsMapLength === 0) {
-      dispatch(loadIngredients());
-    } else dispatch(setFocus(itemsMap[id!]));
+    dispatch(setFocus(itemsMap[id!]));
   }, [isModalOpen, itemsMap, id]);
 
   return !ingredient ? (

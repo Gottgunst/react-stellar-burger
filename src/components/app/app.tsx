@@ -7,7 +7,7 @@ import { Outlet } from 'react-router-dom';
 ##################### */
 import styles from './app.module.scss';
 import { useDispatch } from 'hooks/useRedux';
-import { checkUserAuth } from 'services';
+import { checkUserAuth, loadIngredients } from 'services';
 
 /* #################### 
 |||||||||||||||||||||||
@@ -17,6 +17,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     dispatch(checkUserAuth());
+    dispatch(loadIngredients());
   }, []);
 
   return (

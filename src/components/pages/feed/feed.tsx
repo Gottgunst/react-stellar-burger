@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'hooks/useRedux';
 import { Outlet, useLocation, useParams } from 'react-router-dom';
 import { Loading } from '../../ui-kit';
 import { OrderList, Statistic } from '../../layout';
-import { loadIngredients, setFocus } from 'services';
+import { setFocus } from 'services';
 import { PATH } from 'utils/data';
 import { loadOneOrder } from 'services';
 import { useModal } from 'hooks/useModal';
@@ -28,8 +28,6 @@ export const Feed: React.FC = () => {
 
   useEffect(() => {
     if (!oneOrderFlag) {
-      dispatch(loadIngredients());
-
       //если перезагрузили а модальник открыт
       if (!isModalOpen && background && id) {
         if (orders === null) dispatch(loadOneOrder(id as unknown as number));

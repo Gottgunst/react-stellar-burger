@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom';
 import { PATH } from 'utils/data';
 import { useDispatch, useSelector } from 'hooks/useRedux';
-import { loadIngredients, loadOneOrder, logout, setFocus } from 'services';
+import { loadOneOrder, logout, setFocus } from 'services';
 import { Loading } from '../../ui-kit';
 import { useModal } from 'hooks/useModal';
 
@@ -41,8 +41,6 @@ export const Profile: React.FC = () => {
 
   useEffect(() => {
     if (!oneOrderFlag) {
-      dispatch(loadIngredients());
-
       //если перезагрузили а модальник открыт
       if (!isModalOpen && background) {
         if (orders === null) dispatch(loadOneOrder(id as unknown as number));

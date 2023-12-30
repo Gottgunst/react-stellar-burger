@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { BurgerConstructor, BurgerIngredients, BunSelect } from '../../layout';
-import { useDispatch, useSelector } from 'hooks/useRedux';
-import { loadIngredients } from 'services';
+import { useSelector } from 'hooks/useRedux';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -24,7 +23,6 @@ export const Constructor: React.FC = () => {
   const { isModalOpen } = useSelector((store) => store.modal);
   const order = useSelector((store) => store.order);
   const background: boolean = location.state && location.state.background;
-  const dispatch = useDispatch();
 
   const oneIngredientFlag =
     location.pathname.includes(`${PATH.INGREDIENTS}/`) && !background;
@@ -33,7 +31,7 @@ export const Constructor: React.FC = () => {
 
   useEffect(() => {
     // Инициализация данных из API
-    dispatch(loadIngredients());
+    // dispatch(loadIngredients());
 
     // если перезагрузили страницу при модальном окне нового заказа
     // перенаправляем на главную страницу
